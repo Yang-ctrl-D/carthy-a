@@ -671,786 +671,269 @@ main{flex:1;min-width:0}
 </svg>
 
 <header class="topbar" id="topbar">
-  <div class="brand" onclick="go('home')"><img src="assets/carthy-logo.svg" alt="CARTHY"></div>
-  <div class="search">
+  <div class="brand" onclick="go('home')">
+    <svg width="30" height="30" viewBox="0 0 64 64"><rect width="64" height="64" rx="10" fill="none"/><polygon points="32,10 50,20 32,30 14,20" fill="#37e6a9"/><polygon points="14,20 32,30 32,50 14,40" fill="#2a1f4d"/><polygon points="50,20 32,30 32,50 50,40" fill="#a06bff"/></svg>
+    <span style="font-weight:900;font-size:18px">CARTHY</span>
+  </div>
+  <div class="search" style="flex:1;max-width:400px">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-search" xlink:href="#i-search"/></svg>
-    <input id="searchIn" placeholder="搜索帖子、模组、资源…" onkeydown="if(event.key==='Enter')toast('搜索：'+this.value)">
-    <kbd>Ctrl K</kbd>
+    <input placeholder="搜索公告、Bug…" onkeydown="if(event.key==='Enter')toast('搜索：'+this.value)">
   </div>
-  <button class="btn-play" onclick="openLogin()"><svg viewBox="0 0 24 24"><use href="#i-launch" xlink:href="#i-launch"/></svg><span class="btn-txt">登录 / 注册</span></button>
-  <div class="user-mini" onclick="go('profile')">
-    <div class="avatar"><img src="assets/carthy-avatar.svg" alt=""></div>
-    <span>Steve 矿工</span>
-  </div>
+  <button class="btn-play" onclick="openLogin()"><svg viewBox="0 0 24 24"><use href="#i-login" xlink:href="#i-login"/></svg><span class="btn-txt" id="topBtnTxt">登录 / 注册</span></button>
 </header>
 
 <div class="layout">
   <aside class="sidebar">
     <nav class="side-nav">
-      <div class="cap">浏览</div>
-      <button class="nav-item" data-nav="home" onclick="go('home')"><svg><use href="#i-home" xlink:href="#i-home"/></svg>论坛首页</button>
-      <button class="nav-item" onclick="openLogin()"><svg><use href="#i-login" xlink:href="#i-login"/></svg>登录 / 注册</button>
-      <button class="nav-item" data-nav="download" onclick="go('download')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载中心</button>
+      <div class="cap">导航</div>
+      <button class="nav-item active" data-nav="home" onclick="go('home')"><svg><use href="#i-home" xlink:href="#i-home"/></svg>公告</button>
       <button class="nav-item" data-nav="bugs" onclick="go('bugs')"><svg><use href="#i-forum" xlink:href="#i-forum"/></svg>Bug 反馈</button>
+      <button class="nav-item" data-nav="download" onclick="go('download')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载启动器</button>
       <button class="nav-item" data-nav="profile" onclick="go('profile')"><svg><use href="#i-user" xlink:href="#i-user"/></svg>个人主页</button>
     </nav>
     <div class="side-foot">
       <div class="online"><span class="dot"></span><span>CARTHY 社区</span></div>
-      <p>启动器持续更新 · 欢迎交流</p>
+      <p>启动器持续更新<br>欢迎反馈问题</p>
     </div>
   </aside>
 
   <main>
-    <!-- ===== VIEW: LAUNCH ===== -->
-    <section class="view" id="v-launch"></section>
-    <!-- ===== VIEW: HOME ===== -->
-    <section class="view" id="v-home">
+    <!-- HOME: announcements from GitHub Issues -->
+    <section class="view active" id="v-home">
       <div class="hero">
         <div class="hero-card glass">
           <span class="glow"></span>
-          <h1><span class="px">CARTHY FORUM</span>最懂《我的世界》的<br>中文玩家社区</h1>
-          <p>光影、整合包、模组与海量资源一站式分享。无论你是原版党、Forge 老手还是 Fabric 极客，都能在这里找到同好与资源。</p>
-          <div class="hero-cta">
-            <button class="btn solid" onclick="go('download')"><svg><use href="#i-box" xlink:href="#i-box"/></svg>开始下载</button>
-          </div>
+          <h1><span class="px">CARTHY FORUM</span>Minecraft 启动器社区</h1>
+          <p>查看公告、反馈 Bug、下载启动器。数据存储在 GitHub，电脑关机也能访问。</p>
         </div>
         <div class="hero-stats glass">
-          <div class="hstat"><div class="icon g"><svg><use href="#i-user" xlink:href="#i-user"/></svg></div><div><b>CARTHY</b><span>Minecraft 启动器社区</span></div></div>
+          <div class="hstat"><div class="icon g"><svg><use href="#i-home" xlink:href="#i-home"/></svg></div><div><b>CARTHY</b><span>启动器社区</span></div></div>
         </div>
       </div>
 
       <div class="sec-head">
-        <div><h2>论坛<span class="acc">广场</span></h2><div class="sub">一个全新的社区，等待第一条帖子</div></div>
-        <span class="more" onclick="toast('发布功能即将开放')">发布帖子 <svg width="15" height="15"><use href="#i-edit" xlink:href="#i-edit"/></svg></span>
+        <div><h2>社区<span class="acc">公告</span></h2><div class="sub">从 GitHub 仓库实时加载</div></div>
+        <span class="more" onclick="newPost()"><svg width="15" height="15"><use href="#i-edit" xlink:href="#i-edit"/></svg> 发布公告</span>
       </div>
-
-      <div class="empty glass">
-        <div class="empty-ico"><svg><use href="#i-forum" xlink:href="#i-forum"/></svg></div>
-        <h3>这里还没有任何帖子</h3>
-        <p>还没有人发帖。发一条公告、教程或资源分享，开启 CARTHY 社区的交流吧。</p>
-        <button class="btn solid" onclick="toast('发布功能演示中，敬请期待')"><svg><use href="#i-edit" xlink:href="#i-edit"/></svg>发布第一条帖子</button>
-      </div>
+      <div id="announceList"><div class="empty glass"><p>加载中...</p></div></div>
     </section>
 
-    <!-- ===== VIEW: POST ===== -->
-    <section class="view" id="v-post">
-      <div class="post-main">
-        <div class="post-head glass">
-          <div class="crumbs"><a onclick="go('home')">首页</a><span class="sep">/</span><a onclick="go('download')">光影</a><span class="sep">/</span><span>帖子详情</span></div>
-          <h1>【教程】Complimentary Reimagined 光影在 Fabric 1.20.1 下的安装与调参</h1>
-          <div class="tags"><span class="chip p">光影</span><span class="chip g">技术教程</span><span class="tag fabric">Fabric</span></div>
-          <div class="byline">
-            <div class="avatar" style="width:38px;height:38px"><img src="assets/carthy-avatar.svg" alt=""></div>
-            <span class="u">Steve_矿工</span><span class="dot"></span><span>2 小时前发布</span><span class="dot"></span><span>浏览 6,231</span>
-          </div>
-        </div>
-
-        <div class="post-body glass">
-          <p>很多新手问光影装好之后"一卡一卡"，其实大概率是<b>渲染距离</b>和<b>光影质量档</b>没配合好。今天这篇教程手把手教你在 Fabric 1.20.1 下正确安装并调参，把平均帧数从 30 稳定提到 60。</p>
-          <h2>第一步：准备环境</h2>
-          <p>先安装对应版本的 <code>Fabric Loader</code> 与 <code>Fabric API</code>，再下载 Iris（作为 Sodium 的兼容光影层）。推荐配置如下：</p>
-          <pre><span class="c"># build.gradle / 启动器依赖</span>
-fabric-loader 0.16.5
-fabric-api 0.100.4+1.20.1
-sodium 0.5.11+mc1.20.1
-iris 1.6.11+mc1.20.1</pre>
-          <blockquote>提示：Iris 与 Sodium 版本必须匹配，否则启动会直接闪退。</blockquote>
-          <h2>第二步：安装光影包</h2>
-          <p>把下载的 <code>.zip</code> 光影包放进 <code>.minecraft/shaderpacks</code> 目录，回到游戏点击 <b>设置 → 光影</b>，选中即可加载。</p>
-          <h2>第三步：调参关键点</h2>
-          <ul>
-            <li>渲染距离建议 10–14，太高会爆显存。</li>
-            <li>光影质量档用「中」，关闭动态模糊与景深。</li>
-            <li>开启「雾效优化」与「区块缓存」，帧数提升最明显。</li>
-          </ul>
-          <p>调完保存配置，切个光照丰富的场景测试，基本就能稳定 60 帧。有任何问题欢迎在下方回复，我看到都会回。</p>
-        </div>
-
-        <div class="post-actions">
-          <button class="react liked" id="likeBtn" onclick="toggleLike(this)"><svg class="love"><use href="#i-heart" xlink:href="#i-heart"/></svg><span>342</span> 已赞</button>
-          <button class="react" onclick="toast('已复制帖子链接')"><svg><use href="#i-comment" xlink:href="#i-comment"/></svg>128 回复</button>
-          <button class="react" onclick="toast('收藏成功')"><svg><use href="#i-star" xlink:href="#i-star"/></svg>收藏</button>
-          <button class="react" onclick="toast('感谢举报')"><svg><use href="#i-flag" xlink:href="#i-flag"/></svg>举报</button>
-        </div>
-
-        <div class="related glass">
-          <h3>相关推荐</h3>
-          <div class="r-item" onclick="toast('打开相关帖子')"><span>【教程】iris 光影设置全解：白天黑夜两种配置</span><span>6.9k 浏览</span></div>
-          <div class="r-item" onclick="toast('打开相关帖子')"><span>[求助] 光影加载后全屏泛白怎么办？</span><span>1.2k 浏览</span></div>
-          <div class="r-item" onclick="toast('打开相关帖子')"><span>2026 最推荐的 5 款低配光影合集</span><span>18k 浏览</span></div>
-          <div class="r-item" onclick="toast('打开相关帖子')"><span>Stellar 光影更新：新增自适应曝光</span><span>4.3k 浏览</span></div>
-        </div>
-
-        <div class="comments glass">
-          <h3>评论 <span style="color:var(--ink-faint);font-size:13px;font-weight:400">(128)</span></h3>
-          <div class="comment">
-            <div class="avatar"><img src="assets/carthy-avatar.svg" alt=""></div>
-            <div class="c-main">
-              <div class="c-top"><span class="u">Mossy_Stone</span><span class="lvl">Lv.8</span><span>· 2 小时前</span><span class="op">楼主</span></div>
-              <div class="c-text">按教程调完确实流畅了很多，感谢分享！不过 0.5.11 的 Sodium 好像会跟某些粒子模组冲突？</div>
-              <div class="c-actions"><span><svg><use href="#i-heart" xlink:href="#i-heart"/></svg>点赞 12</span><span>回复</span></div>
-              <div class="subs">
-                <div class="comment sub">
-                  <div class="avatar"><img src="assets/carthy-avatar.svg" alt=""></div>
-                  <div class="c-main">
-                    <div class="c-top"><span class="u">Steve_矿工</span><span class="lvl">Lv.12</span><span>· 1 小时前</span><span class="op">楼主</span></div>
-                    <div class="c-text">是的，建议把粒子模组更新到对应版本，或者关掉「粒子合并」选项即可。</div>
-                    <div class="c-actions"><span>回复</span></div>
-                  </div>
-                </div>
-                <div class="comment sub">
-                  <div class="avatar"><img src="assets/carthy-avatar.svg" alt=""></div>
-                  <div class="c-main">
-                    <div class="c-top"><span class="u">Ender_Queen</span><span class="lvl">Lv.10</span><span>· 55 分钟前</span></div>
-                    <div class="c-text">学到了，收藏了！等下就去试。</div>
-                    <div class="c-actions"><span><svg><use href="#i-heart" xlink:href="#i-heart"/></svg>点赞 3</span><span>回复</span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="comment">
-            <div class="avatar"><img src="assets/carthy-avatar.svg" alt=""></div>
-            <div class="c-main">
-              <div class="c-top"><span class="u">Redstone_Wizard</span><span class="lvl">Lv.9</span><span>· 昨天</span></div>
-              <div class="c-text">问一下渲染距离 14 但显存只有 4G 会不会爆？想参考下你的设置截图。</div>
-              <div class="c-actions"><span><svg><use href="#i-heart" xlink:href="#i-heart"/></svg>点赞 5</span><span>回复</span></div>
-            </div>
-          </div>
-          <div class="comment-box">
-            <div class="avatar"><img src="assets/carthy-avatar.svg" alt=""></div>
-            <textarea placeholder="写下你的回复…" id="cmtInput"></textarea>
-            <div style="display:flex;flex-direction:column;justify-content:space-between;gap:8px">
-              <button class="btn solid" onclick="submitComment()">发表</button>
-            </div>
-          </div>
-        </div>
+    <!-- BUGS -->
+    <section class="view" id="v-bugs">
+      <div class="sec-head" style="margin-top:0">
+        <div><h2>Bug <span class="acc">反馈</span></h2><div class="sub">从 GitHub Issues 实时加载</div></div>
+        <span class="more" onclick="newBug()"><svg width="15" height="15"><use href="#i-edit" xlink:href="#i-edit"/></svg> 反馈 Bug</span>
       </div>
+      <div id="bugList"><div class="empty glass"><p>加载中...</p></div></div>
     </section>
 
-    <!-- ===== VIEW: DOWNLOAD ===== -->
+    <!-- DOWNLOAD -->
     <section class="view" id="v-download">
       <div class="sec-head" style="margin-top:0">
-        <div><h2>下载<span class="acc">中心</span></h2><div class="sub">游戏本体、最新启动器、模组与资源包，一个入口全搞定</div></div>
-        <span class="more" onclick="openPublish()">发布整合包 <svg width="15" height="15"><use href="#i-upload" xlink:href="#i-upload"/></svg></span>
+        <div><h2>下载<span class="acc">启动器</span></h2><div class="sub">CARTHY 启动器 Windows 版</div></div>
       </div>
-
-      <div class="filterbar glass">
-        <span class="f-label"><svg><use href="#i-craft" xlink:href="#i-craft"/></svg>筛选：</span>
-        <button class="fbtn on" data-f="all" onclick="filterDL('all',this)">全部</button>
-        <button class="fbtn" data-f="vanilla" onclick="filterDL('vanilla',this)">Vanilla</button>
-        <button class="fbtn" data-f="forge" onclick="filterDL('forge',this)">Forge</button>
-        <button class="fbtn" data-f="fabric" onclick="filterDL('fabric',this)">Fabric</button>
-        <button class="fbtn" data-f="mod" onclick="filterDL('mod',this)">Mod</button>
-        <button class="fbtn" data-f="map" onclick="filterDL('map',this)">地图</button>
-        <span class="dl-count" id="dlCount">共 8 个资源</span>
-      </div>
-
-      <div class="dl-grid" id="dlGrid">
-        <div class="dl-card glass" data-t="vanilla">
-          <div class="head"><div class="ver-icon fg"><svg><use href="#i-box" xlink:href="#i-box"/></svg></div><div><div class="v">Java 版游戏本体</div><div class="tag vanilla">Vanilla</div></div></div>
-          <p class="desc">《我的世界》Java 版官方启动器下载，含 1.20.1 全版本客户端。</p>
-          <div class="meta"><span><svg><use href="#i-download" xlink:href="#i-download"/></svg>18,420 下载</span><span><svg><use href="#i-box" xlink:href="#i-box"/></svg>3.2 GB</span></div>
-          <button class="btn solid dl-btn" onclick="toast('开始下载 Vanilla 本体')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载</button>
-        </div>
-        <div class="dl-card glass" data-t="vanilla">
-          <div class="head"><div class="ver-icon c"><svg><use href="#i-launch" xlink:href="#i-launch"/></svg></div><div><div class="v">CARTHY 整合启动器</div><div class="tag vanilla">Vanilla</div></div></div>
-          <span class="latest">最新版 v1.0.0</span>
-          <p class="desc">一键启动、自动下载 Java 与游戏版本、内置 Mod 管理、多源加速下载。</p>
-          <div class="meta"><span><svg><use href="#i-download" xlink:href="#i-download"/></svg>9,872 下载</span><span><svg><use href="#i-box" xlink:href="#i-box"/></svg>80 MB</span></div>
-          <button class="btn solid dl-btn" onclick="dlLauncher()"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载最新启动器</button>
-        </div>
-        <div class="dl-card glass" data-t="forge">
-          <div class="head"><div class="ver-icon g"><svg><use href="#i-mod" xlink:href="#i-mod"/></svg></div><div><div class="v">Forge 安装包 1.20.1</div><div class="tag forge">Forge</div></div></div>
-          <p class="desc">官方 Forge 加载器安装包，Windows 一键安装，支持主流整合包。</p>
-          <div class="meta"><span><svg><use href="#i-download" xlink:href="#i-download"/></svg>11,356 下载</span><span><svg><use href="#i-box" xlink:href="#i-box"/></svg>12 MB</span></div>
-          <button class="btn solid dl-btn" onclick="toast('开始下载 Forge 安装包')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载</button>
-        </div>
-        <div class="dl-card glass" data-t="fabric">
-          <div class="head"><div class="ver-icon c"><svg><use href="#i-mod" xlink:href="#i-mod"/></svg></div><div><div class="v">Fabric API 0.100.4</div><div class="tag fabric">Fabric</div></div></div>
-          <p class="desc">Fabric 生态核心前置库，光影、优化与辅助模组都依赖它。</p>
-          <div class="meta"><span><svg><use href="#i-download" xlink:href="#i-download"/></svg>15,204 下载</span><span><svg><use href="#i-box" xlink:href="#i-box"/></svg>1.6 MB</span></div>
-          <button class="btn solid dl-btn" onclick="toast('开始下载 Fabric API')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载</button>
-        </div>
-        <div class="dl-card glass" data-t="fabric">
-          <div class="head"><div class="ver-icon c"><svg><use href="#i-box" xlink:href="#i-box"/></svg></div><div><div class="v">Sodium + Iris 光影整合</div><div class="tag fabric">Fabric</div></div></div>
-          <p class="desc">性能优化核心，搭配光影的推荐组合，帧数立竿见影。</p>
-          <div class="meta"><span><svg><use href="#i-download" xlink:href="#i-download"/></svg>7,915 下载</span><span><svg><use href="#i-box" xlink:href="#i-box"/></svg>24 MB</span></div>
-          <button class="btn solid dl-btn" onclick="toast('开始下载 Sodium+Iris')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载</button>
-        </div>
-        <div class="dl-card glass" data-t="mod">
-          <div class="head"><div class="ver-icon p"><svg><use href="#i-mod" xlink:href="#i-mod"/></svg></div><div><div class="v">翡翠世界整合包</div><div class="tag mod">Mod</div></div></div>
-          <p class="desc">200+ 模组一键整合，含优化、冒险、科技与辅助四大类。</p>
-          <div class="meta"><span><svg><use href="#i-download" xlink:href="#i-download"/></svg>5,662 下载</span><span><svg><use href="#i-box" xlink:href="#i-box"/></svg>1.8 GB</span></div>
-          <button class="btn solid dl-btn" onclick="toast('开始下载翡翠世界整合包')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载</button>
-        </div>
-        <div class="dl-card glass" data-t="mod">
-          <div class="head"><div class="ver-icon m"><svg><use href="#i-box" xlink:href="#i-box"/></svg></div><div><div class="v">动态地图 Mod</div><div class="tag mod">Mod</div></div></div>
-          <p class="desc">实时显示地图与玩家位置，开荒必备。</p>
-          <div class="meta"><span><svg><use href="#i-download" xlink:href="#i-download"/></svg>3,208 下载</span><span><svg><use href="#i-box" xlink:href="#i-box"/></svg>9 MB</span></div>
-          <button class="btn solid dl-btn" onclick="toast('开始下载动态地图 Mod')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载</button>
-        </div>
-        <div class="dl-card glass" data-t="map">
-          <div class="head"><div class="ver-icon m"><svg><use href="#i-star" xlink:href="#i-star"/></svg></div><div><div class="v">翡翠平原开荒地图</div><div class="tag map">地图</div></div></div>
-          <p class="desc">官方开荒地图存档，村庄与资源点已标注。</p>
-          <div class="meta"><span><svg><use href="#i-download" xlink:href="#i-download"/></svg>2,746 下载</span><span><svg><use href="#i-box" xlink:href="#i-box"/></svg>410 MB</span></div>
-          <button class="btn solid dl-btn" onclick="toast('开始下载翡翠平原地图')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载</button>
+      <div class="dl-grid" style="grid-template-columns:1fr;max-width:480px">
+        <div class="dl-card glass">
+          <div class="head"><div class="ver-icon fg"><svg><use href="#i-box" xlink:href="#i-box"/></svg></div><div><div class="v">CARTHY 启动器</div><div class="tag vanilla">Windows</div></div></div>
+          <p class="desc">一键启动 Minecraft，自动下载 Java，多源加速下载游戏版本。</p>
+          <div class="meta"><span>约 80 MB</span></div>
+          <button class="btn solid dl-btn" onclick="dlLauncher()"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载最新版</button>
         </div>
       </div>
     </section>
 
-    <!-- ===== VIEW: PROFILE ===== -->
+    <!-- PROFILE -->
     <section class="view" id="v-profile">
       <div class="profile-wrap">
         <div class="profile-card glass">
           <div class="banner"></div>
           <div class="inner">
-            <div class="big-av"><img src="assets/carthy-avatar.svg" alt=""></div>
+            <div class="big-av"><img src="" alt="" onerror="this.style.display='none'"></div>
             <div class="p-id">
-              <div class="p-name"><span id="pName">Steve_矿工</span> <span class="role" id="pRole">管理员</span></div>
-              <div class="p-title">翡翠社区站长 · 光影与整合包作者</div>
-              <div class="p-meta">
-                <span><svg><use href="#i-clock" xlink:href="#i-clock"/></svg>2021-03-12 注册</span>
-                <span><svg><use href="#i-eye" xlink:href="#i-eye"/></svg>关注 892 · 粉丝 4,120</span>
-                <span><svg><use href="#i-craft" xlink:href="#i-craft"/></svg>发帖 326</span>
-              </div>
-              <div class="badges">
-                <span class="badge"><svg><use href="#i-star" xlink:href="#i-star"/></svg>资深作者</span>
-                <span class="badge"><svg><use href="#i-shield" xlink:href="#i-shield"/></svg>版主</span>
-                <span class="badge"><svg><use href="#i-mod" xlink:href="#i-mod"/></svg>模组贡献者</span>
-                <span class="badge"><svg><use href="#i-heart" xlink:href="#i-heart"/></svg>万元户</span>
-              </div>
-            </div>
-            <div class="p-stats">
-              <div class="lvl-box">
-                <span class="lv">LV.12</span>
-                <span style="font-size:11px;color:var(--ink-faint)">矿工大师</span>
-                <div class="lvl-bar"><i style="width:76%"></i></div>
-              </div>
-              <div class="stat"><b style="color:var(--green)">4,120</b><span>粉丝</span></div>
-              <div class="stat"><b style="color:var(--purple)">326</b><span>帖子</span></div>
-              <div class="stat"><b style="color:var(--cyan)">88k</b><span>获赞</span></div>
+              <div class="p-name"><span id="pName">未登录</span></div>
+              <div class="p-title" id="pRole">点击右上角登录</div>
             </div>
           </div>
         </div>
-
-        <div class="auth-card glass">
-          <div class="ac-icon"><svg><use href="#i-login" xlink:href="#i-login"/></svg></div>
-          <div class="ac-body">
-            <b id="authMethodName">外置登录（LittleSkin）</b>
-            <div class="ac-sub">当前登录：<span id="authCurUser">Steve_矿工</span> · 支持正版 / 外置 / 游客</div>
-          </div>
-          <button class="btn ghost" onclick="openLogin()"><svg><use href="#i-login" xlink:href="#i-login"/></svg>切换登录方式</button>
-        </div>
-
-        <div class="p-tab glass">
-          <button class="tab-btn on" data-tab="posts" onclick="switchTab('posts',this)">我的帖子</button>
-          <button class="tab-btn" data-tab="acts" onclick="switchTab('acts',this)">最近动态</button>
-        </div>
-
-        <div class="two-col">
-          <div class="glass" style="padding:6px 8px" id="tab-posts">
-            <div class="my-post" onclick="go('post')">
-              <div class="cover">教程</div>
-              <div class="mp-body"><h4>【教程】Complimentary Reimagined 光影在 Fabric 1.20.1 下的安装与调参</h4>
-                <div class="mp-meta"><span>2 小时前</span><span class="tag fabric">Fabric</span><span>浏览 6.2k</span><span>赞 342</span></div></div>
-            </div>
-            <div class="my-post" onclick="go('post')">
-              <div class="cover">整合</div>
-              <div class="mp-body"><h4>[1.20.1] 我的"翡翠世界"整合包：200+ 模组一键启动</h4>
-                <div class="mp-meta"><span>昨天</span><span class="tag forge">Forge</span><span>浏览 3.8k</span><span>赞 201</span></div></div>
-            </div>
-            <div class="my-post" onclick="go('post')">
-              <div class="cover">光影</div>
-              <div class="mp-body"><h4>Stellar 光影更新 v1.6：新增自适应曝光与体积雾</h4>
-                <div class="mp-meta"><span>3 天前</span><span class="tag fabric">Fabric</span><span>浏览 9.1k</span><span>赞 618</span></div></div>
-            </div>
-          </div>
-
-          <div class="glass" style="padding:16px 18px;display:none" id="tab-acts">
-            <div class="acts">
-              <div class="act"><div class="a-icon g"><svg><use href="#i-craft" xlink:href="#i-craft"/></svg></div><div><b>发布了新光影包</b><span>Stellar v1.6</span></div><time>2h</time></div>
-              <div class="act"><div class="a-icon p"><svg><use href="#i-edit" xlink:href="#i-edit"/></svg></div><div><b>编辑了整合包</b><span>翡翠世界 · 版本 3.2</span></div><time>1d</time></div>
-              <div class="act"><div class="a-icon c"><svg><use href="#i-comment" xlink:href="#i-comment"/></svg></div><div><b>回复了帖子</b><span>光影泛白问题解决方案</span></div><time>2d</time></div>
-              <div class="act"><div class="a-icon g"><svg><use href="#i-star" xlink:href="#i-star"/></svg></div><div><b>获得徽章</b><span>万元户 · 累计获赞 1 万+</span></div><time>4d</time></div>
-              <div class="act"><div class="a-icon p"><svg><use href="#i-mod" xlink:href="#i-mod"/></svg></div><div><b>更新了整合包</b><span>翡翠世界 · 版本 3.2.1</span></div><time>6d</time></div>
-            </div>
-          </div>
+        <div class="glass" style="padding:20px">
+          <h3 style="font-weight:900;margin-bottom:12px">账号信息</h3>
+          <div id="profileInfo" style="color:var(--ink-dim);font-size:14px;line-height:2">登录后在此显示账号信息</div>
         </div>
       </div>
     </section>
-
-    <!-- ===== VIEW: ADMIN ===== -->
-    <section class="view" id="v-admin">
-      <div class="admin-wrap">
-        <div class="admin-head glass">
-          <h1>后台<span class="acc" style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">面板</span></h1>
-          <span class="role-chip">ADMIN</span>
-          <div class="search">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute;left:11px;top:10px;width:19px;height:19px;color:var(--ink-faint)"><use href="#i-search" xlink:href="#i-search"/></svg>
-            <input onkeydown="if(event.key==='Enter')toast('搜索管理数据：'+this.value)" placeholder="搜索用户 / 帖子 / 举报…" style="width:100%;height:38px;border:1px solid var(--line-2);border-radius:19px;background:rgba(255,255,255,.05);padding:0 14px 0 38px;color:var(--ink);font-family:var(--font);font-size:13px;outline:none">
-          </div>
-        </div>
-
-        <div class="kpi-grid">
-          <div class="kpi glass"><div class="k-icon g"><svg><use href="#i-user" xlink:href="#i-user"/></svg></div><b>—</b><span class="k-label">注册用户</span></div>
-          <div class="kpi glass"><div class="k-icon p"><svg><use href="#i-forum" xlink:href="#i-forum"/></svg></div><b>—</b><span class="k-label">主题帖</span></div>
-          <div class="kpi glass"><div class="k-icon o"><svg><use href="#i-flag" xlink:href="#i-flag"/></svg></div><b>—</b><span class="k-label">举报</span></div>
-        </div>
-
-        <div class="admin-cols">
-          <div class="glass" style="padding:20px 22px">
-            <h3><span class="n">#01</span>下载趋势 <span style="margin-left:auto;font-size:12px;color:var(--ink-faint);font-weight:400">最近 8 周下载量</span></h3>
-            <div class="trend-chart">
-              <div class="bars" id="trendBars"></div>
-            </div>
-          </div>
-          <div class="glass a-panel">
-            <h3><span class="n">#02</span>站点概况</h3>
-            <div class="srv-status">
-              <div class="ss-ico"><svg><use href="#i-trend" xlink:href="#i-trend"/></svg></div>
-              <div class="ss-body"><b>社区今日数据</b><div class="sub">内容与互动实时概况</div></div>
-              <span class="online-pill">活跃</span>
-            </div>
-            <div class="uptime">
-              <div class="u"><b style="color:var(--green)">1,284</b><span>在线用户</span></div>
-              <div class="u"><b style="color:var(--cyan)">96</b><span>今日发帖</span></div>
-              <div class="u"><b style="color:var(--purple)">412</b><span>今日下载</span></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="admin-cols">
-          <div class="glass a-panel" style="overflow:hidden">
-            <h3><span class="n">#03</span>用户与帖子</h3>
-            <table class="tbl">
-              <colgroup><col style="width:26%"><col style="width:14%"><col style="width:16%"><col style="width:16%"><col style="width:14%"><col style="width:14%"></colgroup>
-              <thead><tr><th>用户</th><th>等级</th><th>帖子</th><th>状态</th><th>注册</th><th>操作</th></tr></thead>
-              <tbody>
-                <tr><td><span class="user"><span class="mini"></span>Steve_矿工</span></td><td>Lv.12</td><td>326</td><td class="ok">正常</td><td>2021-03</td><td><button class="act-btn" onclick="toast('打开用户详情')">详情</button></td></tr>
-                <tr><td><span class="user"><span class="mini"></span>Mossy_Stone</span></td><td>Lv.8</td><td>94</td><td class="ok">正常</td><td>2022-07</td><td><button class="act-btn" onclick="toast('打开用户详情')">详情</button></td></tr>
-                <tr><td><span class="user"><span class="mini"></span>Hacker_Noob</span></td><td>Lv.1</td><td>3</td><td class="warn">审核中</td><td>2026-08</td><td><button class="act-btn" onclick="toast('打开用户详情')">详情</button></td></tr>
-                <tr><td><span class="user"><span class="mini"></span>Spam_Bot</span></td><td>Lv.1</td><td>47</td><td class="bad">封禁</td><td>2026-09</td><td><button class="act-btn del" onclick="toast('已加入封禁队列')">处理</button></td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="glass a-panel">
-            <h3><span class="n">#04</span>最新举报</h3>
-            <div class="rpt-item"><div class="flag"><svg><use href="#i-flag" xlink:href="#i-flag"/></svg></div><div><b>广告 / 灌水</b><span>来自 Spam_Bot 的批量刷帖</span></div><time>12 分钟前</time><button class="btn danger do" style="height:30px;padding:0 12px;font-size:12px" onclick="toast('已处理该举报')">处理</button></div>
-            <div class="rpt-item"><div class="flag"><svg><use href="#i-flag" xlink:href="#i-flag"/></svg></div><div><b>违规内容</b><span>帖子含外链广告</span></div><time>1 小时前</time><button class="btn danger do" style="height:30px;padding:0 12px;font-size:12px" onclick="toast('已处理该举报')">处理</button></div>
-            <div class="rpt-item"><div class="flag"><svg><use href="#i-flag" xlink:href="#i-flag"/></svg></div><div><b>争议内容</b><span>用户互相攻击</span></div><time>3 小时前</time><button class="btn danger do" style="height:30px;padding:0 12px;font-size:12px" onclick="toast('已处理该举报')">处理</button></div>
-            <div class="rpt-item"><div class="flag"><svg><use href="#i-flag" xlink:href="#i-flag"/></svg></div><div><b>侵权举报</b><span>整合包涉嫌抄袭</span></div><time>昨天</time><button class="btn danger do" style="height:30px;padding:0 12px;font-size:12px" onclick="toast('已处理该举报')">处理</button></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== VIEW: 404 ===== -->
-    <section class="view" id="v-void">
-      <div class="four-wrap" style="position:static;min-height:70vh">
-        <div class="four-inner">
-          <div class="broken-cubes"><i></i><i></i><i></i><i></i><i></i></div>
-          <div class="four-code"><span class="px-fx">404</span></div>
-          <h2>页面迷失在末地虚空</h2>
-          <p>你要找的方块可能被末影人偷走了，或者链接已经失效。回到首页，继续你的冒险吧。</p>
-          <div class="four-btns">
-            <button class="btn solid" onclick="go('home')"><svg><use href="#i-home" xlink:href="#i-home"/></svg>返回首页</button>
-            <button class="btn ghost" onclick="go('download')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>去下载中心</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- BUGS VIEW -->
-    <section class="view" id="v-bugs">
-      <div class="sec-head">
-        <div><h2>Bug <span class="acc" style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">反馈</span></h2><div class="sub">从 GitHub 仓库实时加载</div></div>
-      </div>
-      <div id="bugList"><div class="empty glass"><p style="color:var(--ink-faint)">加载中...</p></div></div>
-    </section>
-
-    <!-- VIEWS_PLACEHOLDER -->
   </main>
 </div>
 
-<nav class="mnav">
-  <div class="inner">
-    <button class="mnav-item" data-mnav="home" onclick="go('home')"><svg><use href="#i-home" xlink:href="#i-home"/></svg>首页</button>
-    <button class="mnav-item" data-mnav="download" onclick="go('download')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载</button>
-    <button class="mnav-item mid" onclick="go('launch')"><svg><use href="#i-launch" xlink:href="#i-launch"/></svg></button>
-    <button class="mnav-item" data-mnav="profile" onclick="go('profile')"><svg><use href="#i-user" xlink:href="#i-user"/></svg>我的</button>
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal" onclick="if(event.target===this)closeLogin()">
+  <div class="modal glass">
+    <div class="modal-head"><h3>登录 <span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">CARTHY</span></h3><button class="modal-x" onclick="closeLogin()">×</button></div>
+    <p class="auth-note" style="margin-top:16px">输入邮箱和密码登录。新用户自动注册。</p>
+    <label style="display:block;font-size:12px;color:var(--ink-dim);margin:13px 0 6px;font-weight:600">邮箱</label>
+    <input id="liEmail" type="email" placeholder="your@email.com" style="width:100%;height:42px;border:1px solid var(--line-2);border-radius:10px;background:rgba(6,9,15,.7);color:var(--ink);padding:0 14px;outline:none">
+    <label style="display:block;font-size:12px;color:var(--ink-dim);margin:13px 0 6px;font-weight:600">密码</label>
+    <input id="liPwd" type="password" placeholder="••••••••" style="width:100%;height:42px;border:1px solid var(--line-2);border-radius:10px;background:rgba(6,9,15,.7);color:var(--ink);padding:0 14px;outline:none">
+    <button class="btn solid auth-submit" style="width:100%;margin-top:18px;height:44px" onclick="doLogin()">登录 / 注册</button>
+    <div class="modal-foot">腐竹账号：3962892029@qq.com</div>
   </div>
-</nav>
+</div>
+
+<!-- NEW POST/BUG MODAL -->
+<div class="modal-overlay" id="postModal" onclick="if(event.target===this)closePost()">
+  <div class="modal glass">
+    <div class="modal-head"><h3 id="postTitle">发布内容</h3><button class="modal-x" onclick="closePost()">×</button></div>
+    <label style="display:block;font-size:12px;color:var(--ink-dim);margin:13px 0 6px;font-weight:600">标题</label>
+    <input id="npTitle" placeholder="输入标题" style="width:100%;height:42px;border:1px solid var(--line-2);border-radius:10px;background:rgba(6,9,15,.7);color:var(--ink);padding:0 14px;outline:none">
+    <label style="display:block;font-size:12px;color:var(--ink-dim);margin:13px 0 6px;font-weight:600">内容</label>
+    <textarea id="npBody" placeholder="输入内容" rows="5" style="width:100%;border:1px solid var(--line-2);border-radius:10px;background:rgba(6,9,15,.7);color:var(--ink);padding:12px;outline:none;resize:vertical;font-family:inherit"></textarea>
+    <button class="btn solid" style="width:100%;margin-top:14px;height:44px" onclick="submitPost()">提交到 GitHub</button>
+    <div class="modal-foot">需要 GitHub 账号，提交后在仓库 Issues 中可见</div>
+  </div>
+</div>
 
 <div id="toast"></div>
 
 <script>
-/* ===== 背景与启动页 ===== */
-var bg = document.getElementById('bg');
-var particles = document.getElementById('particles');
-var VIEW_BG = {
-  home:'home', post:'post', download:'download',
-  profile:'profile', admin:'admin', launch:'launch', void:'void', bugs:'home'
-};
-var views = ['home','post','download','profile','admin','launch','void','bugs'];
+var GH_REPO='Yang-ctrl-D/carthy-a';
+var ADMIN_EMAIL='3962892029@qq.com';
+var ADMIN_PWD="6fd7h8d6s4f'h/f'h'\\f\\h'\\jjgugIlIIl//;";
+var BANNED=['傻逼','操你妈','滚蛋','垃圾','shit','fuck'];
+var user=JSON.parse(localStorage.getItem('carthy_user')||'null');
 
-/* 渲染 404 之外的启动页（用独立构图，注入 home 同款面板） */
-function renderLaunch(){
-  var el = document.getElementById('v-launch');
-  el.className = 'view active';
-  el.innerHTML =
-  '<div class="launch-wrap" style="position:fixed;inset:0">'+
-    '<div class="bg launch" style="z-index:-1"></div>'+
-    '<div class="launch-inner">'+
-      '<img class="logo-big" src="assets/carthy-logo.svg" alt="CARTHY">'+
-      '<div class="l-sub">MINECRAFT <b>·</b> JAVA 1.20.1 <b>·</b> FABRIC &amp; FORGE</div>'+
-      '<h1>CARTHY FORUM</h1>'+
-      '<p>欢迎来到方块玩家的家。下载整合启动器、挑选光影模组，开启你的方块冒险。</p>'+
-      '<div class="launch-btns">'+
-        '<button class="btn solid" onclick="go(\'home\')"><svg><use href="#i-launch" xlink:href="#i-launch"/></svg>进入论坛</button>'+
-        '<button class="btn ghost" onclick="go(\'download\')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载启动器</button>'+
-      '</div>'+
-      '<div class="version-note">BUILD 3.2.1 · 2026</div>'+
-    '</div>'+
-  '</div>';
-}
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},2500)}
 
-function switchTo(name){
-  if(!VIEW_BG[name]) name='home';
-  bg.className = 'bg ' + VIEW_BG[name];
-  /* 静默粒子（除 launch/void） */
-  particles.classList.toggle('quiet', name!=='launch' && name!=='void');
-  views.forEach(function(v){
-    var el = document.getElementById('v-'+v);
-    if(el){ el.classList.remove('active'); }
-  });
-  if(name==='launch'){ renderLaunch(); return; }
-  var target = document.getElementById('v-'+name);
-  if(target) target.classList.add('active');
-  /* nav 高亮 */
-  document.querySelectorAll('.nav-item').forEach(function(b){ b.classList.toggle('active', b.dataset.nav===name); });
-  document.querySelectorAll('.mnav-item').forEach(function(b){ b.classList.toggle('active', b.dataset.mnav===name); });
+function go(v){
+  document.querySelectorAll('.view').forEach(function(e){e.classList.remove('active')});
+  document.getElementById('v-'+v).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(function(b){b.classList.toggle('active',b.dataset.nav===v)});
+  if(v==='home') loadAnnouncements();
+  if(v==='bugs') loadBugs();
   window.scrollTo(0,0);
-  history.replaceState(null,'','#'+name);
 }
 
-function go(name){ switchTo(name); if(name==='bugs') loadBugs(); }
+function openLogin(){
+  if(user){
+    if(confirm('当前登录：'+user.name+'\n\n确定退出登录？')){
+      localStorage.removeItem('carthy_user');user=null;refreshUser();toast('已退出');
+    }
+    return;
+  }
+  document.getElementById('loginModal').classList.add('open');
+}
+function closeLogin(){document.getElementById('loginModal').classList.remove('open')}
 
-/* ===== Load bugs from GitHub Issues ===== */
-function loadBugs(){
-  var el=document.getElementById('bugList');
-  el.innerHTML='<div class="empty glass"><p style="color:var(--ink-faint)">加载中...</p></div>';
-  fetch('https://api.github.com/repos/Yang-ctrl-D/carthy-a/issues?state=all&per_page=20')
+function doLogin(){
+  var em=document.getElementById('liEmail').value.trim();
+  var pw=document.getElementById('liPwd').value;
+  if(!em||!pw){toast('请输入邮箱和密码');return}
+  for(var i=0;i<BANNED.length;i++){
+    if(em.toLowerCase().indexOf(BANNED[i].toLowerCase())>=0){toast('邮箱包含违规词');return}
+  }
+  if(em===ADMIN_EMAIL&&pw===ADMIN_PWD){
+    user={email:em,name:'腐竹',role:'admin'};
+  }else{
+    user={email:em,name:em.split('@')[0],role:'player'};
+  }
+  localStorage.setItem('carthy_user',JSON.stringify(user));
+  refreshUser();closeLogin();toast('欢迎，'+user.name+'！');
+}
+
+function refreshUser(){
+  var btnTxt=document.getElementById('topBtnTxt');
+  var pn=document.getElementById('pName');var pr=document.getElementById('pRole');var pi=document.getElementById('profileInfo');
+  if(user){
+    btnTxt.textContent=user.name;
+    pn.textContent=user.name;
+    pr.textContent=user.role==='admin'?'腐竹':'玩家';
+    pi.innerHTML='邮箱：'+user.email+'<br>角色：'+(user.role==='admin'?'腐竹':'玩家')+'<br><span style="color:var(--green)">已登录</span>';
+  }else{
+    btnTxt.textContent='登录 / 注册';
+    pn.textContent='未登录';pr.textContent='点击右上角登录';
+  }
+}
+
+function esc(s){if(!s)return'';var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+function loadAnnouncements(){
+  var el=document.getElementById('announceList');
+  el.innerHTML='<div class="empty glass"><p>加载中...</p></div>';
+  fetch('https://api.github.com/repos/'+GH_REPO+'/issues?state=open&per_page=10')
     .then(function(r){return r.json()})
     .then(function(issues){
-      if(!issues||!issues.length){ el.innerHTML='<div class="empty glass"><h3>暂无 Bug 报告</h3><p>遇到问题？在 GitHub 仓库提 Issue 即可。</p></div>'; return; }
-      el.innerHTML=issues.map(function(i){
-        var closed=i.state==='closed';
-        return '<div class="dl-card glass" style="margin-bottom:10px">'+
-          '<div class="head"><div><div class="v">#'+i.number+' '+esc(i.title)+'</div>'+
-          '<span class="tag '+(closed?'forge':'fabric')+'">'+(closed?'已解决':'待处理')+'</span></div></div>'+
-          '<p class="desc" style="font-size:13px;color:var(--ink-dim)">'+esc(i.body?i.body.substring(0,200):'')+'</p>'+
-          '<div class="meta"><span>'+i.user.login+' · '+new Date(i.created_at).toLocaleDateString()+'</span></div></div>';
+      var anns=(issues||[]).filter(function(i){return (i.labels||[]).some(function(l){return l.name==='announcement'})});
+      if(!anns.length){
+        el.innerHTML='<div class="empty glass"><div class="empty-ico"><svg><use href="#i-home" xlink:href="#i-home"/></svg></div><h3>暂无公告</h3><p>发布第一条公告吧</p></div>';
+        return;
+      }
+      el.innerHTML=anns.map(function(i){
+        return '<div class="post-card glass" onclick="window.open(\''+i.html_url+'\',\'_blank\')">'+
+          '<div class="avatar"></div><div class="body">'+
+          '<div class="meta"><span class="u">'+esc(i.user.login)+'</span><span>'+new Date(i.created_at).toLocaleDateString()+'</span></div>'+
+          '<h3>'+esc(i.title)+'</h3>'+
+          '<div class="snippet">'+esc(i.body?i.body.substring(0,150):'')+'</div>'+
+          '</div></div>';
       }).join('');
     })
-    .catch(function(){ el.innerHTML='<div class="empty glass"><p>加载失败，请刷新重试</p></div>'; });
-}
-function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
-window.addEventListener('hashchange', function(){ var h=location.hash.replace('#',''); switchTo(h||'home'); });
-
-/* 下载筛选 */
-function filterDL(f, btn){
-  var cards = document.querySelectorAll('#dlGrid .dl-card');
-  var n=0;
-  cards.forEach(function(c){
-    var show = f==='all' || c.dataset.t===f;
-    c.style.display = show?'':'none';
-    if(show) n++;
-  });
-  document.getElementById('dlCount').textContent = '共 '+n+' 个资源';
-  document.querySelectorAll('.filterbar .fbtn').forEach(function(b){ b.classList.remove('on'); });
-  btn.classList.add('on');
+    .catch(function(){el.innerHTML='<div class="empty glass"><p>加载失败，请刷新</p></div>'});
 }
 
-/* 个人页 Tab */
-function switchTab(t, btn){
-  document.getElementById('tab-posts').style.display = t==='posts'?'':'none';
-  document.getElementById('tab-acts').style.display = t==='acts'?'':'none';
-  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('on'); });
-  btn.classList.add('on');
+function loadBugs(){
+  var el=document.getElementById('bugList');
+  el.innerHTML='<div class="empty glass"><p>加载中...</p></div>';
+  fetch('https://api.github.com/repos/'+GH_REPO+'/issues?state=all&per_page=20')
+    .then(function(r){return r.json()})
+    .then(function(issues){
+      var bugs=(issues||[]).filter(function(i){return (i.labels||[]).some(function(l){return l.name==='bug'})||!i.labels.length});
+      if(!bugs.length){
+        el.innerHTML='<div class="empty glass"><div class="empty-ico"><svg><use href="#i-forum" xlink:href="#i-forum"/></svg></div><h3>暂无 Bug 报告</h3><p>遇到问题？点击右上角"反馈 Bug"</p></div>';
+        return;
+      }
+      el.innerHTML=bugs.map(function(i){
+        var closed=i.state==='closed';
+        return '<div class="post-card glass" onclick="window.open(\''+i.html_url+'\',\'_blank\')">'+
+          '<div class="avatar"></div><div class="body">'+
+          '<div class="meta"><span class="u">'+esc(i.user.login)+'</span><span class="tag '+(closed?'forge':'fabric')+'" style="margin-left:8px">'+(closed?'已解决':'待处理')+'</span></div>'+
+          '<h3>#'+i.number+' '+esc(i.title)+'</h3>'+
+          '<div class="snippet">'+esc(i.body?i.body.substring(0,150):'')+'</div>'+
+          '</div></div>';
+      }).join('');
+    })
+    .catch(function(){el.innerHTML='<div class="empty glass"><p>加载失败，请刷新</p></div>'});
 }
 
-/* 点赞切换 */
-function toggleLike(btn){
-  var s = btn.querySelector('span');
-  if(btn.classList.contains('liked')){
-    btn.classList.remove('liked');
-    s.textContent = '342';
-  } else {
-    btn.classList.add('liked');
-    s.textContent = '343';
+function newPost(){
+  if(!user){toast('请先登录');return}
+  document.getElementById('postTitle').textContent='发布公告';
+  document.getElementById('postModal').classList.add('open');
+}
+function newBug(){
+  if(!user){toast('请先登录');return}
+  document.getElementById('postTitle').textContent='反馈 Bug';
+  document.getElementById('postModal').classList.add('open');
+}
+function closePost(){document.getElementById('postModal').classList.remove('open')}
+
+function submitPost(){
+  var t=document.getElementById('npTitle').value.trim();
+  var b=document.getElementById('npBody').value.trim();
+  if(!t||!b){toast('请填写标题和内容');return}
+  for(var i=0;i<BANNED.length;i++){
+    if(t.toLowerCase().indexOf(BANNED[i].toLowerCase())>=0||b.toLowerCase().indexOf(BANNED[i].toLowerCase())>=0){toast('内容包含违规词');return}
   }
+  // Open GitHub to create issue
+  var isBug=document.getElementById('postTitle').textContent.indexOf('Bug')>=0;
+  var url='https://github.com/'+GH_REPO+'/issues/new?title='+encodeURIComponent(t)+'&body='+encodeURIComponent(b+'\n\n提交者：'+user.email);
+  window.open(url,'_blank');
+  closePost();toast('正在跳转到 GitHub 提交...');
 }
 
-/* 评论提交 */
-function submitComment(){
-  var t = document.getElementById('cmtInput');
-  if(!t.value.trim()){ toast('请先写下回复内容'); return; }
-  toast('回复已发布');
-  t.value='';
-}
-
-/* 下载趋势柱状图（确定性数据） */
-(function(){
-  var data=[1820,2140,1980,2460,2710,3050,3420,3810];
-  var wrap=document.getElementById('trendBars');
-  if(!wrap) return;
-  var html='';
-  var max=Math.max.apply(null,data);
-  var labels=['W1','W2','W3','W4','W5','W6','W7','W8'];
-  data.forEach(function(v,i){
-    var h=(v/max*100);
-    html+='<div class="b"><div class="fill" style="height:'+h+'%" title="'+v+'"></div><div class="v">'+v+'</div><div class="l">'+labels[i]+'</div></div>';
-  });
-  wrap.innerHTML=html;
-})();
-
-/* toast */
-var toastTimer=null;
-function toast(msg){
-  var el=document.getElementById('toast');
-  el.innerHTML=msg;
-  el.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer=setTimeout(function(){ el.classList.remove('show'); }, 2200);
-}
-
-/* ===== login ===== */
-var ACCOUNTS = { 'YangYishui': { pwd:'20141123', role:'腐竹' }, '腐竹': { pwd:"6fd7h8d6s4f'h/f'h'\\f\\h'\\jjgugIlIIl//;", role:'腐竹' } };
-var capAns = 0;
-function newCaptcha(){
-  var a=Math.floor(Math.random()*8)+2, b=Math.floor(Math.random()*8)+2;
-  capAns=a+b;
-  document.getElementById('capQ').textContent=a+' + '+b+' = ?';
-  document.getElementById('capIn').value='';
-}
-function openLogin(){ newCaptcha(); document.getElementById('loginModal').classList.add('open'); }
-function closeLogin(){ document.getElementById('loginModal').classList.remove('open'); }
-function authTab(mode, btn){
-  document.querySelectorAll('.auth-tab').forEach(function(b){ b.classList.remove('on'); });
-  btn.classList.add('on');
-  document.querySelectorAll('.auth-pane').forEach(function(p){ p.classList.remove('on'); });
-  document.getElementById('auth-'+mode).classList.add('on');
-}
-function currentAuthMode(){
-  var t=document.querySelector('.auth-tab.on');
-  return t ? t.getAttribute('data-auth') : 'official';
-}
-var _emailCode='', _emailTimer=null;
-function sendEmailCode(){
-  var em=document.getElementById('em-email').value.trim();
-  if(!em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){ toast('请输入正确的邮箱地址'); return; }
-  _emailCode=String(Math.floor(100000+Math.random()*900000));
-  var btn=document.getElementById('sendCodeBtn');
-  btn.disabled=true;
-  var sec=60;
-  // Try to send via backend, fallback to showing code
-  var backend='https://wholesale-sport-challenged-medicines.trycloudflare.com';
-  fetch(backend+'/api/send-code',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em,code:_emailCode})}).catch(function(){});
-  // Also show code on screen for immediate feedback (demo mode)
-  toast('验证码：'+_emailCode+'（已尝试发送到 '+em+'）');
-  _emailTimer=setInterval(function(){
-    sec--;
-    btn.textContent=sec+'秒后重发';
-    if(sec<=0){ clearInterval(_emailTimer); btn.disabled=false; btn.textContent='发送验证码'; }
-  },1000);
-}
-function doLogin(){
-  var mode=currentAuthMode();
-  if(!document.getElementById('termsBox').checked){ toast('请先勾选同意《用户协议》与《隐私政策》'); return false; }
-  var c=document.getElementById('capIn').value.trim();
-  if(c==='' || parseInt(c,10)!==capAns){ toast('防人机验证未通过'); newCaptcha(); return false; }
-  var name='', role='';
-  if(mode==='official'){
-    var acc=document.getElementById('off-account').value.trim();
-    if(!acc){ toast('请输入账号'); return false; }
-    name=acc.split('@')[0] || acc;
-    toast('正版登录成功（演示）');
-  } else if(mode==='external'){
-    var un=document.getElementById('ext-user').value.trim();
-    var pw=document.getElementById('ext-pwd').value;
-    var rec=ACCOUNTS[un];
-    if(rec && rec.pwd===pw){ name=un; role=rec.role; toast((role==='腐竹'?'腐竹 · ':'')+un+' 登录成功'); }
-    else { toast('外置账号或密码错误'); return false; }
-  } else if(mode==='email'){
-    var em=document.getElementById('em-email').value.trim();
-    var code=document.getElementById('em-code').value.trim();
-    var nick=document.getElementById('em-nick').value.trim();
-    if(!em){ toast('请输入邮箱'); return false; }
-    // banned words check
-    var BANNED=['傻逼','操你妈','滚蛋','shit','fuck'];
-    for(var bi=0;bi<BANNED.length;bi++){
-      if(nick && nick.toLowerCase().indexOf(BANNED[bi].toLowerCase())>=0){ toast('昵称包含违规词'); return false; }
-    }
-    if(!code || code!==_emailCode){ toast('验证码错误或未发送'); return false; }
-    name=nick || em.split('@')[0];
-    if(em==='3962892029@qq.com'){ role='腐竹'; toast('腐竹登录成功'); }
-    else { toast('邮箱登录成功：'+name); }
-  } else {
-    var gn=document.getElementById('guest-name').value.trim();
-    if(!gn){ toast('请输入昵称'); return false; }
-    name=gn;
-    toast('已以游客身份进入');
-  }
-  var mini=document.querySelector('.user-mini span');
-  if(mini) mini.textContent=name;
-  var pn=document.getElementById('pName'); if(pn) pn.textContent=name;
-  var pr=document.getElementById('pRole'); if(pr) pr.textContent = role==='腐竹' ? '腐竹' : (role==='管理员'?'管理员':'玩家');
-  var cu=document.getElementById('authCurUser'); if(cu) cu.textContent=name;
-  var auth=document.getElementById('authMethodName');
-  if(auth) auth.textContent = role==='腐竹' ? '外置登录（腐竹 · LittleSkin）' : (mode==='guest' ? '游客模式' : (mode==='official' ? '正版登录（Minecraft / 微软）' : '外置登录（LittleSkin）'));
-  closeLogin();
-  return false;
-}
-document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeLogin(); });
-
-/* ===== 下载最新启动器 ===== */
 function dlLauncher(){
-  toast('开始下载 CarthY 启动器 v1.0.0 (80MB)...');
-  window.location.href = 'https://github.com/Yang-ctrl-D/carthy-a/releases/download/v1.0.0/CarthY-Setup.exe';
+  window.location.href='https://github.com/Yang-ctrl-D/carthy-a/releases/download/v1.0.0/CarthY-Setup.exe';
 }
 
-/* ===== 发布整合包 ===== */
-function openPublish(){ document.getElementById('pubModal').classList.add('open'); }
-function closePub(){ document.getElementById('pubModal').classList.remove('open'); }
-function doPublish(){
-  var name=document.getElementById('pub-name').value.trim();
-  var desc=document.getElementById('pub-desc').value.trim();
-  var url=document.getElementById('pub-url').value.trim();
-  if(!name){ toast('请填写资源名称'); return false; }
-  if(!desc){ toast('请填写一句话简介'); return false; }
-  var type=document.getElementById('pub-type').value;
-  var tlabel={vanilla:'Vanilla',forge:'Forge',fabric:'Fabric',mod:'Mod',map:'地图'}[type];
-  var icon = type==='map' ? '#i-star' : (type==='vanilla' ? '#i-box' : '#i-mod');
-  var vcls = type==='map' ? 'm' : (type==='vanilla' ? 'fg' : 'c');
-  var card=document.createElement('div');
-  card.className='dl-card glass'; card.setAttribute('data-t',type);
-  card.innerHTML='<div class="head"><div class="ver-icon '+vcls+'"><svg><use href="'+icon+'" xlink:href="'+icon+'"/></svg></div><div><div class="v">'+name+'</div><div class="tag '+type+'">'+tlabel+'</div></div></div>'+
-    '<p class="desc">'+(desc||'')+(url?' <a href="'+url+'" target="_blank" rel="noopener" style="color:var(--cyan)">下载</a>':'')+'</p>'+
-    '<div class="meta"><span><svg><use href="#i-upload" xlink:href="#i-upload"/></svg>刚发布</span></div>'+
-    '<button class="btn solid dl-btn" onclick="toast(\'开始下载 '+name+'\')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载</button>';
-  var grid=document.getElementById('dlGrid');
-  grid.insertBefore(card, grid.firstChild);
-  recountDL();
-  toast('「'+name+'」发布成功');
-  closePub();
-  document.getElementById('pub-name').value='';
-  document.getElementById('pub-desc').value='';
-  document.getElementById('pub-url').value='';
-  return false;
-}
-function recountDL(){
-  var total=document.querySelectorAll('#dlGrid .dl-card').length;
-  document.getElementById('dlCount').textContent='共 '+total+' 个资源';
-}
-
-/* ===== 在线人数（动态演示） ===== */
-var onlineN=1284;
-function fmtNum(n){ return n.toLocaleString('en-US'); }
-setInterval(function(){
-  onlineN += Math.floor(Math.random()*13)-6;
-  if(onlineN<1150) onlineN=1150;
-  if(onlineN>1450) onlineN=1450;
-  document.querySelectorAll('.js-online').forEach(function(el){ el.textContent=fmtNum(onlineN); });
-}, 5000);
-
-/* 首次进入：默认启动页 */
-(function(){
-  var h=location.hash.replace('#','');
-  switchTo(h || 'launch');
-})();
+// init
+refreshUser();
+loadAnnouncements();
 </script>
-
-<!-- ===== LOGIN MODAL ===== -->
-<div class="modal-overlay" id="loginModal" onclick="if(event.target===this)closeLogin()">
-  <div class="modal glass">
-    <div class="modal-head"><h3>登录 <span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">CARTHY</span></h3><button class="modal-x" onclick="closeLogin()" aria-label="关闭">×</button></div>
-    <div class="auth-tabs">
-      <button class="auth-tab on" data-auth="official" onclick="authTab('official',this)">正版</button>
-      <button class="auth-tab" data-auth="external" onclick="authTab('external',this)">外置</button>
-      <button class="auth-tab" data-auth="email" onclick="authTab('email',this)">邮箱</button>
-      <button class="auth-tab" data-auth="guest" onclick="authTab('guest',this)">游客</button>
-    </div>
-    <form class="auth-pane on" id="auth-official" onsubmit="return doLogin()">
-      <p class="auth-note">使用 Minecraft 官方 / 微软账号登录。演示环境无法直连微软，正式上线需接入后端验证。</p>
-      <label>账号（微软 / 邮箱）</label>
-      <input id="off-account" placeholder="example@outlook.com" autocomplete="username">
-      <label>密码</label>
-      <input type="password" id="off-pwd" placeholder="••••••••" autocomplete="current-password">
-    </form>
-    <form class="auth-pane" id="auth-external" onsubmit="return doLogin()">
-      <p class="auth-note">支持 LittleSkin 等 Yggdrasil 外置认证。演示账号：YangYishui（腐竹）。</p>
-      <label>认证服务器地址</label>
-      <input id="ext-api" value="https://littleskin.cn/api/yggdrasil" autocomplete="url">
-      <label>用户名</label>
-      <input id="ext-user" placeholder="你的游戏昵称" autocomplete="username">
-      <label>密码</label>
-      <input type="password" id="ext-pwd" placeholder="••••••••" autocomplete="current-password">
-    </form>
-    <form class="auth-pane" id="auth-email" onsubmit="return doLogin()">
-      <p class="auth-note">输入邮箱获取验证码，验证码将发送到你的邮箱。注册后自动登录。</p>
-      <label>邮箱</label>
-      <input id="em-email" type="email" placeholder="your@email.com" autocomplete="email">
-      <label>验证码</label>
-      <div style="display:flex;gap:8px">
-        <input id="em-code" placeholder="6位验证码" inputmode="numeric" maxlength="6" autocomplete="one-time-code" style="flex:1">
-        <button type="button" class="btn ghost" style="white-space:nowrap" id="sendCodeBtn" onclick="sendEmailCode()">发送验证码</button>
-      </div>
-      <label>昵称</label>
-      <input id="em-nick" placeholder="你的游戏昵称（首次注册）">
-    </form>
-    <form class="auth-pane" id="auth-guest" onsubmit="return doLogin()">
-      <p class="auth-note">游客模式仅用于浏览，无法发帖与下载。</p>
-      <label>游戏内昵称</label>
-      <input id="guest-name" placeholder="输入你的昵称">
-    </form>
-    <div class="captcha-row">
-      <span class="cap-label">防人机验证</span>
-      <span class="cap-q" id="capQ"></span>
-      <input id="capIn" placeholder="答案" inputmode="numeric" autocomplete="off">
-      <button type="button" class="cap-refresh" onclick="newCaptcha()" title="换一题">↻</button>
-    </div>
-    <label class="terms"><input type="checkbox" id="termsBox"><span>我已阅读并同意<b>《用户协议》</b>与<b>《隐私政策》</b></span></label>
-    <button type="button" class="btn solid auth-submit" onclick="doLogin()">登录</button>
-    <div class="modal-foot">需勾选同意条款，并通过防人机验证后才能登录。</div>
-  </div>
-</div>
-
-<!-- ===== PUBLISH MODAL ===== -->
-<div class="modal-overlay" id="pubModal" onclick="if(event.target===this)closePub()">
-  <div class="modal glass">
-    <div class="modal-head"><h3>发布<span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">整合包</span></h3><button class="modal-x" onclick="closePub()" aria-label="关闭">×</button></div>
-    <form onsubmit="return doPublish()">
-      <label>名称</label>
-      <input id="pub-name" placeholder="整合包 / Mod / 地图名称">
-      <label>类型</label>
-      <select id="pub-type">
-        <option value="vanilla">Vanilla</option>
-        <option value="forge">Forge</option>
-        <option value="fabric" selected>Fabric</option>
-        <option value="mod">Mod</option>
-        <option value="map">地图</option>
-      </select>
-      <label>一句话简介</label>
-      <input id="pub-desc" placeholder="描述这个资源">
-      <label>下载链接</label>
-      <input id="pub-url" placeholder="https:// 网盘 / 直链">
-      <button class="btn solid auth-submit" type="submit">发布</button>
-    </form>
-    <div class="modal-foot">发布即代表同意《发布规范》，内容将展示在下载中心。</div>
-  </div>
-</div>
-
 </body>
 </html>
-<!-- VIEWS_PLACEHOLDER -->

@@ -1,0 +1,15 @@
+{
+  "name": "carthy-forum",
+  "version": "1.0.0",
+  "description": "CarthY 鍚姩鍣ㄧぞ鍖鸿鍧?,
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "better-sqlite3": "^11.3.0",
+    "express-session": "^1.18.0",
+    "axios": "^1.7.7"
+  }
+}

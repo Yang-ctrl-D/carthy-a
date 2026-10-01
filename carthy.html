@@ -3,296 +3,1454 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CARTHY · Minecraft 社区</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2305070d'/%3E%3Cpolygon points='32,10 50,20 32,30 14,20' fill='%2337e6a9'/%3E%3Cpolygon points='14,20 32,30 32,50 14,40' fill='%232a1f4d'/%3E%3Cpolygon points='50,20 32,30 32,50 50,40' fill='%23a06bff'/%3E%3C/svg%3E">
+<title>CARTHY Forum · Minecraft 玩家社区</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%2305070d'/%3E%3Cpolygon points='32,10 50,20 32,30 14,20' fill='%2337e6a9'/%3E%3Cpolygon points='14,20 32,30 32,50 14,40' fill='%232a1f4d'/%3E%3Cpolygon points='50,20 32,30 32,50 50,40' fill='%23a06bff'/%3E%3Cpolygon points='32,26 39,30 32,34 25,30' fill='%23f6ecff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://miaoda.feishu.cn">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Press+Start+2P&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
 <style>
 :root{
-  --bg:#05070d;--bg2:#0b1019;--green:#37e6a9;--green2:#12b37f;
-  --cyan:#6fd7ff;--purple:#a06bff;--purple2:#7a3cf0;
-  --grad:linear-gradient(118deg,#37e6a9,#6fd7ff 46%,#a06bff);
-  --ink:#ecf5f2;--ink-dim:#9fb4b8;--ink-faint:#6b8188;
-  --glass:rgba(15,23,36,.58);--line:rgba(168,210,212,.12);--line2:rgba(168,210,212,.22);
-  --r:14px;--r2:9px;
+  --bg:#05070d;
+  --bg2:#0b1019;
+  --green:#37e6a9;
+  --green2:#12b37f;
+  --cyan:#6fd7ff;
+  --purple:#a06bff;
+  --purple2:#7a3cf0;
+  --grad:linear-gradient(118deg,#37e6a9 0%,#6fd7ff 46%,#a06bff 100%);
+  --ink:#ecf5f2;
+  --ink-dim:#9fb4b8;
+  --ink-faint:#6b8188;
+  --glass:rgba(15,23,36,.58);
+  --glass-2:rgba(22,32,50,.42);
+  --line:rgba(168,210,212,.12);
+  --line-2:rgba(168,210,212,.22);
+  --radius:14px;
+  --radius-sm:9px;
+  --shadow:0 18px 50px rgba(0,0,0,.5);
+  --font-px:'Press Start 2P',ui-monospace,monospace;
+  --font:'Noto Sans SC',system-ui,-apple-system,'Segoe UI',Roboto,'PingFang SC','Microsoft YaHei',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Noto Sans SC',system-ui,-apple-system,'Segoe UI',Roboto,'Microsoft YaHei',sans-serif;
-  background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden}
-::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:linear-gradient(var(--green),var(--purple));border-radius:8px}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--ink);
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--green),var(--purple));border-radius:8px;border:2px solid var(--bg)}
+::-webkit-scrollbar-track{background:transparent}
+::selection{background:rgba(160,107,255,.35)}
 
-/* bg */
-.bg{position:fixed;inset:0;z-index:-2;
-  background:radial-gradient(1200px 600px at 50% 0%,rgba(55,230,169,.12),transparent 60%),
-             radial-gradient(1000px 700px at 90% 100%,rgba(160,107,255,.14),transparent 60%),
-             var(--bg)}
+/* ===== background layer ===== */
+.bg{position:fixed;inset:0;z-index:-2;background-size:cover;background-position:center;transition:opacity .5s}
+.bg::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(5,7,13,.42),rgba(5,7,13,.55) 45%,rgba(5,7,13,.82) 100%);
+}
+.bg::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(1200px 600px at 50% 0%,rgba(55,230,169,.08),transparent 60%),
+             radial-gradient(1000px 700px at 90% 100%,rgba(160,107,255,.10),transparent 60%);
+  mix-blend-mode:screen;}
+.bg.home{background-image:url("assets/home-bg.jpg")}
+.bg.post{background-image:url("assets/post-bg.jpg")}
+.bg.download{background-image:url("assets/download-bg.jpg")}
+.bg.profile{background-image:url("assets/profile-bg.jpg")}
+.bg.admin{background-image:url("assets/admin-bg.jpg")}
+.bg.launch{background-image:url("assets/launch-bg.jpg")}
+.bg.void{background-image:url("assets/void-bg.jpg")}
+
+/* floating cubes + particles */
 .particles{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
 .particles i{position:absolute;display:block;border-radius:2px;opacity:0;animation:float 9s linear infinite}
-.particles i:nth-child(1){left:8%;top:20%;width:10px;height:10px;background:#37e6a9;box-shadow:0 0 12px #37e6a9}
+.particles i:nth-child(1){left:8%;top:20%;width:10px;height:10px;background:#37e6a9;box-shadow:0 0 12px #37e6a9;animation-delay:0s}
 .particles i:nth-child(2){left:18%;top:70%;width:6px;height:6px;background:#a06bff;box-shadow:0 0 10px #a06bff;animation-delay:1.4s}
 .particles i:nth-child(3){left:30%;top:40%;width:8px;height:8px;background:#6fd7ff;box-shadow:0 0 12px #6fd7ff;animation-delay:.6s}
 .particles i:nth-child(4){left:46%;top:16%;width:7px;height:7px;background:#a06bff;box-shadow:0 0 10px #a06bff;animation-delay:2s}
 .particles i:nth-child(5){left:58%;top:64%;width:11px;height:11px;background:#37e6a9;box-shadow:0 0 14px #37e6a9;animation-delay:1s}
-.particles i:nth-child(6){left:80%;top:55%;width:9px;height:9px;background:#a06bff;box-shadow:0 0 12px #a06bff;animation-delay:.3s}
-@keyframes float{0%{transform:translateY(0);opacity:0}15%{opacity:.8}85%{opacity:.6}100%{transform:translateY(-120px);opacity:0}}
+.particles i:nth-child(6){left:68%;top:28%;width:6px;height:6px;background:#6fd7ff;box-shadow:0 0 10px #6fd7ff;animation-delay:2.6s}
+.particles i:nth-child(7){left:80%;top:55%;width:9px;height:9px;background:#a06bff;box-shadow:0 0 12px #a06bff;animation-delay:.3s}
+.particles i:nth-child(8){left:90%;top:18%;width:7px;height:7px;background:#37e6a9;box-shadow:0 0 10px #37e6a9;animation-delay:1.8s}
+@keyframes float{0%{transform:translateY(0) translateX(0) rotate(0);opacity:0}
+  15%{opacity:.85}85%{opacity:.7}100%{transform:translateY(-130px) translateX(30px) rotate(180deg);opacity:0}}
+.particles.quiet i{animation:none;opacity:.55}
 
-/* topbar */
-.topbar{position:fixed;top:0;left:0;right:0;z-index:50;height:60px;display:flex;align-items:center;gap:16px;
-  padding:0 24px;background:linear-gradient(180deg,rgba(8,12,20,.85),rgba(8,12,20,.5));
+/* ===== topbar ===== */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:50;height:64px;display:flex;align-items:center;gap:20px;
+  padding:0 22px;background:linear-gradient(180deg,rgba(8,12,20,.8),rgba(8,12,20,.45));
   border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}
-.brand{display:flex;align-items:center;gap:10px;cursor:pointer;font-weight:900;font-size:18px}
-.brand svg{width:28px;height:28px}
-.nav{display:flex;gap:4px;margin-left:20px}
-.nav button{background:none;border:none;color:var(--ink-dim);font-size:14px;font-weight:600;padding:8px 16px;
-  border-radius:8px;cursor:pointer;transition:.2s;font-family:inherit}
-.nav button:hover{color:var(--ink);background:rgba(255,255,255,.06)}
-.nav button.on{color:#05110c;background:var(--grad);font-weight:800}
-.right{margin-left:auto;display:flex;align-items:center;gap:12px}
-.user-chip{display:flex;align-items:center;gap:8px;cursor:pointer;padding:6px 12px;border-radius:20px;
-  background:var(--glass);border:1px solid var(--line);transition:.2s}
-.user-chip:hover{border-color:var(--green)}
-.user-chip .ava{width:24px;height:24px;border-radius:6px;background:var(--grad)}
-.user-chip span{font-size:13px;color:var(--ink-dim)}
-.btn{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 18px;border:none;cursor:pointer;
-  border-radius:10px;background:var(--grad);color:#05110c;font-weight:800;font-size:13px;transition:.2s;font-family:inherit}
-.btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(55,230,169,.35)}
-.btn.ghost{background:rgba(255,255,255,.06);color:var(--ink);border:1px solid var(--line2)}
+.brand{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.brand img{height:34px;width:auto}
+.brand .brand-px{display:none}
+.search{flex:1;max-width:560px;position:relative}
+.search input{width:100%;height:40px;border:1px solid var(--line-2);border-radius:20px;background:rgba(255,255,255,.05);
+  padding:0 18px 0 44px;color:var(--ink);font-family:var(--font);font-size:14px;outline:none;transition:.25s}
+.search input::placeholder{color:var(--ink-faint)}
+.search input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(55,230,169,.15)}
+.search svg{position:absolute;left:15px;top:10px;width:20px;height:20px;color:var(--ink-faint);pointer-events:none}
+.search kbd{position:absolute;right:14px;top:11px;font-size:11px;color:var(--ink-faint);border:1px solid var(--line-2);
+  border-radius:5px;padding:2px 6px;background:rgba(255,255,255,.04);font-family:var(--font)}
+.btn-play{display:inline-flex;align-items:center;gap:9px;height:42px;padding:0 20px;border:none;cursor:pointer;
+  border-radius:12px;background:var(--grad);color:#05110c;font-family:var(--font);font-weight:800;font-size:14px;
+  box-shadow:0 8px 26px rgba(55,230,169,.4);transition:.25s;white-space:nowrap}
+.btn-play:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(160,107,255,.5)}
+.btn-play svg{width:16px;height:16px}
+.topbar .user-mini{display:flex;align-items:center;gap:9px;cursor:pointer;padding:5px 8px;border-radius:20px;transition:.2s}
+.topbar .user-mini:hover{background:rgba(255,255,255,.06)}
+.topbar .user-mini .avatar{width:32px;height:32px;border-radius:8px;background:var(--grad);position:relative;overflow:hidden}
+.topbar .user-mini .avatar::after{content:"";position:absolute;inset:6px;background:#0b0f1a;border-radius:4px}
+.topbar .user-mini span{font-size:13px;color:var(--ink-dim)}
+
+/* ===== layout ===== */
+.layout{display:flex;gap:22px;max-width:1380px;margin:0 auto;padding:86px 22px 40px;min-height:100vh}
+
+/* sidebar */
+.sidebar{width:228px;flex-shrink:0;display:flex;flex-direction:column;gap:10px;position:sticky;top:86px;height:calc(100vh - 120px)}
+.side-nav{background:var(--glass);border:1px solid var(--line);border-radius:var(--radius);padding:12px;backdrop-filter:blur(12px)}
+.side-nav .cap{font-size:11px;color:var(--ink-faint);letter-spacing:.12em;padding:4px 10px 8px}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;cursor:pointer;color:var(--ink-dim);
+  font-size:14px;font-weight:600;transition:.18s;position:relative;border:none;background:none;width:100%;text-align:left;font-family:var(--font)}
+.nav-item svg{width:20px;height:20px;flex-shrink:0}
+.nav-item:hover{color:var(--ink);background:rgba(255,255,255,.05)}
+.nav-item.active{color:#05110c;background:var(--grad);font-weight:800;box-shadow:0 6px 18px rgba(55,230,169,.3)}
+.nav-item.active svg{color:#05110c}
+.side-foot{background:var(--glass-2);border:1px solid var(--line);border-radius:var(--radius);padding:14px;backdrop-filter:blur(12px);margin-top:auto}
+.side-foot .online{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-dim)}
+.side-foot .dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.side-foot p{font-size:12px;color:var(--ink-faint);margin-top:8px;line-height:1.6}
 
 /* main */
-.wrap{max-width:960px;margin:0 auto;padding:84px 20px 40px}
-.view{display:none}.view.on{display:block;animation:fade .3s ease}
-@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+main{flex:1;min-width:0}
+.view{display:none}
+.view.active{display:block;animation:fadeUp .45s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
-/* cards */
-.card{background:var(--glass);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:14px;backdrop-filter:blur(12px)}
-.card h2{font-size:18px;font-weight:900;margin-bottom:6px}
-.card .sub{font-size:13px;color:var(--ink-faint);margin-bottom:14px}
+/* ===== generic components ===== */
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:var(--radius);backdrop-filter:blur(14px);box-shadow:var(--shadow)}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:4px 10px;border-radius:20px;border:1px solid var(--line-2);
+  color:var(--ink-dim);background:rgba(255,255,255,.04)}
+.chip.g{color:var(--green);border-color:rgba(55,230,169,.4);background:rgba(55,230,169,.08)}
+.chip.p{color:var(--purple);border-color:rgba(160,107,255,.45);background:rgba(160,107,255,.08)}
+.tag{font-size:11px;padding:3px 9px;border-radius:6px;font-weight:600}
+.tag.forge{background:rgba(240,180,90,.16);color:#ffcf8a}
+.tag.fabric{background:rgba(111,215,255,.16);color:#8fe2ff}
+.tag.vanilla{background:rgba(55,230,169,.16);color:#5ce9b4}
+.tag.mod{background:rgba(160,107,255,.18);color:#c9a6ff}
+.tag.map{background:rgba(255,140,180,.16);color:#ff9cc0}
+.tag.admin{background:rgba(255,120,120,.18);color:#ff9898}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin:26px 2px 16px}
+.sec-head h2{font-size:20px;font-weight:900;letter-spacing:.02em}
+.sec-head h2 .acc{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sec-head .sub{font-size:13px;color:var(--ink-faint);margin-top:4px}
+.sec-head .more{font-size:13px;color:var(--green);cursor:pointer;display:inline-flex;align-items:center;gap:4px;font-weight:600}
+.sec-head .more:hover{text-decoration:underline}
+.avatar{width:44px;height:44px;border-radius:10px;background:var(--grad);position:relative;flex-shrink:0;overflow:hidden}
+.avatar::after{content:"";position:absolute;inset:8px;background:#0b0f1a;border-radius:5px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.avatar img{position:absolute;inset:9px;width:26px;height:26px;object-fit:contain}
+.stat{text-align:center}
+.stat b{font-size:18px;font-weight:900;display:block}
+.stat span{font-size:12px;color:var(--ink-faint)}
+.divider{height:1px;background:var(--line);border:none;margin:14px 0}
 
-/* bug list */
-.bug{padding:14px;border:1px solid var(--line);border-radius:var(--r2);margin-bottom:10px;background:rgba(255,255,255,.02)}
-.bug-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
-.bug-title{font-weight:700;font-size:14px;flex:1}
-.bug-badge{font-size:11px;padding:2px 8px;border-radius:6px;font-weight:700}
-.bug-badge.open{background:rgba(55,230,169,.15);color:var(--green)}
-.bug-badge.closed{background:rgba(255,120,120,.15);color:#ff9898}
-.bug-meta{font-size:12px;color:var(--ink-faint)}
-.bug-body{font-size:13px;color:var(--ink-dim);margin-top:8px;line-height:1.6;white-space:pre-wrap}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:38px;padding:0 16px;border-radius:10px;
+  border:1px solid var(--line-2);background:rgba(255,255,255,.05);color:var(--ink);font-family:var(--font);
+  font-size:14px;font-weight:600;cursor:pointer;transition:.2s}
+.btn svg{width:17px;height:17px;flex-shrink:0}
+.btn:hover{border-color:var(--green);color:var(--green)}
+.btn.solid{background:var(--grad);border:none;color:#05110c;font-weight:800;box-shadow:0 8px 22px rgba(55,230,169,.35)}
+.btn.solid:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(160,107,255,.45);color:#05110c}
+.btn.ghost{border-color:rgba(160,107,255,.5);color:var(--purple);background:rgba(160,107,255,.08)}
+.btn.ghost:hover{background:rgba(160,107,255,.18);color:var(--purple)}
+.btn.danger{border-color:rgba(255,120,120,.5);color:#ff9898;background:rgba(255,120,120,.06)}
+.btn.danger:hover{background:rgba(255,120,120,.15);color:#ff9898}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 
-/* login modal */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px)}
-.overlay.open{display:flex}
-.modal{background:var(--bg2);border:1px solid var(--line2);border-radius:var(--r);padding:28px;width:380px;max-width:92vw;
-  box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.modal h3{font-size:20px;font-weight:900;margin-bottom:4px}
-.modal .msub{font-size:13px;color:var(--ink-faint);margin-bottom:20px}
-.modal label{display:block;font-size:12px;color:var(--ink-dim);margin:12px 0 4px}
-.modal input{width:100%;height:40px;border:1px solid var(--line2);border-radius:8px;background:rgba(255,255,255,.04);
-  padding:0 12px;color:var(--ink);font-size:14px;outline:none;font-family:inherit}
-.modal input:focus{border-color:var(--green)}
-.modal .row{display:flex;gap:8px}
-.modal .row input{flex:1}
-.modal .btn{width:100%;justify-content:center;margin-top:18px}
-.modal .foot{font-size:12px;color:var(--ink-faint);margin-top:14px;text-align:center}
-.modal .close{float:right;background:none;border:none;color:var(--ink-faint);font-size:20px;cursor:pointer}
-.modal .close:hover{color:var(--ink)}
+/* ===== forum home ===== */
+.hero{display:flex;gap:18px;align-items:stretch;margin-bottom:8px}
+.hero-card{flex:1;padding:26px 28px;position:relative;overflow:hidden;min-height:150px;display:flex;flex-direction:column;justify-content:center}
+.hero-card .glow{position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(55,230,169,.35),transparent 65%);filter:blur(8px)}
+.hero-card h1{font-size:30px;font-weight:900;letter-spacing:.02em;line-height:1.25}
+.hero-card h1 .px{font-family:var(--font-px);font-size:18px;color:var(--cyan);display:block;margin-bottom:12px;letter-spacing:.1em}
+.hero-card p{color:var(--ink-dim);font-size:14px;margin-top:12px;max-width:52ch;line-height:1.7}
+.hero-card .hero-cta{margin-top:20px;display:flex;gap:10px}
+.hero-stats{display:flex;flex-direction:column;gap:12px;justify-content:center;padding:22px 26px}
+.hstat{display:flex;align-items:center;gap:14px}
+.hstat .icon{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;flex-shrink:0}
+.hstat .icon svg{width:21px;height:21px;color:#05110c}
+.hstat .icon.g{background:linear-gradient(135deg,#37e6a9,#6fd7ff)}
+.hstat .icon.p{background:linear-gradient(135deg,#a06bff,#7a3cf0)}
+.hstat b{font-size:17px;font-weight:900}
+.hstat span{font-size:12px;color:var(--ink-faint)}
 
-/* toast */
-#toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--green);
-  color:var(--ink);padding:12px 24px;border-radius:10px;font-size:14px;z-index:200;display:none;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.posts{display:flex;flex-direction:column;gap:12px}
+.post-card{display:flex;gap:16px;padding:16px 18px;transition:.2s;cursor:pointer;position:relative;overflow:hidden}
+.post-card:hover{border-color:var(--line-2);transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.post-card .avatar{width:46px;height:46px}
+.post-card .body{flex:1;min-width:0}
+.post-card .meta{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--ink-faint);flex-wrap:wrap}
+.post-card .meta .u{color:var(--cyan);font-weight:600}
+.post-card h3{font-size:16px;font-weight:800;margin:8px 0 6px;line-height:1.45}
+.post-card h3:hover{color:var(--green)}
+.post-card .snippet{font-size:13px;color:var(--ink-dim);line-height:1.65;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.post-card .foot{display:flex;align-items:center;gap:14px;margin-top:12px;font-size:12px;color:var(--ink-faint);flex-wrap:wrap}
+.post-card .foot svg{width:15px;height:15px;vertical-align:-3px;margin-right:4px}
+.post-card .hot{position:absolute;right:16px;top:16px;font-family:var(--font-px);font-size:9px;color:var(--purple);background:rgba(160,107,255,.1);border:1px solid rgba(160,107,255,.4);padding:4px 7px;border-radius:6px}
 
-/* welcome */
-.welcome{text-align:center;padding:40px 0}
-.welcome h1{font-size:32px;font-weight:900;margin-bottom:8px}
-.welcome h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.welcome p{color:var(--ink-dim);font-size:15px}
+.pager{display:flex;justify-content:center;gap:8px;margin-top:22px}
+.pager button{width:38px;height:38px;border-radius:10px;border:1px solid var(--line-2);background:rgba(255,255,255,.04);
+  color:var(--ink-dim);cursor:pointer;font-weight:700;transition:.18s}
+.pager button:hover{border-color:var(--green);color:var(--green)}
+.pager button.cur{background:var(--grad);border:none;color:#05110c;font-weight:800}
+
+/* ===== post detail ===== */
+.post-main{max-width:860px;margin:0 auto}
+.post-head{padding:26px 30px;text-align:center}
+.post-head .crumbs{font-size:12px;color:var(--ink-faint);margin-bottom:14px;display:flex;justify-content:center;gap:6px;flex-wrap:wrap}
+.post-head .crumbs .sep{opacity:.5}
+.post-head .crumbs a{color:var(--green);cursor:pointer}
+.post-head h1{font-size:26px;font-weight:900;line-height:1.4;letter-spacing:.01em}
+.post-head .tags{display:flex;justify-content:center;gap:8px;margin-top:16px;flex-wrap:wrap}
+.post-head .byline{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:18px;font-size:13px;color:var(--ink-faint);flex-wrap:wrap}
+.post-head .byline .u{color:var(--cyan);font-weight:700}
+.post-head .byline .dot{width:4px;height:4px;border-radius:50%;background:var(--ink-faint)}
+.post-body{padding:32px 34px;line-height:1.9;font-size:15.5px;color:var(--ink)}
+.post-body h2{font-size:20px;font-weight:900;margin:26px 0 12px;color:var(--ink)}
+.post-body h2::before{content:"";display:inline-block;width:6px;height:6px;background:var(--grad);border-radius:2px;margin-right:10px;vertical-align:3px}
+.post-body p{margin:12px 0}
+.post-body code{background:rgba(160,107,255,.12);color:#cdb2ff;padding:2px 7px;border-radius:6px;font-size:13px;font-family:ui-monospace,Consolas,monospace}
+.post-body pre{background:rgba(6,9,15,.85);border:1px solid var(--line);border-radius:10px;padding:16px;margin:16px 0;
+  overflow-x:auto;font-size:13px;line-height:1.7;font-family:ui-monospace,Consolas,monospace;color:#b6ffd9}
+.post-body pre .c{color:#6b8188}
+.post-body blockquote{border-left:3px solid var(--purple);background:rgba(160,107,255,.07);padding:12px 16px;border-radius:0 8px 8px 0;margin:16px 0;color:var(--ink-dim)}
+.post-body img{max-width:100%;border-radius:10px;margin:14px 0;border:1px solid var(--line)}
+.post-body ul{padding-left:22px;margin:12px 0}
+.post-body li{margin:6px 0}
+.post-actions{display:flex;justify-content:center;gap:12px;padding:20px;flex-wrap:wrap}
+.react{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:20px;border:1px solid var(--line-2);
+  background:rgba(255,255,255,.04);color:var(--ink-dim);cursor:pointer;font-size:14px;font-weight:600;transition:.18s}
+.react svg{width:18px;height:18px}
+.react:hover{border-color:var(--green);color:var(--green);transform:translateY(-2px)}
+.react.liked{background:rgba(55,230,169,.12);border-color:var(--green);color:var(--green)}
+.react svg.love{color:#ff7a9c}
+.related{padding:18px 22px;margin-top:22px}
+.related h3{font-size:15px;font-weight:900;margin-bottom:12px}
+.related .r-item{display:flex;justify-content:space-between;gap:12px;padding:9px 4px;border-bottom:1px dashed var(--line);cursor:pointer;font-size:14px}
+.related .r-item:last-child{border:none}
+.related .r-item:hover{color:var(--green)}
+.related .r-item span{color:var(--ink-faint);font-size:12px;white-space:nowrap}
+
+/* ===== comments ===== */
+.comments{padding:24px 30px;margin-top:22px}
+.comments h3{font-size:17px;font-weight:900;margin-bottom:16px}
+.comment{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.comment:last-of-type{border:none}
+.comment .avatar{width:38px;height:38px}
+.comment .c-main{flex:1;min-width:0}
+.comment .c-top{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-faint);flex-wrap:wrap}
+.comment .c-top .u{color:var(--cyan);font-weight:700}
+.comment .c-top .lvl{font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(160,107,255,.14);color:var(--purple)}
+.comment .c-text{font-size:14px;line-height:1.7;margin:7px 0}
+.comment .c-actions{display:flex;gap:14px;font-size:12px;color:var(--ink-faint)}
+.comment .c-actions span{cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.comment .c-actions span:hover{color:var(--green)}
+.comment .subs{margin-top:12px;padding-left:0}
+.comment .sub .c-main{background:rgba(255,255,255,.03);border-radius:8px;padding:10px 12px}
+.comment .sub .avatar{width:28px;height:28px}
+.comment .op{font-size:10px;background:var(--grad);color:#05110c;font-weight:800;padding:2px 6px;border-radius:4px}
+.comment-box{display:flex;gap:12px;margin-top:18px;padding:16px;background:rgba(255,255,255,.03);border:1px dashed var(--line-2);border-radius:12px}
+.comment-box textarea{flex:1;background:rgba(6,9,15,.7);border:1px solid var(--line-2);border-radius:8px;color:var(--ink);
+  padding:12px;font-family:var(--font);font-size:14px;resize:vertical;min-height:64px;outline:none}
+.comment-box textarea:focus{border-color:var(--purple)}
+
+/* ===== download ===== */
+.filterbar{display:flex;align-items:center;gap:8px;padding:14px 18px;flex-wrap:wrap;position:sticky;top:86px;z-index:20}
+.filterbar .f-label{font-size:12px;color:var(--ink-faint);margin-right:2px;display:inline-flex;align-items:center;gap:6px}
+.filterbar .f-label svg{width:16px;height:16px}
+.fbtn{padding:7px 15px;border-radius:20px;border:1px solid var(--line-2);background:rgba(255,255,255,.04);color:var(--ink-dim);
+  cursor:pointer;font-size:13px;font-weight:600;transition:.18s;font-family:var(--font)}
+.fbtn:hover{border-color:var(--green);color:var(--green)}
+.fbtn.on{background:var(--grad);border:none;color:#05110c;font-weight:800}
+.dl-count{margin-left:auto;font-size:12px;color:var(--ink-faint)}
+.dl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.dl-card{padding:18px;display:flex;flex-direction:column;gap:11px;transition:.2s;position:relative;overflow:hidden}
+.dl-card:hover{transform:translateY(-3px);border-color:var(--line-2);box-shadow:0 14px 34px rgba(0,0,0,.42)}
+.dl-card .head{display:flex;align-items:center;gap:11px}
+.dl-card .ver-icon{width:46px;height:46px;border-radius:11px;display:grid;place-items:center;flex-shrink:0}
+.dl-card .ver-icon svg{width:24px;height:24px;color:#05110c}
+.dl-card .ver-icon.fg{background:linear-gradient(135deg,#37e6a9,#12b37f)}
+.dl-card .ver-icon.p{background:linear-gradient(135deg,#a06bff,#7a3cf0)}
+.dl-card .ver-icon.c{background:linear-gradient(135deg,#6fd7ff,#3fa8e0)}
+.dl-card .ver-icon.g{background:linear-gradient(135deg,#ffcf8a,#f0a03c)}
+.dl-card .ver-icon.m{background:linear-gradient(135deg,#ff9cc0,#ff5f8f)}
+.dl-card .head .v{font-weight:900;font-size:15px;line-height:1.2}
+.dl-card .head .tag{margin-top:3px}
+.dl-card .desc{font-size:12.5px;color:var(--ink-dim);line-height:1.6;flex:1}
+.dl-card .meta{display:flex;gap:14px;font-size:12px;color:var(--ink-faint)}
+.dl-card .meta svg{width:14px;height:14px;vertical-align:-3px;margin-right:4px}
+.dl-card .dl-btn{width:100%}
+
+/* ===== server ===== */
+.server-hero{padding:24px 26px;margin-bottom:16px;position:relative;overflow:hidden}
+.server-hero .glow{position:absolute;right:-30px;bottom:-50px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(160,107,255,.3),transparent 65%);filter:blur(10px)}
+.server-hero .row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.server-hero h1{font-size:24px;font-weight:900}
+.server-hero .ip{font-family:var(--font-px);font-size:12px;color:var(--cyan);background:rgba(6,9,15,.7);padding:10px 14px;border-radius:8px;border:1px solid var(--line-2);letter-spacing:.04em}
+.server-hero p{color:var(--ink-dim);font-size:13px;margin-top:12px;line-height:1.7}
+.srv-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.srv-card{padding:20px;display:flex;flex-direction:column;gap:12px;transition:.2s}
+.srv-card:hover{transform:translateY(-3px);border-color:var(--line-2);box-shadow:0 14px 34px rgba(0,0,0,.42)}
+.srv-card .head{display:flex;align-items:center;gap:12px}
+.srv-card .mode{width:50px;height:50px;border-radius:12px;display:grid;place-items:center;flex-shrink:0;font-family:var(--font-px);font-size:10px;color:#05110c;background:var(--grad)}
+.srv-card .mode.lite{background:linear-gradient(135deg,#6fd7ff,#3fa8e0)}
+.srv-card .mode.soft{background:linear-gradient(135deg,#ffcf8a,#f0a03c)}
+.srv-card .mode.hard{background:linear-gradient(135deg,#ff9cc0,#ff5f8f)}
+.srv-card h3{font-size:16px;font-weight:900}
+.srv-card .addr{font-size:12px;color:var(--ink-faint);font-family:ui-monospace,monospace;margin-top:3px}
+.srv-card .map{font-size:12px;color:var(--ink-dim);margin-top:3px}
+.srv-card .map b{color:var(--green);font-weight:600}
+.srv-meters{display:flex;gap:18px;margin-top:4px;flex-wrap:wrap}
+.meter{display:flex;align-items:center;gap:8px;font-size:13px}
+.meter .dot{width:9px;height:9px;border-radius:50%}
+.meter.good .dot{background:var(--green);box-shadow:0 0 8px var(--green)}
+.meter.mid .dot{background:#ffcf8a;box-shadow:0 0 8px #ffcf8a}
+.meter.hi .dot{background:#ff9898;box-shadow:0 0 8px #ff9898}
+.meter b{font-weight:800;color:var(--ink)}
+.bar{height:7px;border-radius:5px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:2px}
+.bar i{display:block;height:100%;border-radius:5px}
+.srv-card .actions{display:flex;gap:8px;margin-top:auto}
+.srv-card .actions .btn{flex:1}
+
+/* ===== profile ===== */
+.profile-wrap{display:flex;flex-direction:column;gap:16px}
+.profile-card{padding:0;overflow:hidden}
+.profile-card .banner{height:120px;background:linear-gradient(120deg,rgba(55,230,169,.5),rgba(160,107,255,.5));position:relative}
+.profile-card .banner::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent,rgba(5,7,13,.6))}
+.profile-card .inner{display:flex;gap:20px;padding:22px 26px;position:relative;flex-wrap:wrap}
+.profile-card .big-av{width:86px;height:86px;border-radius:16px;background:var(--grad);position:relative;margin-top:-46px;
+  border:3px solid rgba(5,7,13,.8);box-shadow:0 10px 30px rgba(0,0,0,.5);flex-shrink:0}
+.profile-card .big-av::after{content:"";position:absolute;inset:14px;background:#0b0f1a;border-radius:9px}
+.profile-card .big-av img{position:absolute;inset:15px;width:56px;height:56px;object-fit:contain}
+.profile-card .p-id{flex:1;min-width:220px}
+.profile-card .p-name{font-size:22px;font-weight:900;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.profile-card .p-name .role{font-size:11px;background:var(--grad);color:#05110c;font-weight:800;padding:3px 8px;border-radius:5px}
+.profile-card .p-title{color:var(--ink-dim);font-size:13px;margin-top:6px}
+.profile-card .p-meta{display:flex;gap:16px;margin-top:10px;font-size:12px;color:var(--ink-faint);flex-wrap:wrap}
+.profile-card .p-meta svg{width:14px;height:14px;vertical-align:-3px;margin-right:4px}
+.profile-card .p-stats{display:flex;gap:26px;align-items:center}
+.lvl-box{display:flex;flex-direction:column;align-items:center;gap:4px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;padding:10px 16px}
+.lvl-box .lv{font-family:var(--font-px);font-size:18px;color:var(--cyan);background:linear-gradient(var(--green),var(--purple));-webkit-background-clip:text;background-clip:text}
+.lvl-bar{width:150px;height:8px;border-radius:6px;background:rgba(255,255,255,.07);overflow:hidden;margin:8px auto 0}
+.lvl-bar i{display:block;height:100%;background:var(--grad);border-radius:6px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:5px 11px;border-radius:8px;border:1px solid var(--line-2);background:rgba(255,255,255,.04);color:var(--ink-dim)}
+.badge svg{width:15px;height:15px;color:var(--purple)}
+.two-col{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.p-tab{display:flex;gap:6px;padding:14px 18px;margin-top:16px}
+.tab-btn{flex:1;padding:10px;text-align:center;border-radius:9px;cursor:pointer;font-size:14px;font-weight:600;color:var(--ink-dim);
+  border:1px solid transparent;background:none;font-family:var(--font);transition:.18s}
+.tab-btn:hover{color:var(--ink)}
+.tab-btn.on{background:var(--grad);color:#05110c;font-weight:800;box-shadow:0 6px 18px rgba(55,230,169,.25)}
+.my-post{display:flex;gap:14px;padding:14px 16px;transition:.18s;cursor:pointer}
+.my-post:hover{border-color:var(--line-2)}
+.my-post .cover{width:96px;height:64px;border-radius:8px;flex-shrink:0;display:grid;place-items:center;color:#05110c;font-family:var(--font-px);font-size:9px;background:linear-gradient(135deg,rgba(55,230,169,.4),rgba(160,107,255,.4))}
+.my-post .mp-body{flex:1;min-width:0}
+.my-post h4{font-size:14.5px;font-weight:800;line-height:1.4}
+.my-post h4:hover{color:var(--green)}
+.my-post .mp-meta{font-size:12px;color:var(--ink-faint);margin-top:7px;display:flex;gap:12px;flex-wrap:wrap}
+.acts{display:flex;flex-direction:column;gap:8px}
+.act{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:9px;background:rgba(255,255,255,.03);font-size:13px;transition:.15s;cursor:pointer}
+.act:hover{background:rgba(255,255,255,.06)}
+.act .a-icon{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;flex-shrink:0;color:#05110c}
+.act .a-icon svg{width:16px;height:16px}
+.act .a-icon.g{background:linear-gradient(135deg,#37e6a9,#12b37f)}
+.act .a-icon.p{background:linear-gradient(135deg,#a06bff,#7a3cf0)}
+.act .a-icon.c{background:linear-gradient(135deg,#6fd7ff,#3fa8e0)}
+.act b{display:block;font-size:13px}
+.act span{font-size:12px;color:var(--ink-faint)}
+.act time{margin-left:auto;font-size:11px;color:var(--ink-faint)}
+
+/* ===== admin ===== */
+.admin-wrap{display:flex;flex-direction:column;gap:16px}
+.admin-head{padding:20px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.admin-head h1{font-size:22px;font-weight:900}
+.admin-head .role-chip{font-family:var(--font-px);font-size:9px;color:#ffcf8a;background:rgba(240,180,90,.1);border:1px solid rgba(240,180,90,.4);padding:6px 9px;border-radius:6px}
+.admin-head .search{margin-left:auto;max-width:320px}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kpi{padding:18px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden}
+.kpi .k-icon{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:#05110c}
+.kpi .k-icon svg{width:20px;height:20px}
+.kpi .k-icon.g{background:linear-gradient(135deg,#37e6a9,#12b37f)}
+.kpi .k-icon.p{background:linear-gradient(135deg,#a06bff,#7a3cf0)}
+.kpi .k-icon.c{background:linear-gradient(135deg,#6fd7ff,#3fa8e0)}
+.kpi .k-icon.o{background:linear-gradient(135deg,#ffcf8a,#f0a03c)}
+.kpi b{font-size:26px;font-weight:900}
+.kpi .k-trend{font-size:12px;font-weight:700}
+.kpi .k-trend.up{color:var(--green)}
+.kpi .k-trend.down{color:#ff9898}
+.kpi .k-label{font-size:12px;color:var(--ink-faint)}
+.admin-cols{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.a-panel{padding:20px 22px}
+.a-panel h3{font-size:15px;font-weight:900;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.a-panel h3 .n{font-family:var(--font-px);font-size:10px;color:var(--green)}
+.srv-status{display:flex;align-items:center;gap:14px;padding:12px;border-radius:10px;background:rgba(255,255,255,.03);margin-bottom:10px}
+.srv-status .ss-ico{width:40px;height:40px;border-radius:10px;background:rgba(55,230,169,.12);display:grid;place-items:center;color:var(--green)}
+.srv-status .ss-ico svg{width:20px;height:20px}
+.srv-status .ss-body{flex:1}
+.srv-status b{font-size:14px;display:block}
+.srv-status .sub{font-size:12px;color:var(--ink-faint)}
+.srv-status .online-pill{font-family:var(--font-px);font-size:9px;color:var(--green);border:1px solid rgba(55,230,169,.5);padding:5px 8px;border-radius:6px}
+.uptime{display:flex;gap:14px;margin-top:4px}
+.uptime .u{flex:1;text-align:center;padding:12px;border-radius:9px;background:rgba(255,255,255,.03)}
+.uptime b{font-size:16px;font-weight:900;display:block}
+.uptime span{font-size:11px;color:var(--ink-faint)}
+.trend-chart{width:100%;height:150px;margin-top:6px}
+.trend-chart .bars{display:flex;align-items:flex-end;gap:8px;height:100%;padding:8px 4px 0}
+.trend-chart .bars .b{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;height:100%;justify-content:flex-end}
+.trend-chart .bars .b .fill{width:100%;border-radius:6px 6px 2px 2px;background:var(--grad);opacity:.85;transition:.3s;position:relative}
+.trend-chart .bars .b:hover .fill{opacity:1;filter:brightness(1.15)}
+.trend-chart .bars .b .v{font-size:10px;color:var(--ink-faint);font-family:var(--font-px)}
+.trend-chart .bars .b .l{font-size:10px;color:var(--ink-faint)}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;padding:10px 12px;color:var(--ink-faint);font-weight:600;font-size:12px;border-bottom:1px solid var(--line)}
+.tbl td{padding:11px 12px;border-bottom:1px solid var(--line)}
+.tbl tr:last-child td{border:none}
+.tbl .user{display:flex;align-items:center;gap:9px}
+.tbl .user .mini{width:28px;height:28px;border-radius:7px;background:var(--grad);position:relative}
+.tbl .user .mini::after{content:"";position:absolute;inset:5px;background:#0b0f1a;border-radius:3px}
+.tbl .ok{color:var(--green);font-weight:700}
+.tbl .warn{color:#ffcf8a;font-weight:700}
+.tbl .bad{color:#ff9898;font-weight:700}
+.tbl .act-btn{padding:4px 10px;font-size:12px;border-radius:7px;border:1px solid var(--line-2);background:rgba(255,255,255,.04);color:var(--ink-dim);cursor:pointer}
+.tbl .act-btn:hover{border-color:var(--green);color:var(--green)}
+.tbl .act-btn.del:hover{border-color:#ff9898;color:#ff9898}
+.rpt-item{display:flex;gap:11px;padding:11px;border-radius:9px;background:rgba(255,255,255,.03);margin-bottom:8px;align-items:center}
+.rpt-item .flag{width:34px;height:34px;border-radius:8px;background:rgba(255,120,120,.12);display:grid;place-items:center;color:#ff9898;flex-shrink:0}
+.rpt-item .flag svg{width:17px;height:17px}
+.rpt-item b{font-size:13px;display:block}
+.rpt-item span{font-size:12px;color:var(--ink-faint)}
+.rpt-item time{margin-left:auto;font-size:11px;color:var(--ink-faint)}
+.rpt-item .do{margin-left:10px}
+
+/* ===== launch ===== */
+.launch-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:60;background:var(--bg)}
+.launch-wrap .bg{z-index:-1;opacity:1}
+.launch-inner{text-align:center;padding:30px;max-width:640px}
+.launch-inner .logo-big{width:100%;max-width:460px;margin:0 auto 28px;filter:drop-shadow(0 10px 40px rgba(160,107,255,.4))}
+.launch-inner .l-sub{font-size:14px;color:var(--ink-dim);letter-spacing:.14em;margin-bottom:8px}
+.launch-inner .l-sub b{color:var(--cyan)}
+.launch-inner h1{font-family:var(--font-px);font-size:22px;line-height:1.9;color:var(--ink);letter-spacing:.06em;margin-bottom:6px;
+  text-shadow:0 0 18px rgba(55,230,169,.45),0 0 34px rgba(160,107,255,.35)}
+.launch-inner p{color:var(--ink-dim);font-size:14px;line-height:1.8;margin:14px auto 30px;max-width:46ch}
+.launch-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.launch-btns .btn{height:48px;padding:0 26px;font-size:15px;border-radius:12px}
+.version-note{margin-top:30px;font-family:var(--font-px);font-size:9px;color:var(--ink-faint);letter-spacing:.08em;display:inline-block;border:1px solid var(--line);padding:8px 12px;border-radius:8px;background:rgba(255,255,255,.03)}
+
+/* ===== 404 ===== */
+.four-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:60}
+.four-inner{text-align:center;padding:30px;max-width:600px}
+.four-code{font-family:var(--font-px);font-size:76px;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 6px 30px rgba(160,107,255,.35))}
+.four-code .px-fx{display:inline-block;animation:glitch .6s steps(2) infinite}
+.four-inner h2{font-size:22px;font-weight:900;margin:18px 0 10px}
+.four-inner p{color:var(--ink-dim);font-size:14px;line-height:1.8;max-width:44ch;margin:0 auto 26px}
+.four-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.broken-cubes{display:flex;gap:8px;justify-content:center;margin-bottom:6px;height:26px;align-items:flex-end}
+.broken-cubes i{width:20px;height:20px;border-radius:4px;background:linear-gradient(135deg,#37e6a9,#a06bff);opacity:.8;animation:bounce 2.2s infinite}
+.broken-cubes i:nth-child(2){animation-delay:.3s;background:linear-gradient(135deg,#6fd7ff,#7a3cf0)}
+.broken-cubes i:nth-child(3){animation-delay:.6s}
+.broken-cubes i:nth-child(4){animation-delay:.9s;background:linear-gradient(135deg,#6fd7ff,#7a3cf0)}
+.broken-cubes i:nth-child(5){animation-delay:1.2s}
+@keyframes bounce{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(-10px);opacity:1}}
+@keyframes glitch{0%{transform:translate(0)}25%{transform:translate(-2px,1px)}50%{transform:translate(2px,-1px)}75%{transform:translate(-1px,-1px)}100%{transform:translate(0)}}
+
+/* ===== mobile bottom nav ===== */
+.mnav{display:none;position:fixed;left:0;right:0;bottom:0;z-index:50;height:62px;background:rgba(9,13,22,.92);backdrop-filter:blur(14px);
+  border-top:1px solid var(--line)}
+.mnav .inner{display:flex;height:100%;max-width:640px;margin:0 auto}
+.mnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--ink-dim);cursor:pointer;font-size:10px;font-weight:600;background:none;border:none;font-family:var(--font)}
+.mnav-item svg{width:21px;height:21px}
+.mnav-item.active{color:var(--green)}
+.mnav-item.active svg{filter:drop-shadow(0 0 8px rgba(55,230,169,.7))}
+.mnav-item.mid{background:var(--grad);color:#05110c;border-radius:16px;height:44px;margin:9px 6px;flex:none;width:64px}
+.mnav-item.mid svg{color:#05110c}
+
+/* ===== toast ===== */
+#toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);z-index:200;
+  background:rgba(10,15,26,.95);border:1px solid var(--line-2);color:var(--ink);padding:12px 20px;border-radius:12px;
+  font-size:14px;opacity:0;pointer-events:none;transition:.3s;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast .g{color:var(--green)}
+
+/* ===== responsive ===== */
+/* ===== login ===== */
+.btn-login{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px;border-radius:12px;
+  border:1px solid var(--line-2);background:rgba(255,255,255,.05);color:var(--ink);font-family:var(--font);
+  font-size:14px;font-weight:600;cursor:pointer;transition:.2s;white-space:nowrap}
+.btn-login:hover{border-color:var(--purple);color:var(--purple);background:rgba(160,107,255,.08)}
+.btn-login svg{width:16px;height:16px}
+.modal-overlay{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;
+  background:rgba(4,6,12,.72);backdrop-filter:blur(4px);padding:16px}
+.modal-overlay.open{display:flex}
+.modal{width:100%;max-width:424px;padding:26px 26px 18px;animation:fadeUp .3s ease;max-height:90vh;overflow:auto}
+.modal-head{display:flex;align-items:center;justify-content:space-between}
+.modal-head h3{font-size:19px;font-weight:900}
+.modal-x{width:34px;height:34px;border-radius:9px;border:none;background:rgba(255,255,255,.06);color:var(--ink-dim);
+  font-size:20px;cursor:pointer;line-height:1;transition:.18s;font-family:var(--font)}
+.modal-x:hover{background:rgba(255,255,255,.14);color:var(--ink)}
+.auth-tabs{display:flex;gap:6px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;padding:5px;margin:18px 0}
+.auth-tab{flex:1;padding:9px;border-radius:8px;border:none;background:none;color:var(--ink-dim);font-family:var(--font);
+  font-size:14px;font-weight:600;cursor:pointer;transition:.18s}
+.auth-tab.on{background:var(--grad);color:#05110c;font-weight:800}
+.auth-pane{display:none}
+.auth-pane.on{display:block}
+.auth-note{font-size:12.5px;color:var(--ink-faint);line-height:1.65;margin:2px 0 6px}
+.auth-pane label{display:block;font-size:12px;color:var(--ink-dim);margin:13px 0 6px;font-weight:600}
+.auth-pane input{width:100%;height:42px;border:1px solid var(--line-2);border-radius:10px;background:rgba(6,9,15,.7);
+  color:var(--ink);padding:0 14px;font-family:var(--font);font-size:14px;outline:none;transition:.2s}
+.auth-pane input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(55,230,169,.12)}
+.auth-submit{width:100%;margin-top:18px;height:44px;font-size:15px}
+.modal-foot{text-align:center;font-size:11.5px;color:var(--ink-faint);margin-top:16px;line-height:1.5}
+.auth-card{display:flex;align-items:center;gap:14px;padding:16px 18px;flex-wrap:wrap}
+.auth-card .ac-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,rgba(55,230,169,.18),rgba(160,107,255,.2));display:grid;place-items:center;color:var(--purple);flex-shrink:0}
+.auth-card .ac-icon svg{width:22px;height:22px}
+.auth-card .ac-body{flex:1;min-width:180px}
+.auth-card b{font-size:14.5px;display:block}
+.auth-card .ac-sub{font-size:12.5px;color:var(--ink-faint);margin-top:3px}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  padding:64px 24px;gap:6px}
+.empty .empty-ico{width:66px;height:66px;border-radius:18px;display:grid;place-items:center;color:var(--purple);
+  background:linear-gradient(135deg,rgba(55,230,169,.16),rgba(160,107,255,.22));margin-bottom:10px}
+.empty .empty-ico svg{width:30px;height:30px}
+.empty h3{font-size:19px;font-weight:900;margin:4px 0}
+.empty p{font-size:13.5px;color:var(--ink-dim);line-height:1.7;max-width:340px}
+.empty .btn{margin-top:16px}
+.latest{display:inline-block;font-size:10px;font-weight:700;color:#05110c;background:var(--grad);padding:3px 8px;border-radius:6px;margin-bottom:8px;font-family:var(--font-px)}
+.captcha-row{display:flex;align-items:center;gap:10px;margin-top:16px;padding:12px;border:1px solid var(--line);border-radius:10px;background:rgba(6,9,15,.5)}
+.captcha-row .cap-label{font-size:12px;color:var(--ink-dim);font-weight:600;white-space:nowrap}
+.captcha-row .cap-q{font-family:var(--font-px);font-size:12px;color:var(--green);padding:9px 12px;background:rgba(55,230,169,.08);border:1px dashed rgba(55,230,169,.35);border-radius:8px;white-space:nowrap}
+.captcha-row input{flex:1;min-width:0;height:38px;border:1px solid var(--line-2);border-radius:9px;background:rgba(6,9,15,.7);color:var(--ink);padding:0 12px;font-family:var(--font);font-size:14px;outline:none}
+.captcha-row input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(55,230,169,.1)}
+.captcha-row .cap-refresh{width:38px;height:38px;border-radius:9px;border:1px solid var(--line-2);background:rgba(255,255,255,.05);color:var(--ink-dim);cursor:pointer;font-size:18px;line-height:1;transition:.18s}
+.captcha-row .cap-refresh:hover{color:var(--green);border-color:var(--green)}
+.terms{display:flex;align-items:center;gap:9px;margin-top:14px;font-size:13px;color:var(--ink-dim);cursor:pointer;user-select:none}
+.terms input{width:17px;height:17px;accent-color:var(--green);cursor:pointer;flex-shrink:0}
+.terms b{color:var(--green);font-weight:600}
+.auth-pane select{width:100%;height:42px;border:1px solid var(--line-2);border-radius:10px;background:rgba(6,9,15,.7);color:var(--ink);padding:0 12px;font-family:var(--font);font-size:14px;outline:none}
+
+@media(max-width:1080px){
+  .dl-grid{grid-template-columns:repeat(2,1fr)}
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .hero{flex-direction:column}
+  .hero-stats{flex-direction:row;flex-wrap:wrap;justify-content:space-around}
+}
+@media(max-width:900px){
+  .sidebar{display:none}
+  .layout{padding:82px 14px 120px}
+  .topbar{height:58px;padding:0 14px;gap:10px}
+  .search input{padding-left:38px}
+  .search svg{left:11px}
+  .search kbd{display:none}
+  .brand img{height:28px}
+  .topbar .user-mini span{display:none}
+  .mnav{display:block}
+  .two-col,.admin-cols{grid-template-columns:1fr}
+  .dl-grid{grid-template-columns:1fr}
+  .srv-grid{grid-template-columns:1fr}
+  .btn-play{height:40px;padding:0 15px;font-size:13px}
+  .btn-play .btn-txt{display:none}
+  .btn-login{height:40px;padding:0 11px}
+  .btn-login .btn-txt{display:none}
+  .hero-card h1{font-size:24px}
+}
+@media(max-width:600px){
+  .post-body{padding:24px 18px}
+  .post-head{padding:20px 16px}
+  .post-head h1{font-size:20px}
+  .comments{padding:20px 16px}
+  .profile-card .inner{gap:14px}
+  .lvl-box{width:100%}
+  .four-code{font-size:54px}
+}
+@media(prefers-reduced-motion:reduce){
+  .particles i,.broken-cubes i{animation:none}
+  *{transition:none!important}
+  html{scroll-behavior:auto}
+}
 </style>
 </head>
 <body>
 
-<div class="bg"></div>
-<div class="partaurants"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-
-<!-- topbar -->
-<div class="topbar">
-  <div class="brand" onclick="show('home')">
-    <svg viewBox="0 0 64 64"><rect width="64" height="64" rx="10" fill="#05070d"/><polygon points="32,10 50,20 32,30 14,20" fill="#37e6a9"/><polygon points="14,20 32,30 32,50 14,40" fill="#2a1f4d"/><polygon points="50,20 32,30 32,50 50,40" fill="#a06bff"/></svg>
-    CARTHY
-  </div>
-  <div class="nav">
-    <button class="on" onclick="show('home',this)">首页</button>
-    <button onclick="show('bugs',this)">Bug 反馈</button>
-  </div>
-  <div class="right">
-    <div class="user-chip" id="userChip" onclick="openLogin()" style="display:none">
-      <div class="ava"></div><span id="userName">玩家</span>
-    </div>
-    <button class="btn" id="loginBtn" onclick="openLogin()">登录 / 注册</button>
-  </div>
+<div class="bg home" id="bg"></div>
+<div class="particles" id="particles" aria-hidden="true">
+  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
 </div>
 
-<div class="wrap">
+<!-- ===== icon sprite ===== -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:none">
+  <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M3 11 12 4l9 7"/><path d="M5 10v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9"/><path d="M9.5 20v-6h5v6"/>
+  </symbol>
+  <symbol id="i-forum" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M4 5h13a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H9l-4 3v-3H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/>
+    <path d="M18 8h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1v3l-3-2"/>
+  </symbol>
+  <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M12 3v11"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-2"/>
+  </symbol>
+  <symbol id="i-mod" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+    <path d="M12 3 20 7v10l-8 4-8-4V7z"/><path d="M12 12 20 8"/><path d="M12 12v10"/><path d="M4 8l8 4"/>
+  </symbol>
+  <symbol id="i-server" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+    <rect x="4" y="3" width="16" height="7" rx="2"/><rect x="4" y="14" width="16" height="7" rx="2"/>
+    <path d="M8 6.5h.01M8 17.5h.01"/><path d="M12 6.5h5M12 17.5h5"/>
+  </symbol>
+  <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+    <circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/>
+  </symbol>
+  <symbol id="i-admin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M12 3 5 6v5c0 4.4 3 8.4 7 10 4-1.6 7-5.6 7-10V6z"/><path d="m9 12 2 2 4-4"/>
+  </symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/>
+  </symbol>
+  <symbol id="i-craft" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+    <rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/>
+  </symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 21S4 15 4 9.5A4.5 4.5 0 0 1 12 6a4.5 4.5 0 0 1 8 3.5C20 15 12 21 12 21z"/>
+  </symbol>
+  <symbol id="i-comment" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+    <path d="M21 12a8 8 0 0 1-8 8H4l2.2-2.9A8 8 0 1 1 21 12z"/>
+  </symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+    <path d="M5 3v18"/><path d="M5 4h12l-2 4 2 4H5"/>
+  </symbol>
+  <symbol id="i-launch" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M8 5.5v13l11-6.5z"/>
+  </symbol>
+  <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor">
+    <path d="m12 3 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 18.4 6.2 21l1.1-6.5L2.6 9.8l6.5-.9z"/>
+  </symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M5 12h14M13 6l6 6-6 6"/>
+  </symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+  </symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>
+  </symbol>
+  <symbol id="i-trend" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>
+  </symbol>
+  <symbol id="i-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+    <path d="M12 3 20 7v10l-8 4-8-4V7z"/><path d="M12 12 20 8"/><path d="M12 12v10"/><path d="M4 8l8 4"/>
+  </symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>
+  </symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+    <path d="M12 3 5 6v5c0 4.4 3 8.4 7 10 4-1.6 7-5.6 7-10V6z"/>
+  </symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M9 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>
+  </symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>
+  </symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M12 16V5"/><path d="m7 9 5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/>
+  </symbol>
+  <symbol id="i-login" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <circle cx="9" cy="8" r="4"/><path d="M2 20a7 7 0 0 1 12.5-4"/><path d="M18 15v6M15 18h6"/>
+  </symbol>
+</svg>
 
-  <!-- HOME -->
-  <div class="view on" id="v-home">
-    <div class="welcome">
-      <h1>欢迎来到 <span>CARTHY</span></h1>
-      <p>Minecraft 玩家社区 · 启动器交流 · Bug 反馈</p>
+<header class="topbar" id="topbar">
+  <div class="brand" onclick="go('home')"><img src="assets/carthy-logo.svg" alt="CARTHY"></div>
+  <div class="search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-search" xlink:href="#i-search"/></svg>
+    <input id="searchIn" placeholder="搜索帖子、模组、资源…" onkeydown="if(event.key==='Enter')toast('搜索：'+this.value)">
+    <kbd>Ctrl K</kbd>
+  </div>
+  <button class="btn-play" onclick="openLogin()"><svg viewBox="0 0 24 24"><use href="#i-launch" xlink:href="#i-launch"/></svg><span class="btn-txt">登录 / 注册</span></button>
+  <div class="user-mini" onclick="go('profile')">
+    <div class="avatar"><img src="assets/carthy-avatar.svg" alt=""></div>
+    <span>Steve 矿工</span>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <nav class="side-nav">
+      <div class="cap">浏览</div>
+      <button class="nav-item" data-nav="home" onclick="go('home')"><svg><use href="#i-home" xlink:href="#i-home"/></svg>论坛首页</button>
+      <button class="nav-item" onclick="openLogin()"><svg><use href="#i-login" xlink:href="#i-login"/></svg>登录 / 注册</button>
+      <button class="nav-item" data-nav="download" onclick="go('download')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载中心</button>
+      <button class="nav-item" data-nav="bugs" onclick="go('bugs')"><svg><use href="#i-forum" xlink:href="#i-forum"/></svg>Bug 反馈</button>
+      <button class="nav-item" data-nav="profile" onclick="go('profile')"><svg><use href="#i-user" xlink:href="#i-user"/></svg>个人主页</button>
+    </nav>
+    <div class="side-foot">
+      <div class="online"><span class="dot"></span><span>CARTHY 社区</span></div>
+      <p>启动器持续更新 · 欢迎交流</p>
     </div>
-    <div class="card">
-      <h2>关于 CARTHY</h2>
-      <div class="sub">一个简洁的 Minecraft 启动器社区</div>
-      <p style="color:var(--ink-dim);font-size:14px;line-height:1.8">
-        CARTHY 启动器支持正版登录、外置登录（LittleSkin）、自动下载 Java、BMCLAPI 多源加速下载。
-        你可以在这里查看已知 Bug，反馈遇到的问题。
-      </p>
-    </div>
-    <div class="card">
-      <h2>快速开始</h2>
-      <div class="sub">登录后即可使用社区功能</div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
-        <span class="chip" style="padding:6px 14px;border-radius:8px;border:1px solid var(--line2);font-size:13px">正版登录</span>
-        <span class="chip" style="padding:6px 14px;border-radius:8px;border:1px solid var(--line2);font-size:13px">外置登录</span>
-        <span class="chip" style="padding:6px 14px;border-radius:8px;border:1px solid var(--line2);font-size:13px">邮箱注册</span>
-        <span class="chip" style="padding:6px 14px;border-radius:8px;border:1px solid var(--line2);font-size:13px">自动 Java</span>
+  </aside>
+
+  <main>
+    <!-- ===== VIEW: LAUNCH ===== -->
+    <section class="view" id="v-launch"></section>
+    <!-- ===== VIEW: HOME ===== -->
+    <section class="view" id="v-home">
+      <div class="hero">
+        <div class="hero-card glass">
+          <span class="glow"></span>
+          <h1><span class="px">CARTHY FORUM</span>最懂《我的世界》的<br>中文玩家社区</h1>
+          <p>光影、整合包、模组与海量资源一站式分享。无论你是原版党、Forge 老手还是 Fabric 极客，都能在这里找到同好与资源。</p>
+          <div class="hero-cta">
+            <button class="btn solid" onclick="go('download')"><svg><use href="#i-box" xlink:href="#i-box"/></svg>开始下载</button>
+          </div>
+        </div>
+        <div class="hero-stats glass">
+          <div class="hstat"><div class="icon g"><svg><use href="#i-user" xlink:href="#i-user"/></svg></div><div><b>CARTHY</b><span>Minecraft 启动器社区</span></div></div>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <!-- BUGS -->
-  <div class="view" id="v-bugs">
-    <div class="card">
-      <h2>Bug 反馈</h2>
-      <div class="sub">从 GitHub 仓库实时加载的问题列表</div>
-      <div id="bugList"><p style="color:var(--ink-faint);font-size:14px">加载中...</p></div>
-    </div>
-  </div>
+      <div class="sec-head">
+        <div><h2>论坛<span class="acc">广场</span></h2><div class="sub">一个全新的社区，等待第一条帖子</div></div>
+        <span class="more" onclick="toast('发布功能即将开放')">发布帖子 <svg width="15" height="15"><use href="#i-edit" xlink:href="#i-edit"/></svg></span>
+      </div>
 
+      <div class="empty glass">
+        <div class="empty-ico"><svg><use href="#i-forum" xlink:href="#i-forum"/></svg></div>
+        <h3>这里还没有任何帖子</h3>
+        <p>还没有人发帖。发一条公告、教程或资源分享，开启 CARTHY 社区的交流吧。</p>
+        <button class="btn solid" onclick="toast('发布功能演示中，敬请期待')"><svg><use href="#i-edit" xlink:href="#i-edit"/></svg>发布第一条帖子</button>
+      </div>
+    </section>
+
+    <!-- ===== VIEW: POST ===== -->
+    <section class="view" id="v-post">
+      <div class="post-main">
+        <div class="post-head glass">
+          <div class="crumbs"><a onclick="go('home')">首页</a><span class="sep">/</span><a onclick="go('download')">光影</a><span class="sep">/</span><span>帖子详情</span></div>
+          <h1>【教程】Complimentary Reimagined 光影在 Fabric 1.20.1 下的安装与调参</h1>
+          <div class="tags"><span class="chip p">光影</span><span class="chip g">技术教程</span><span class="tag fabric">Fabric</span></div>
+          <div class="byline">
+            <div class="avatar" style="width:38px;height:38px"><img src="assets/carthy-avatar.svg" alt=""></div>
+            <span class="u">Steve_矿工</span><span class="dot"></span><span>2 小时前发布</span><span class="dot"></span><span>浏览 6,231</span>
+          </div>
+        </div>
+
+        <div class="post-body glass">
+          <p>很多新手问光影装好之后"一卡一卡"，其实大概率是<b>渲染距离</b>和<b>光影质量档</b>没配合好。今天这篇教程手把手教你在 Fabric 1.20.1 下正确安装并调参，把平均帧数从 30 稳定提到 60。</p>
+          <h2>第一步：准备环境</h2>
+          <p>先安装对应版本的 <code>Fabric Loader</code> 与 <code>Fabric API</code>，再下载 Iris（作为 Sodium 的兼容光影层）。推荐配置如下：</p>
+          <pre><span class="c"># build.gradle / 启动器依赖</span>
+fabric-loader 0.16.5
+fabric-api 0.100.4+1.20.1
+sodium 0.5.11+mc1.20.1
+iris 1.6.11+mc1.20.1</pre>
+          <blockquote>提示：Iris 与 Sodium 版本必须匹配，否则启动会直接闪退。</blockquote>
+          <h2>第二步：安装光影包</h2>
+          <p>把下载的 <code>.zip</code> 光影包放进 <code>.minecraft/shaderpacks</code> 目录，回到游戏点击 <b>设置 → 光影</b>，选中即可加载。</p>
+          <h2>第三步：调参关键点</h2>
+          <ul>
+            <li>渲染距离建议 10–14，太高会爆显存。</li>
+            <li>光影质量档用「中」，关闭动态模糊与景深。</li>
+            <li>开启「雾效优化」与「区块缓存」，帧数提升最明显。</li>
+          </ul>
+          <p>调完保存配置，切个光照丰富的场景测试，基本就能稳定 60 帧。有任何问题欢迎在下方回复，我看到都会回。</p>
+        </div>
+
+        <div class="post-actions">
+          <button class="react liked" id="likeBtn" onclick="toggleLike(this)"><svg class="love"><use href="#i-heart" xlink:href="#i-heart"/></svg><span>342</span> 已赞</button>
+          <button class="react" onclick="toast('已复制帖子链接')"><svg><use href="#i-comment" xlink:href="#i-comment"/></svg>128 回复</button>
+          <button class="react" onclick="toast('收藏成功')"><svg><use href="#i-star" xlink:href="#i-star"/></svg>收藏</button>
+          <button class="react" onclick="toast('感谢举报')"><svg><use href="#i-flag" xlink:href="#i-flag"/></svg>举报</button>
+        </div>
+
+        <div class="related glass">
+          <h3>相关推荐</h3>
+          <div class="r-item" onclick="toast('打开相关帖子')"><span>【教程】iris 光影设置全解：白天黑夜两种配置</span><span>6.9k 浏览</span></div>
+          <div class="r-item" onclick="toast('打开相关帖子')"><span>[求助] 光影加载后全屏泛白怎么办？</span><span>1.2k 浏览</span></div>
+          <div class="r-item" onclick="toast('打开相关帖子')"><span>2026 最推荐的 5 款低配光影合集</span><span>18k 浏览</span></div>
+          <div class="r-item" onclick="toast('打开相关帖子')"><span>Stellar 光影更新：新增自适应曝光</span><span>4.3k 浏览</span></div>
+        </div>
+
+        <div class="comments glass">
+          <h3>评论 <span style="color:var(--ink-faint);font-size:13px;font-weight:400">(128)</span></h3>
+          <div class="comment">
+            <div class="avatar"><img src="assets/carthy-avatar.svg" alt=""></div>
+            <div class="c-main">
+              <div class="c-top"><span class="u">Mossy_Stone</span><span class="lvl">Lv.8</span><span>· 2 小时前</span><span class="op">楼主</span></div>
+              <div class="c-text">按教程调完确实流畅了很多，感谢分享！不过 0.5.11 的 Sodium 好像会跟某些粒子模组冲突？</div>
+              <div class="c-actions"><span><svg><use href="#i-heart" xlink:href="#i-heart"/></svg>点赞 12</span><span>回复</span></div>
+              <div class="subs">
+                <div class="comment sub">
+                  <div class="avatar"><img src="assets/carthy-avatar.svg" alt=""></div>
+                  <div class="c-main">
+                    <div class="c-top"><span class="u">Steve_矿工</span><span class="lvl">Lv.12</span><span>· 1 小时前</span><span class="op">楼主</span></div>
+                    <div class="c-text">是的，建议把粒子模组更新到对应版本，或者关掉「粒子合并」选项即可。</div>
+                    <div class="c-actions"><span>回复</span></div>
+                  </div>
+                </div>
+                <div class="comment sub">
+                  <div class="avatar"><img src="assets/carthy-avatar.svg" alt=""></div>
+                  <div class="c-main">
+                    <div class="c-top"><span class="u">Ender_Queen</span><span class="lvl">Lv.10</span><span>· 55 分钟前</span></div>
+                    <div class="c-text">学到了，收藏了！等下就去试。</div>
+                    <div class="c-actions"><span><svg><use href="#i-heart" xlink:href="#i-heart"/></svg>点赞 3</span><span>回复</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="comment">
+            <div class="avatar"><img src="assets/carthy-avatar.svg" alt=""></div>
+            <div class="c-main">
+              <div class="c-top"><span class="u">Redstone_Wizard</span><span class="lvl">Lv.9</span><span>· 昨天</span></div>
+              <div class="c-text">问一下渲染距离 14 但显存只有 4G 会不会爆？想参考下你的设置截图。</div>
+              <div class="c-actions"><span><svg><use href="#i-heart" xlink:href="#i-heart"/></svg>点赞 5</span><span>回复</span></div>
+            </div>
+          </div>
+          <div class="comment-box">
+            <div class="avatar"><img src="assets/carthy-avatar.svg" alt=""></div>
+            <textarea placeholder="写下你的回复…" id="cmtInput"></textarea>
+            <div style="display:flex;flex-direction:column;justify-content:space-between;gap:8px">
+              <button class="btn solid" onclick="submitComment()">发表</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== VIEW: DOWNLOAD ===== -->
+    <section class="view" id="v-download">
+      <div class="sec-head" style="margin-top:0">
+        <div><h2>下载<span class="acc">中心</span></h2><div class="sub">游戏本体、最新启动器、模组与资源包，一个入口全搞定</div></div>
+        <span class="more" onclick="openPublish()">发布整合包 <svg width="15" height="15"><use href="#i-upload" xlink:href="#i-upload"/></svg></span>
+      </div>
+
+      <div class="filterbar glass">
+        <span class="f-label"><svg><use href="#i-craft" xlink:href="#i-craft"/></svg>筛选：</span>
+        <button class="fbtn on" data-f="all" onclick="filterDL('all',this)">全部</button>
+        <button class="fbtn" data-f="vanilla" onclick="filterDL('vanilla',this)">Vanilla</button>
+        <button class="fbtn" data-f="forge" onclick="filterDL('forge',this)">Forge</button>
+        <button class="fbtn" data-f="fabric" onclick="filterDL('fabric',this)">Fabric</button>
+        <button class="fbtn" data-f="mod" onclick="filterDL('mod',this)">Mod</button>
+        <button class="fbtn" data-f="map" onclick="filterDL('map',this)">地图</button>
+        <span class="dl-count" id="dlCount">共 8 个资源</span>
+      </div>
+
+      <div class="dl-grid" id="dlGrid">
+        <div class="dl-card glass" data-t="vanilla">
+          <div class="head"><div class="ver-icon fg"><svg><use href="#i-box" xlink:href="#i-box"/></svg></div><div><div class="v">Java 版游戏本体</div><div class="tag vanilla">Vanilla</div></div></div>
+          <p class="desc">《我的世界》Java 版官方启动器下载，含 1.20.1 全版本客户端。</p>
+          <div class="meta"><span><svg><use href="#i-download" xlink:href="#i-download"/></svg>18,420 下载</span><span><svg><use href="#i-box" xlink:href="#i-box"/></svg>3.2 GB</span></div>
+          <button class="btn solid dl-btn" onclick="toast('开始下载 Vanilla 本体')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载</button>
+        </div>
+        <div class="dl-card glass" data-t="vanilla">
+          <div class="head"><div class="ver-icon c"><svg><use href="#i-launch" xlink:href="#i-launch"/></svg></div><div><div class="v">CARTHY 整合启动器</div><div class="tag vanilla">Vanilla</div></div></div>
+          <span class="latest">最新版 v1.0.0</span>
+          <p class="desc">一键启动、自动下载 Java 与游戏版本、内置 Mod 管理、多源加速下载。</p>
+          <div class="meta"><span><svg><use href="#i-download" xlink:href="#i-download"/></svg>9,872 下载</span><span><svg><use href="#i-box" xlink:href="#i-box"/></svg>80 MB</span></div>
+          <button class="btn solid dl-btn" onclick="dlLauncher()"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载最新启动器</button>
+        </div>
+        <div class="dl-card glass" data-t="forge">
+          <div class="head"><div class="ver-icon g"><svg><use href="#i-mod" xlink:href="#i-mod"/></svg></div><div><div class="v">Forge 安装包 1.20.1</div><div class="tag forge">Forge</div></div></div>
+          <p class="desc">官方 Forge 加载器安装包，Windows 一键安装，支持主流整合包。</p>
+          <div class="meta"><span><svg><use href="#i-download" xlink:href="#i-download"/></svg>11,356 下载</span><span><svg><use href="#i-box" xlink:href="#i-box"/></svg>12 MB</span></div>
+          <button class="btn solid dl-btn" onclick="toast('开始下载 Forge 安装包')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载</button>
+        </div>
+        <div class="dl-card glass" data-t="fabric">
+          <div class="head"><div class="ver-icon c"><svg><use href="#i-mod" xlink:href="#i-mod"/></svg></div><div><div class="v">Fabric API 0.100.4</div><div class="tag fabric">Fabric</div></div></div>
+          <p class="desc">Fabric 生态核心前置库，光影、优化与辅助模组都依赖它。</p>
+          <div class="meta"><span><svg><use href="#i-download" xlink:href="#i-download"/></svg>15,204 下载</span><span><svg><use href="#i-box" xlink:href="#i-box"/></svg>1.6 MB</span></div>
+          <button class="btn solid dl-btn" onclick="toast('开始下载 Fabric API')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载</button>
+        </div>
+        <div class="dl-card glass" data-t="fabric">
+          <div class="head"><div class="ver-icon c"><svg><use href="#i-box" xlink:href="#i-box"/></svg></div><div><div class="v">Sodium + Iris 光影整合</div><div class="tag fabric">Fabric</div></div></div>
+          <p class="desc">性能优化核心，搭配光影的推荐组合，帧数立竿见影。</p>
+          <div class="meta"><span><svg><use href="#i-download" xlink:href="#i-download"/></svg>7,915 下载</span><span><svg><use href="#i-box" xlink:href="#i-box"/></svg>24 MB</span></div>
+          <button class="btn solid dl-btn" onclick="toast('开始下载 Sodium+Iris')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载</button>
+        </div>
+        <div class="dl-card glass" data-t="mod">
+          <div class="head"><div class="ver-icon p"><svg><use href="#i-mod" xlink:href="#i-mod"/></svg></div><div><div class="v">翡翠世界整合包</div><div class="tag mod">Mod</div></div></div>
+          <p class="desc">200+ 模组一键整合，含优化、冒险、科技与辅助四大类。</p>
+          <div class="meta"><span><svg><use href="#i-download" xlink:href="#i-download"/></svg>5,662 下载</span><span><svg><use href="#i-box" xlink:href="#i-box"/></svg>1.8 GB</span></div>
+          <button class="btn solid dl-btn" onclick="toast('开始下载翡翠世界整合包')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载</button>
+        </div>
+        <div class="dl-card glass" data-t="mod">
+          <div class="head"><div class="ver-icon m"><svg><use href="#i-box" xlink:href="#i-box"/></svg></div><div><div class="v">动态地图 Mod</div><div class="tag mod">Mod</div></div></div>
+          <p class="desc">实时显示地图与玩家位置，开荒必备。</p>
+          <div class="meta"><span><svg><use href="#i-download" xlink:href="#i-download"/></svg>3,208 下载</span><span><svg><use href="#i-box" xlink:href="#i-box"/></svg>9 MB</span></div>
+          <button class="btn solid dl-btn" onclick="toast('开始下载动态地图 Mod')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载</button>
+        </div>
+        <div class="dl-card glass" data-t="map">
+          <div class="head"><div class="ver-icon m"><svg><use href="#i-star" xlink:href="#i-star"/></svg></div><div><div class="v">翡翠平原开荒地图</div><div class="tag map">地图</div></div></div>
+          <p class="desc">官方开荒地图存档，村庄与资源点已标注。</p>
+          <div class="meta"><span><svg><use href="#i-download" xlink:href="#i-download"/></svg>2,746 下载</span><span><svg><use href="#i-box" xlink:href="#i-box"/></svg>410 MB</span></div>
+          <button class="btn solid dl-btn" onclick="toast('开始下载翡翠平原地图')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== VIEW: PROFILE ===== -->
+    <section class="view" id="v-profile">
+      <div class="profile-wrap">
+        <div class="profile-card glass">
+          <div class="banner"></div>
+          <div class="inner">
+            <div class="big-av"><img src="assets/carthy-avatar.svg" alt=""></div>
+            <div class="p-id">
+              <div class="p-name"><span id="pName">Steve_矿工</span> <span class="role" id="pRole">管理员</span></div>
+              <div class="p-title">翡翠社区站长 · 光影与整合包作者</div>
+              <div class="p-meta">
+                <span><svg><use href="#i-clock" xlink:href="#i-clock"/></svg>2021-03-12 注册</span>
+                <span><svg><use href="#i-eye" xlink:href="#i-eye"/></svg>关注 892 · 粉丝 4,120</span>
+                <span><svg><use href="#i-craft" xlink:href="#i-craft"/></svg>发帖 326</span>
+              </div>
+              <div class="badges">
+                <span class="badge"><svg><use href="#i-star" xlink:href="#i-star"/></svg>资深作者</span>
+                <span class="badge"><svg><use href="#i-shield" xlink:href="#i-shield"/></svg>版主</span>
+                <span class="badge"><svg><use href="#i-mod" xlink:href="#i-mod"/></svg>模组贡献者</span>
+                <span class="badge"><svg><use href="#i-heart" xlink:href="#i-heart"/></svg>万元户</span>
+              </div>
+            </div>
+            <div class="p-stats">
+              <div class="lvl-box">
+                <span class="lv">LV.12</span>
+                <span style="font-size:11px;color:var(--ink-faint)">矿工大师</span>
+                <div class="lvl-bar"><i style="width:76%"></i></div>
+              </div>
+              <div class="stat"><b style="color:var(--green)">4,120</b><span>粉丝</span></div>
+              <div class="stat"><b style="color:var(--purple)">326</b><span>帖子</span></div>
+              <div class="stat"><b style="color:var(--cyan)">88k</b><span>获赞</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="auth-card glass">
+          <div class="ac-icon"><svg><use href="#i-login" xlink:href="#i-login"/></svg></div>
+          <div class="ac-body">
+            <b id="authMethodName">外置登录（LittleSkin）</b>
+            <div class="ac-sub">当前登录：<span id="authCurUser">Steve_矿工</span> · 支持正版 / 外置 / 游客</div>
+          </div>
+          <button class="btn ghost" onclick="openLogin()"><svg><use href="#i-login" xlink:href="#i-login"/></svg>切换登录方式</button>
+        </div>
+
+        <div class="p-tab glass">
+          <button class="tab-btn on" data-tab="posts" onclick="switchTab('posts',this)">我的帖子</button>
+          <button class="tab-btn" data-tab="acts" onclick="switchTab('acts',this)">最近动态</button>
+        </div>
+
+        <div class="two-col">
+          <div class="glass" style="padding:6px 8px" id="tab-posts">
+            <div class="my-post" onclick="go('post')">
+              <div class="cover">教程</div>
+              <div class="mp-body"><h4>【教程】Complimentary Reimagined 光影在 Fabric 1.20.1 下的安装与调参</h4>
+                <div class="mp-meta"><span>2 小时前</span><span class="tag fabric">Fabric</span><span>浏览 6.2k</span><span>赞 342</span></div></div>
+            </div>
+            <div class="my-post" onclick="go('post')">
+              <div class="cover">整合</div>
+              <div class="mp-body"><h4>[1.20.1] 我的"翡翠世界"整合包：200+ 模组一键启动</h4>
+                <div class="mp-meta"><span>昨天</span><span class="tag forge">Forge</span><span>浏览 3.8k</span><span>赞 201</span></div></div>
+            </div>
+            <div class="my-post" onclick="go('post')">
+              <div class="cover">光影</div>
+              <div class="mp-body"><h4>Stellar 光影更新 v1.6：新增自适应曝光与体积雾</h4>
+                <div class="mp-meta"><span>3 天前</span><span class="tag fabric">Fabric</span><span>浏览 9.1k</span><span>赞 618</span></div></div>
+            </div>
+          </div>
+
+          <div class="glass" style="padding:16px 18px;display:none" id="tab-acts">
+            <div class="acts">
+              <div class="act"><div class="a-icon g"><svg><use href="#i-craft" xlink:href="#i-craft"/></svg></div><div><b>发布了新光影包</b><span>Stellar v1.6</span></div><time>2h</time></div>
+              <div class="act"><div class="a-icon p"><svg><use href="#i-edit" xlink:href="#i-edit"/></svg></div><div><b>编辑了整合包</b><span>翡翠世界 · 版本 3.2</span></div><time>1d</time></div>
+              <div class="act"><div class="a-icon c"><svg><use href="#i-comment" xlink:href="#i-comment"/></svg></div><div><b>回复了帖子</b><span>光影泛白问题解决方案</span></div><time>2d</time></div>
+              <div class="act"><div class="a-icon g"><svg><use href="#i-star" xlink:href="#i-star"/></svg></div><div><b>获得徽章</b><span>万元户 · 累计获赞 1 万+</span></div><time>4d</time></div>
+              <div class="act"><div class="a-icon p"><svg><use href="#i-mod" xlink:href="#i-mod"/></svg></div><div><b>更新了整合包</b><span>翡翠世界 · 版本 3.2.1</span></div><time>6d</time></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== VIEW: ADMIN ===== -->
+    <section class="view" id="v-admin">
+      <div class="admin-wrap">
+        <div class="admin-head glass">
+          <h1>后台<span class="acc" style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">面板</span></h1>
+          <span class="role-chip">ADMIN</span>
+          <div class="search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute;left:11px;top:10px;width:19px;height:19px;color:var(--ink-faint)"><use href="#i-search" xlink:href="#i-search"/></svg>
+            <input onkeydown="if(event.key==='Enter')toast('搜索管理数据：'+this.value)" placeholder="搜索用户 / 帖子 / 举报…" style="width:100%;height:38px;border:1px solid var(--line-2);border-radius:19px;background:rgba(255,255,255,.05);padding:0 14px 0 38px;color:var(--ink);font-family:var(--font);font-size:13px;outline:none">
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi glass"><div class="k-icon g"><svg><use href="#i-user" xlink:href="#i-user"/></svg></div><b>—</b><span class="k-label">注册用户</span></div>
+          <div class="kpi glass"><div class="k-icon p"><svg><use href="#i-forum" xlink:href="#i-forum"/></svg></div><b>—</b><span class="k-label">主题帖</span></div>
+          <div class="kpi glass"><div class="k-icon o"><svg><use href="#i-flag" xlink:href="#i-flag"/></svg></div><b>—</b><span class="k-label">举报</span></div>
+        </div>
+
+        <div class="admin-cols">
+          <div class="glass" style="padding:20px 22px">
+            <h3><span class="n">#01</span>下载趋势 <span style="margin-left:auto;font-size:12px;color:var(--ink-faint);font-weight:400">最近 8 周下载量</span></h3>
+            <div class="trend-chart">
+              <div class="bars" id="trendBars"></div>
+            </div>
+          </div>
+          <div class="glass a-panel">
+            <h3><span class="n">#02</span>站点概况</h3>
+            <div class="srv-status">
+              <div class="ss-ico"><svg><use href="#i-trend" xlink:href="#i-trend"/></svg></div>
+              <div class="ss-body"><b>社区今日数据</b><div class="sub">内容与互动实时概况</div></div>
+              <span class="online-pill">活跃</span>
+            </div>
+            <div class="uptime">
+              <div class="u"><b style="color:var(--green)">1,284</b><span>在线用户</span></div>
+              <div class="u"><b style="color:var(--cyan)">96</b><span>今日发帖</span></div>
+              <div class="u"><b style="color:var(--purple)">412</b><span>今日下载</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-cols">
+          <div class="glass a-panel" style="overflow:hidden">
+            <h3><span class="n">#03</span>用户与帖子</h3>
+            <table class="tbl">
+              <colgroup><col style="width:26%"><col style="width:14%"><col style="width:16%"><col style="width:16%"><col style="width:14%"><col style="width:14%"></colgroup>
+              <thead><tr><th>用户</th><th>等级</th><th>帖子</th><th>状态</th><th>注册</th><th>操作</th></tr></thead>
+              <tbody>
+                <tr><td><span class="user"><span class="mini"></span>Steve_矿工</span></td><td>Lv.12</td><td>326</td><td class="ok">正常</td><td>2021-03</td><td><button class="act-btn" onclick="toast('打开用户详情')">详情</button></td></tr>
+                <tr><td><span class="user"><span class="mini"></span>Mossy_Stone</span></td><td>Lv.8</td><td>94</td><td class="ok">正常</td><td>2022-07</td><td><button class="act-btn" onclick="toast('打开用户详情')">详情</button></td></tr>
+                <tr><td><span class="user"><span class="mini"></span>Hacker_Noob</span></td><td>Lv.1</td><td>3</td><td class="warn">审核中</td><td>2026-08</td><td><button class="act-btn" onclick="toast('打开用户详情')">详情</button></td></tr>
+                <tr><td><span class="user"><span class="mini"></span>Spam_Bot</span></td><td>Lv.1</td><td>47</td><td class="bad">封禁</td><td>2026-09</td><td><button class="act-btn del" onclick="toast('已加入封禁队列')">处理</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="glass a-panel">
+            <h3><span class="n">#04</span>最新举报</h3>
+            <div class="rpt-item"><div class="flag"><svg><use href="#i-flag" xlink:href="#i-flag"/></svg></div><div><b>广告 / 灌水</b><span>来自 Spam_Bot 的批量刷帖</span></div><time>12 分钟前</time><button class="btn danger do" style="height:30px;padding:0 12px;font-size:12px" onclick="toast('已处理该举报')">处理</button></div>
+            <div class="rpt-item"><div class="flag"><svg><use href="#i-flag" xlink:href="#i-flag"/></svg></div><div><b>违规内容</b><span>帖子含外链广告</span></div><time>1 小时前</time><button class="btn danger do" style="height:30px;padding:0 12px;font-size:12px" onclick="toast('已处理该举报')">处理</button></div>
+            <div class="rpt-item"><div class="flag"><svg><use href="#i-flag" xlink:href="#i-flag"/></svg></div><div><b>争议内容</b><span>用户互相攻击</span></div><time>3 小时前</time><button class="btn danger do" style="height:30px;padding:0 12px;font-size:12px" onclick="toast('已处理该举报')">处理</button></div>
+            <div class="rpt-item"><div class="flag"><svg><use href="#i-flag" xlink:href="#i-flag"/></svg></div><div><b>侵权举报</b><span>整合包涉嫌抄袭</span></div><time>昨天</time><button class="btn danger do" style="height:30px;padding:0 12px;font-size:12px" onclick="toast('已处理该举报')">处理</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== VIEW: 404 ===== -->
+    <section class="view" id="v-void">
+      <div class="four-wrap" style="position:static;min-height:70vh">
+        <div class="four-inner">
+          <div class="broken-cubes"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="four-code"><span class="px-fx">404</span></div>
+          <h2>页面迷失在末地虚空</h2>
+          <p>你要找的方块可能被末影人偷走了，或者链接已经失效。回到首页，继续你的冒险吧。</p>
+          <div class="four-btns">
+            <button class="btn solid" onclick="go('home')"><svg><use href="#i-home" xlink:href="#i-home"/></svg>返回首页</button>
+            <button class="btn ghost" onclick="go('download')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>去下载中心</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUGS VIEW -->
+    <section class="view" id="v-bugs">
+      <div class="sec-head">
+        <div><h2>Bug <span class="acc" style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">反馈</span></h2><div class="sub">从 GitHub 仓库实时加载</div></div>
+      </div>
+      <div id="bugList"><div class="empty glass"><p style="color:var(--ink-faint)">加载中...</p></div></div>
+    </section>
+
+    <!-- VIEWS_PLACEHOLDER -->
+  </main>
 </div>
 
-<!-- LOGIN MODAL -->
-<div class="overlay" id="loginOverlay" onclick="if(event.target===this)closeLogin()">
-  <div class="modal">
-    <button class="close" onclick="closeLogin()">×</button>
-    <h3>登录 <span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">CARTHY</span></h3>
-    <div class="msub">登录后即可参与社区</div>
-
-    <label>邮箱</label>
-    <input id="liEmail" type="email" placeholder="your@email.com">
-    <label>密码</label>
-    <input id="liPwd" type="password" placeholder="••••••••">
-
-    <button class="btn" onclick="doLogin()">登录</button>
-    <div class="foot">腐竹账号已内置 · 新用户自动注册</div>
+<nav class="mnav">
+  <div class="inner">
+    <button class="mnav-item" data-mnav="home" onclick="go('home')"><svg><use href="#i-home" xlink:href="#i-home"/></svg>首页</button>
+    <button class="mnav-item" data-mnav="download" onclick="go('download')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载</button>
+    <button class="mnav-item mid" onclick="go('launch')"><svg><use href="#i-launch" xlink:href="#i-launch"/></svg></button>
+    <button class="mnav-item" data-mnav="profile" onclick="go('profile')"><svg><use href="#i-user" xlink:href="#i-user"/></svg>我的</button>
   </div>
-</div>
+</nav>
 
 <div id="toast"></div>
 
 <script>
-// ===== CONFIG =====
-var ADMIN_EMAIL = '3962892029@qq.com';
-var ADMIN_PWD = "6fd7h8d6s4f'h/f'h'\\f\\h'\\jjgugIlIIl//;";
-var BANNED = ['傻逼','操你妈','滚蛋','垃圾', 'shit','fuck'];
-var GH_REPO = 'Yang-ctrl-D/carthy-a';
+/* ===== 背景与启动页 ===== */
+var bg = document.getElementById('bg');
+var particles = document.getElementById('particles');
+var VIEW_BG = {
+  home:'home', post:'post', download:'download',
+  profile:'profile', admin:'admin', launch:'launch', void:'void', bugs:'home'
+};
+var views = ['home','post','download','profile','admin','launch','void','bugs'];
 
-// ===== STATE =====
-var user = JSON.parse(localStorage.getItem('carthy_user')||'null');
-
-// ===== ROUTING =====
-function show(v,btn){
-  document.querySelectorAll('.view').forEach(function(e){e.classList.remove('on')});
-  document.getElementById('v-'+v).classList.add('on');
-  document.querySelectorAll('.nav button').forEach(function(b){b.classList.remove('on')});
-  if(btn) btn.classList.add('on');
-  if(v==='bugs') loadBugs();
+/* 渲染 404 之外的启动页（用独立构图，注入 home 同款面板） */
+function renderLaunch(){
+  var el = document.getElementById('v-launch');
+  el.className = 'view active';
+  el.innerHTML =
+  '<div class="launch-wrap" style="position:fixed;inset:0">'+
+    '<div class="bg launch" style="z-index:-1"></div>'+
+    '<div class="launch-inner">'+
+      '<img class="logo-big" src="assets/carthy-logo.svg" alt="CARTHY">'+
+      '<div class="l-sub">MINECRAFT <b>·</b> JAVA 1.20.1 <b>·</b> FABRIC &amp; FORGE</div>'+
+      '<h1>CARTHY FORUM</h1>'+
+      '<p>欢迎来到方块玩家的家。下载整合启动器、挑选光影模组，开启你的方块冒险。</p>'+
+      '<div class="launch-btns">'+
+        '<button class="btn solid" onclick="go(\'home\')"><svg><use href="#i-launch" xlink:href="#i-launch"/></svg>进入论坛</button>'+
+        '<button class="btn ghost" onclick="go(\'download\')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载启动器</button>'+
+      '</div>'+
+      '<div class="version-note">BUILD 3.2.1 · 2026</div>'+
+    '</div>'+
+  '</div>';
 }
 
-// ===== LOGIN =====
-function openLogin(){
-  if(user){
-    // logged in, show logout option
-    if(confirm('当前登录：'+user.name+'\n\n点击确定退出登录')){
-      localStorage.removeItem('carthy_user');
-      user=null;
-      refreshUser();
-      toast('已退出登录');
-    }
-    return;
-  }
-  document.getElementById('loginOverlay').classList.add('open');
-}
-function closeLogin(){ document.getElementById('loginOverlay').classList.remove('open'); }
-
-function doLogin(){
-  var em = document.getElementById('liEmail').value.trim();
-  var pw = document.getElementById('liPwd').value;
-  if(!em || !pw){ toast('请输入邮箱和密码'); return; }
-
-  // check banned words in email
-  for(var i=0;i<BANNED.length;i++){
-    if(em.toLowerCase().indexOf(BANNED[i].toLowerCase())>=0){ toast('邮箱包含违规词'); return; }
-  }
-
-  if(em===ADMIN_EMAIL && pw===ADMIN_PWD){
-    user = {email:em, name:'腐竹', role:'admin'};
-  } else {
-    // auto-register as player
-    user = {email:em, name:em.split('@')[0], role:'player'};
-  }
-  localStorage.setItem('carthy_user', JSON.stringify(user));
-  refreshUser();
-  closeLogin();
-  toast('欢迎，'+user.name+'！');
+function switchTo(name){
+  if(!VIEW_BG[name]) name='home';
+  bg.className = 'bg ' + VIEW_BG[name];
+  /* 静默粒子（除 launch/void） */
+  particles.classList.toggle('quiet', name!=='launch' && name!=='void');
+  views.forEach(function(v){
+    var el = document.getElementById('v-'+v);
+    if(el){ el.classList.remove('active'); }
+  });
+  if(name==='launch'){ renderLaunch(); return; }
+  var target = document.getElementById('v-'+name);
+  if(target) target.classList.add('active');
+  /* nav 高亮 */
+  document.querySelectorAll('.nav-item').forEach(function(b){ b.classList.toggle('active', b.dataset.nav===name); });
+  document.querySelectorAll('.mnav-item').forEach(function(b){ b.classList.toggle('active', b.dataset.mnav===name); });
+  window.scrollTo(0,0);
+  history.replaceState(null,'','#'+name);
 }
 
-function refreshUser(){
-  if(user){
-    document.getElementById('userChip').style.display='flex';
-    document.getElementById('userName').textContent = user.role==='admin'?'腐竹':user.name;
-    document.getElementById('loginBtn').style.display='none';
-  } else {
-    document.getElementById('userChip').style.display='none';
-    document.getElementById('loginBtn').style.display='';
-  }
-}
+function go(name){ switchTo(name); if(name==='bugs') loadBugs(); }
 
-// ===== BUGS (GitHub Issues) =====
+/* ===== Load bugs from GitHub Issues ===== */
 function loadBugs(){
-  var el = document.getElementById('bugList');
-  el.innerHTML = '<p style="color:var(--ink-faint);font-size:14px">加载中...</p>';
-  fetch('https://api.github.com/repos/'+GH_REPO+'/issues?state=all&per_page=20')
+  var el=document.getElementById('bugList');
+  el.innerHTML='<div class="empty glass"><p style="color:var(--ink-faint)">加载中...</p></div>';
+  fetch('https://api.github.com/repos/Yang-ctrl-D/carthy-a/issues?state=all&per_page=20')
     .then(function(r){return r.json()})
     .then(function(issues){
-      if(!issues || !issues.length){
-        el.innerHTML = '<p style="color:var(--ink-faint);font-size:14px">暂无 Bug 报告</p>';
-        return;
-      }
-      el.innerHTML = issues.map(function(i){
-        var closed = i.state==='closed';
-        return '<div class="bug">'+
-          '<div class="bug-head">'+
-            '<span class="bug-title">'+esc(i.title)+'</span>'+
-            '<span class="bug-badge '+(closed?'closed':'open')+'">'+(closed?'已解决':'待处理')+'</span>'+
-          '</div>'+
-          '<div class="bug-meta">#'+i.number+' · '+i.user.login+' · '+new Date(i.created_at).toLocaleDateString()+'</div>'+
-          (i.body?'<div class="bug-body">'+esc(i.body.substring(0,300))+'</div>':'')+
-        '</div>';
+      if(!issues||!issues.length){ el.innerHTML='<div class="empty glass"><h3>暂无 Bug 报告</h3><p>遇到问题？在 GitHub 仓库提 Issue 即可。</p></div>'; return; }
+      el.innerHTML=issues.map(function(i){
+        var closed=i.state==='closed';
+        return '<div class="dl-card glass" style="margin-bottom:10px">'+
+          '<div class="head"><div><div class="v">#'+i.number+' '+esc(i.title)+'</div>'+
+          '<span class="tag '+(closed?'forge':'fabric')+'">'+(closed?'已解决':'待处理')+'</span></div></div>'+
+          '<p class="desc" style="font-size:13px;color:var(--ink-dim)">'+esc(i.body?i.body.substring(0,200):'')+'</p>'+
+          '<div class="meta"><span>'+i.user.login+' · '+new Date(i.created_at).toLocaleDateString()+'</span></div></div>';
       }).join('');
     })
-    .catch(function(){
-      el.innerHTML = '<p style="color:var(--ink-faint);font-size:14px">加载失败，请稍后刷新</p>';
-    });
+    .catch(function(){ el.innerHTML='<div class="empty glass"><p>加载失败，请刷新重试</p></div>'; });
 }
-
 function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+window.addEventListener('hashchange', function(){ var h=location.hash.replace('#',''); switchTo(h||'home'); });
 
-// ===== TOAST =====
-function toast(msg){
-  var t=document.getElementById('toast');
-  t.textContent=msg; t.style.display='block';
-  clearTimeout(t._t); t._t=setTimeout(function(){t.style.display='none'},2500);
+/* 下载筛选 */
+function filterDL(f, btn){
+  var cards = document.querySelectorAll('#dlGrid .dl-card');
+  var n=0;
+  cards.forEach(function(c){
+    var show = f==='all' || c.dataset.t===f;
+    c.style.display = show?'':'none';
+    if(show) n++;
+  });
+  document.getElementById('dlCount').textContent = '共 '+n+' 个资源';
+  document.querySelectorAll('.filterbar .fbtn').forEach(function(b){ b.classList.remove('on'); });
+  btn.classList.add('on');
 }
 
-// ===== INIT =====
-refreshUser();
+/* 个人页 Tab */
+function switchTab(t, btn){
+  document.getElementById('tab-posts').style.display = t==='posts'?'':'none';
+  document.getElementById('tab-acts').style.display = t==='acts'?'':'none';
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('on'); });
+  btn.classList.add('on');
+}
+
+/* 点赞切换 */
+function toggleLike(btn){
+  var s = btn.querySelector('span');
+  if(btn.classList.contains('liked')){
+    btn.classList.remove('liked');
+    s.textContent = '342';
+  } else {
+    btn.classList.add('liked');
+    s.textContent = '343';
+  }
+}
+
+/* 评论提交 */
+function submitComment(){
+  var t = document.getElementById('cmtInput');
+  if(!t.value.trim()){ toast('请先写下回复内容'); return; }
+  toast('回复已发布');
+  t.value='';
+}
+
+/* 下载趋势柱状图（确定性数据） */
+(function(){
+  var data=[1820,2140,1980,2460,2710,3050,3420,3810];
+  var wrap=document.getElementById('trendBars');
+  if(!wrap) return;
+  var html='';
+  var max=Math.max.apply(null,data);
+  var labels=['W1','W2','W3','W4','W5','W6','W7','W8'];
+  data.forEach(function(v,i){
+    var h=(v/max*100);
+    html+='<div class="b"><div class="fill" style="height:'+h+'%" title="'+v+'"></div><div class="v">'+v+'</div><div class="l">'+labels[i]+'</div></div>';
+  });
+  wrap.innerHTML=html;
+})();
+
+/* toast */
+var toastTimer=null;
+function toast(msg){
+  var el=document.getElementById('toast');
+  el.innerHTML=msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(function(){ el.classList.remove('show'); }, 2200);
+}
+
+/* ===== login ===== */
+var ACCOUNTS = { 'YangYishui': { pwd:'20141123', role:'腐竹' } };
+var capAns = 0;
+function newCaptcha(){
+  var a=Math.floor(Math.random()*8)+2, b=Math.floor(Math.random()*8)+2;
+  capAns=a+b;
+  document.getElementById('capQ').textContent=a+' + '+b+' = ?';
+  document.getElementById('capIn').value='';
+}
+function openLogin(){ newCaptcha(); document.getElementById('loginModal').classList.add('open'); }
+function closeLogin(){ document.getElementById('loginModal').classList.remove('open'); }
+function authTab(mode, btn){
+  document.querySelectorAll('.auth-tab').forEach(function(b){ b.classList.remove('on'); });
+  btn.classList.add('on');
+  document.querySelectorAll('.auth-pane').forEach(function(p){ p.classList.remove('on'); });
+  document.getElementById('auth-'+mode).classList.add('on');
+}
+function currentAuthMode(){
+  var t=document.querySelector('.auth-tab.on');
+  return t ? t.getAttribute('data-auth') : 'official';
+}
+var _emailCode='', _emailTimer=null;
+function sendEmailCode(){
+  var em=document.getElementById('em-email').value.trim();
+  if(!em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){ toast('请输入正确的邮箱地址'); return; }
+  _emailCode=String(Math.floor(100000+Math.random()*900000));
+  var btn=document.getElementById('sendCodeBtn');
+  btn.disabled=true;
+  var sec=60;
+  // Try to send via backend, fallback to showing code
+  var backend='https://wholesale-sport-challenged-medicines.trycloudflare.com';
+  fetch(backend+'/api/send-code',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em,code:_emailCode})}).catch(function(){});
+  // Also show code on screen for immediate feedback (demo mode)
+  toast('验证码：'+_emailCode+'（已尝试发送到 '+em+'）');
+  _emailTimer=setInterval(function(){
+    sec--;
+    btn.textContent=sec+'秒后重发';
+    if(sec<=0){ clearInterval(_emailTimer); btn.disabled=false; btn.textContent='发送验证码'; }
+  },1000);
+}
+function doLogin(){
+  var mode=currentAuthMode();
+  if(!document.getElementById('termsBox').checked){ toast('请先勾选同意《用户协议》与《隐私政策》'); return false; }
+  var c=document.getElementById('capIn').value.trim();
+  if(c==='' || parseInt(c,10)!==capAns){ toast('防人机验证未通过'); newCaptcha(); return false; }
+  var name='', role='';
+  if(mode==='official'){
+    var acc=document.getElementById('off-account').value.trim();
+    if(!acc){ toast('请输入账号'); return false; }
+    name=acc.split('@')[0] || acc;
+    toast('正版登录成功（演示）');
+  } else if(mode==='external'){
+    var un=document.getElementById('ext-user').value.trim();
+    var pw=document.getElementById('ext-pwd').value;
+    var rec=ACCOUNTS[un];
+    if(rec && rec.pwd===pw){ name=un; role=rec.role; toast((role==='腐竹'?'腐竹 · ':'')+un+' 登录成功'); }
+    else { toast('外置账号或密码错误'); return false; }
+  } else if(mode==='email'){
+    var em=document.getElementById('em-email').value.trim();
+    var code=document.getElementById('em-code').value.trim();
+    var nick=document.getElementById('em-nick').value.trim();
+    if(!em){ toast('请输入邮箱'); return false; }
+    // banned words check
+    var BANNED=['傻逼','操你妈','滚蛋','shit','fuck'];
+    for(var bi=0;bi<BANNED.length;bi++){
+      if(nick && nick.toLowerCase().indexOf(BANNED[bi].toLowerCase())>=0){ toast('昵称包含违规词'); return false; }
+    }
+    if(!code || code!==_emailCode){ toast('验证码错误或未发送'); return false; }
+    name=nick || em.split('@')[0];
+    if(em==='3962892029@qq.com'){ role='腐竹'; toast('腐竹登录成功'); }
+    else { toast('邮箱登录成功：'+name); }
+  } else {
+    var gn=document.getElementById('guest-name').value.trim();
+    if(!gn){ toast('请输入昵称'); return false; }
+    name=gn;
+    toast('已以游客身份进入');
+  }
+  var mini=document.querySelector('.user-mini span');
+  if(mini) mini.textContent=name;
+  var pn=document.getElementById('pName'); if(pn) pn.textContent=name;
+  var pr=document.getElementById('pRole'); if(pr) pr.textContent = role==='腐竹' ? '腐竹' : (role==='管理员'?'管理员':'玩家');
+  var cu=document.getElementById('authCurUser'); if(cu) cu.textContent=name;
+  var auth=document.getElementById('authMethodName');
+  if(auth) auth.textContent = role==='腐竹' ? '外置登录（腐竹 · LittleSkin）' : (mode==='guest' ? '游客模式' : (mode==='official' ? '正版登录（Minecraft / 微软）' : '外置登录（LittleSkin）'));
+  closeLogin();
+  return false;
+}
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeLogin(); });
+
+/* ===== 下载最新启动器 ===== */
+function dlLauncher(){
+  toast('开始下载 CarthY 启动器 v1.0.0 (80MB)...');
+  window.location.href = 'https://github.com/Yang-ctrl-D/carthy-a/releases/download/v1.0.0/CarthY-Setup.exe';
+}
+
+/* ===== 发布整合包 ===== */
+function openPublish(){ document.getElementById('pubModal').classList.add('open'); }
+function closePub(){ document.getElementById('pubModal').classList.remove('open'); }
+function doPublish(){
+  var name=document.getElementById('pub-name').value.trim();
+  var desc=document.getElementById('pub-desc').value.trim();
+  var url=document.getElementById('pub-url').value.trim();
+  if(!name){ toast('请填写资源名称'); return false; }
+  if(!desc){ toast('请填写一句话简介'); return false; }
+  var type=document.getElementById('pub-type').value;
+  var tlabel={vanilla:'Vanilla',forge:'Forge',fabric:'Fabric',mod:'Mod',map:'地图'}[type];
+  var icon = type==='map' ? '#i-star' : (type==='vanilla' ? '#i-box' : '#i-mod');
+  var vcls = type==='map' ? 'm' : (type==='vanilla' ? 'fg' : 'c');
+  var card=document.createElement('div');
+  card.className='dl-card glass'; card.setAttribute('data-t',type);
+  card.innerHTML='<div class="head"><div class="ver-icon '+vcls+'"><svg><use href="'+icon+'" xlink:href="'+icon+'"/></svg></div><div><div class="v">'+name+'</div><div class="tag '+type+'">'+tlabel+'</div></div></div>'+
+    '<p class="desc">'+(desc||'')+(url?' <a href="'+url+'" target="_blank" rel="noopener" style="color:var(--cyan)">下载</a>':'')+'</p>'+
+    '<div class="meta"><span><svg><use href="#i-upload" xlink:href="#i-upload"/></svg>刚发布</span></div>'+
+    '<button class="btn solid dl-btn" onclick="toast(\'开始下载 '+name+'\')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载</button>';
+  var grid=document.getElementById('dlGrid');
+  grid.insertBefore(card, grid.firstChild);
+  recountDL();
+  toast('「'+name+'」发布成功');
+  closePub();
+  document.getElementById('pub-name').value='';
+  document.getElementById('pub-desc').value='';
+  document.getElementById('pub-url').value='';
+  return false;
+}
+function recountDL(){
+  var total=document.querySelectorAll('#dlGrid .dl-card').length;
+  document.getElementById('dlCount').textContent='共 '+total+' 个资源';
+}
+
+/* ===== 在线人数（动态演示） ===== */
+var onlineN=1284;
+function fmtNum(n){ return n.toLocaleString('en-US'); }
+setInterval(function(){
+  onlineN += Math.floor(Math.random()*13)-6;
+  if(onlineN<1150) onlineN=1150;
+  if(onlineN>1450) onlineN=1450;
+  document.querySelectorAll('.js-online').forEach(function(el){ el.textContent=fmtNum(onlineN); });
+}, 5000);
+
+/* 首次进入：默认启动页 */
+(function(){
+  var h=location.hash.replace('#','');
+  switchTo(h || 'launch');
+})();
 </script>
+
+<!-- ===== LOGIN MODAL ===== -->
+<div class="modal-overlay" id="loginModal" onclick="if(event.target===this)closeLogin()">
+  <div class="modal glass">
+    <div class="modal-head"><h3>登录 <span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">CARTHY</span></h3><button class="modal-x" onclick="closeLogin()" aria-label="关闭">×</button></div>
+    <div class="auth-tabs">
+      <button class="auth-tab on" data-auth="official" onclick="authTab('official',this)">正版</button>
+      <button class="auth-tab" data-auth="external" onclick="authTab('external',this)">外置</button>
+      <button class="auth-tab" data-auth="email" onclick="authTab('email',this)">邮箱</button>
+      <button class="auth-tab" data-auth="guest" onclick="authTab('guest',this)">游客</button>
+    </div>
+    <form class="auth-pane on" id="auth-official" onsubmit="return doLogin()">
+      <p class="auth-note">使用 Minecraft 官方 / 微软账号登录。演示环境无法直连微软，正式上线需接入后端验证。</p>
+      <label>账号（微软 / 邮箱）</label>
+      <input id="off-account" placeholder="example@outlook.com" autocomplete="username">
+      <label>密码</label>
+      <input type="password" id="off-pwd" placeholder="••••••••" autocomplete="current-password">
+    </form>
+    <form class="auth-pane" id="auth-external" onsubmit="return doLogin()">
+      <p class="auth-note">支持 LittleSkin 等 Yggdrasil 外置认证。演示账号：YangYishui（腐竹）。</p>
+      <label>认证服务器地址</label>
+      <input id="ext-api" value="https://littleskin.cn/api/yggdrasil" autocomplete="url">
+      <label>用户名</label>
+      <input id="ext-user" placeholder="你的游戏昵称" autocomplete="username">
+      <label>密码</label>
+      <input type="password" id="ext-pwd" placeholder="••••••••" autocomplete="current-password">
+    </form>
+    <form class="auth-pane" id="auth-email" onsubmit="return doLogin()">
+      <p class="auth-note">输入邮箱获取验证码，验证码将发送到你的邮箱。注册后自动登录。</p>
+      <label>邮箱</label>
+      <input id="em-email" type="email" placeholder="your@email.com" autocomplete="email">
+      <label>验证码</label>
+      <div style="display:flex;gap:8px">
+        <input id="em-code" placeholder="6位验证码" inputmode="numeric" maxlength="6" autocomplete="one-time-code" style="flex:1">
+        <button type="button" class="btn ghost" style="white-space:nowrap" id="sendCodeBtn" onclick="sendEmailCode()">发送验证码</button>
+      </div>
+      <label>昵称</label>
+      <input id="em-nick" placeholder="你的游戏昵称（首次注册）">
+    </form>
+    <form class="auth-pane" id="auth-guest" onsubmit="return doLogin()">
+      <p class="auth-note">游客模式仅用于浏览，无法发帖与下载。</p>
+      <label>游戏内昵称</label>
+      <input id="guest-name" placeholder="输入你的昵称">
+    </form>
+    <div class="captcha-row">
+      <span class="cap-label">防人机验证</span>
+      <span class="cap-q" id="capQ"></span>
+      <input id="capIn" placeholder="答案" inputmode="numeric" autocomplete="off">
+      <button type="button" class="cap-refresh" onclick="newCaptcha()" title="换一题">↻</button>
+    </div>
+    <label class="terms"><input type="checkbox" id="termsBox"><span>我已阅读并同意<b>《用户协议》</b>与<b>《隐私政策》</b></span></label>
+    <button type="button" class="btn solid auth-submit" onclick="doLogin()">登录</button>
+    <div class="modal-foot">需勾选同意条款，并通过防人机验证后才能登录。</div>
+  </div>
+</div>
+
+<!-- ===== PUBLISH MODAL ===== -->
+<div class="modal-overlay" id="pubModal" onclick="if(event.target===this)closePub()">
+  <div class="modal glass">
+    <div class="modal-head"><h3>发布<span style="background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">整合包</span></h3><button class="modal-x" onclick="closePub()" aria-label="关闭">×</button></div>
+    <form onsubmit="return doPublish()">
+      <label>名称</label>
+      <input id="pub-name" placeholder="整合包 / Mod / 地图名称">
+      <label>类型</label>
+      <select id="pub-type">
+        <option value="vanilla">Vanilla</option>
+        <option value="forge">Forge</option>
+        <option value="fabric" selected>Fabric</option>
+        <option value="mod">Mod</option>
+        <option value="map">地图</option>
+      </select>
+      <label>一句话简介</label>
+      <input id="pub-desc" placeholder="描述这个资源">
+      <label>下载链接</label>
+      <input id="pub-url" placeholder="https:// 网盘 / 直链">
+      <button class="btn solid auth-submit" type="submit">发布</button>
+    </form>
+    <div class="modal-foot">发布即代表同意《发布规范》，内容将展示在下载中心。</div>
+  </div>
+</div>
+
 </body>
 </html>
+<!-- VIEWS_PLACEHOLDER -->

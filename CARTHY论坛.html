@@ -1257,11 +1257,8 @@ document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeLogin
 
 /* ===== 下载最新启动器 ===== */
 function dlLauncher(){
-  toast('开始下载 CarthY 启动器 v1.0.0 (79.7 MB)...');
-  const a = document.createElement('a');
-  a.href = 'assets/CarthY-Setup.exe';
-  a.download = 'CarthY-Setup.exe';
-  document.body.appendChild(a); a.click(); a.remove();
+  toast('开始下载 CarthY 启动器 v1.0.0 (80MB)...');
+  window.location.href = 'https://github.com/Yang-ctrl-D/carthy-a/releases/download/v1.0.0/CarthY-Setup.exe';
 }
 
 /* ===== 发布整合包 ===== */

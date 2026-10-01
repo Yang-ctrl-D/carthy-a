@@ -672,12 +672,12 @@ main{flex:1;min-width:0}
 
 <header class="topbar" id="topbar">
   <div class="brand" onclick="go('home')">
-    <svg width="30" height="30" viewBox="0 0 64 64"><rect width="64" height="64" rx="10" fill="none"/><polygon points="32,10 50,20 32,30 14,20" fill="#37e6a9"/><polygon points="14,20 32,30 32,50 14,40" fill="#2a1f4d"/><polygon points="50,20 32,30 32,50 50,40" fill="#a06bff"/></svg>
+    <svg width="30" height="30" viewBox="0 0 64 64"><polygon points="32,10 50,20 32,30 14,20" fill="#37e6a9"/><polygon points="14,20 32,30 32,50 14,40" fill="#2a1f4d"/><polygon points="50,20 32,30 32,50 50,40" fill="#a06bff"/></svg>
     <span style="font-weight:900;font-size:18px">CARTHY</span>
   </div>
   <div class="search" style="flex:1;max-width:400px">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-search" xlink:href="#i-search"/></svg>
-    <input placeholder="搜索公告、Bug…" onkeydown="if(event.key==='Enter')toast('搜索：'+this.value)">
+    <input placeholder="搜索帖子、资源、版本…" onkeydown="if(event.key==='Enter')toast('搜索：'+this.value)">
   </div>
   <button class="btn-play" onclick="openLogin()"><svg viewBox="0 0 24 24"><use href="#i-login" xlink:href="#i-login"/></svg><span class="btn-txt" id="topBtnTxt">登录 / 注册</span></button>
 </header>
@@ -687,59 +687,99 @@ main{flex:1;min-width:0}
     <nav class="side-nav">
       <div class="cap">导航</div>
       <button class="nav-item active" data-nav="home" onclick="go('home')"><svg><use href="#i-home" xlink:href="#i-home"/></svg>公告</button>
-      <button class="nav-item" data-nav="bugs" onclick="go('bugs')"><svg><use href="#i-forum" xlink:href="#i-forum"/></svg>Bug 反馈</button>
-      <button class="nav-item" data-nav="download" onclick="go('download')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载启动器</button>
+      <button class="nav-item" data-nav="forum" onclick="go('forum')"><svg><use href="#i-forum" xlink:href="#i-forum"/></svg>论坛</button>
+      <button class="nav-item" data-nav="resource" onclick="go('resource')"><svg><use href="#i-box" xlink:href="#i-box"/></svg>资源分享</button>
+      <button class="nav-item" data-nav="versions" onclick="go('versions')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>游戏版本</button>
+      <button class="nav-item" data-nav="loaders" onclick="go('loaders')"><svg><use href="#i-mod" xlink:href="#i-mod"/></svg>Mod 加载器</button>
+      <button class="nav-item" data-nav="bugs" onclick="go('bugs')"><svg><use href="#i-flag" xlink:href="#i-flag"/></svg>Bug 反馈</button>
       <button class="nav-item" data-nav="profile" onclick="go('profile')"><svg><use href="#i-user" xlink:href="#i-user"/></svg>个人主页</button>
+      <button class="nav-item" data-nav="admin" id="navAdmin" style="display:none" onclick="go('admin')"><svg><use href="#i-admin" xlink:href="#i-admin"/></svg>管理面板</button>
     </nav>
     <div class="side-foot">
       <div class="online"><span class="dot"></span><span>CARTHY 社区</span></div>
-      <p>启动器持续更新<br>欢迎反馈问题</p>
+      <p>数据存储在 GitHub<br>关机也能访问</p>
     </div>
   </aside>
 
   <main>
-    <!-- HOME: announcements from GitHub Issues -->
+    <!-- HOME: announcements -->
     <section class="view active" id="v-home">
       <div class="hero">
         <div class="hero-card glass">
           <span class="glow"></span>
           <h1><span class="px">CARTHY FORUM</span>Minecraft 启动器社区</h1>
-          <p>查看公告、反馈 Bug、下载启动器。数据存储在 GitHub，电脑关机也能访问。</p>
-        </div>
-        <div class="hero-stats glass">
-          <div class="hstat"><div class="icon g"><svg><use href="#i-home" xlink:href="#i-home"/></svg></div><div><b>CARTHY</b><span>启动器社区</span></div></div>
+          <p>公告、论坛、资源分享、游戏版本、Mod 加载器，全部在这里。</p>
         </div>
       </div>
-
       <div class="sec-head">
-        <div><h2>社区<span class="acc">公告</span></h2><div class="sub">从 GitHub 仓库实时加载</div></div>
-        <span class="more" id="btnNewAnnounce" style="display:none" onclick="newPost()"><svg width="15" height="15"><use href="#i-edit" xlink:href="#i-edit"/></svg> 发布公告</span>
+        <div><h2>社区<span class="acc">公告</span></h2><div class="sub">腐竹发布的重要通知</div></div>
+        <span class="more" id="btnNewAnnounce" style="display:none" onclick="openPost('announcement')"><svg width="15" height="15"><use href="#i-edit" xlink:href="#i-edit"/></svg> 发布公告</span>
       </div>
       <div id="announceList"><div class="empty glass"><p>加载中...</p></div></div>
+    </section>
+
+    <!-- FORUM: discussion -->
+    <section class="view" id="v-forum">
+      <div class="sec-head" style="margin-top:0">
+        <div><h2>玩家<span class="acc">论坛</span></h2><div class="sub">讨论、交流、提问</div></div>
+        <span class="more" onclick="openPost('discussion')"><svg width="15" height="15"><use href="#i-edit" xlink:href="#i-edit"/></svg> 发新帖</span>
+      </div>
+      <div id="forumList"><div class="empty glass"><p>加载中...</p></div></div>
+    </section>
+
+    <!-- RESOURCE: resource sharing -->
+    <section class="view" id="v-resource">
+      <div class="sec-head" style="margin-top:0">
+        <div><h2>资源<span class="acc">分享</span></h2><div class="sub">Mod、整合包、JAR 等（附下载链接）</div></div>
+        <span class="more" onclick="openPost('resource')"><svg width="15" height="15"><use href="#i-upload" xlink:href="#i-upload"/></svg> 分享资源</span>
+      </div>
+      <div id="resourceList"><div class="empty glass"><p>加载中...</p></div></div>
+    </section>
+
+    <!-- VERSIONS: Mojang version manifest -->
+    <section class="view" id="v-versions">
+      <div class="sec-head" style="margin-top:0">
+        <div><h2>游戏<span class="acc">版本</span></h2><div class="sub">从 Mojang 官方获取所有版本</div></div>
+      </div>
+      <div id="versionList"><div class="empty glass"><p>加载中...</p></div></div>
+    </section>
+
+    <!-- LOADERS: Forge/Fabric/QFAPI -->
+    <section class="view" id="v-loaders">
+      <div class="sec-head" style="margin-top:0">
+        <div><h2>Mod <span class="acc">加载器</span></h2><div class="sub">下载后放入 CarthY 启动器对应版本目录</div></div>
+      </div>
+      <div class="dl-grid" style="grid-template-columns:repeat(2,1fr);margin-top:16px">
+        <div class="dl-card glass">
+          <div class="head"><div class="ver-icon g"><svg><use href="#i-mod" xlink:href="#i-mod"/></svg></div><div><div class="v">Forge</div><div class="tag forge">Forge</div></div></div>
+          <p class="desc">最流行的 Mod 加载器，支持绝大多数 Mod。下载后在启动器中安装。</p>
+          <button class="btn solid dl-btn" onclick="window.open('https://files.minecraftforge.net/','_blank')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>前往下载</button>
+        </div>
+        <div class="dl-card glass">
+          <div class="head"><div class="ver-icon c"><svg><use href="#i-mod" xlink:href="#i-mod"/></svg></div><div><div class="v">Fabric</div><div class="tag fabric">Fabric</div></div></div>
+          <p class="desc">轻量现代 Mod 加载器，适合 Sodium/Iris 等优化 Mod。</p>
+          <button class="btn solid dl-btn" onclick="window.open('https://fabricmc.net/use/installer/','_blank')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>前往下载</button>
+        </div>
+        <div class="dl-card glass">
+          <div class="head"><div class="ver-icon p"><svg><use href="#i-mod" xlink:href="#i-mod"/></svg></div><div><div class="v">Quilt</div><div class="tag mod">Quilt</div></div></div>
+          <p class="desc">Fabric 的分叉，兼容性更好。</p>
+          <button class="btn solid dl-btn" onclick="window.open('https://quiltmc.org/','_blank')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>前往下载</button>
+        </div>
+        <div class="dl-card glass">
+          <div class="head"><div class="ver-icon m"><svg><use href="#i-box" xlink:href="#i-box"/></svg></div><div><div class="v">NeoForge</div><div class="tag map">NeoForge</div></div></div>
+          <p class="desc">Forge 的现代继任者，1.20.1+ 推荐使用。</p>
+          <button class="btn solid dl-btn" onclick="window.open('https://neoforged.net/','_blank')"><svg><use href="#i-download" xlink:href="#i-download"/></svg>前往下载</button>
+        </div>
+      </div>
     </section>
 
     <!-- BUGS -->
     <section class="view" id="v-bugs">
       <div class="sec-head" style="margin-top:0">
-        <div><h2>Bug <span class="acc">反馈</span></h2><div class="sub">从 GitHub Issues 实时加载</div></div>
-        <span class="more" onclick="newBug()"><svg width="15" height="15"><use href="#i-edit" xlink:href="#i-edit"/></svg> 反馈 Bug</span>
+        <div><h2>Bug <span class="acc">反馈</span></h2><div class="sub">遇到问题？反馈给腐竹</div></div>
+        <span class="more" onclick="openPost('bug')"><svg width="15" height="15"><use href="#i-edit" xlink:href="#i-edit"/></svg> 反馈 Bug</span>
       </div>
       <div id="bugList"><div class="empty glass"><p>加载中...</p></div></div>
-    </section>
-
-    <!-- DOWNLOAD -->
-    <section class="view" id="v-download">
-      <div class="sec-head" style="margin-top:0">
-        <div><h2>下载<span class="acc">启动器</span></h2><div class="sub">CARTHY 启动器 Windows 版</div></div>
-      </div>
-      <div class="dl-grid" style="grid-template-columns:1fr;max-width:480px">
-        <div class="dl-card glass">
-          <div class="head"><div class="ver-icon fg"><svg><use href="#i-box" xlink:href="#i-box"/></svg></div><div><div class="v">CARTHY 启动器</div><div class="tag vanilla">Windows</div></div></div>
-          <p class="desc">一键启动 Minecraft，自动下载 Java，多源加速下载游戏版本。</p>
-          <div class="meta"><span>约 80 MB</span></div>
-          <button class="btn solid dl-btn" onclick="dlLauncher()"><svg><use href="#i-download" xlink:href="#i-download"/></svg>下载最新版</button>
-        </div>
-      </div>
     </section>
 
     <!-- PROFILE -->
@@ -748,7 +788,7 @@ main{flex:1;min-width:0}
         <div class="profile-card glass">
           <div class="banner"></div>
           <div class="inner">
-            <div class="big-av"><img src="" alt="" onerror="this.style.display='none'"></div>
+            <div class="big-av"></div>
             <div class="p-id">
               <div class="p-name"><span id="pName">未登录</span></div>
               <div class="p-title" id="pRole">点击右上角登录</div>
@@ -759,6 +799,26 @@ main{flex:1;min-width:0}
           <h3 style="font-weight:900;margin-bottom:12px">账号信息</h3>
           <div id="profileInfo" style="color:var(--ink-dim);font-size:14px;line-height:2">登录后在此显示账号信息</div>
         </div>
+      </div>
+    </section>
+
+    <!-- ADMIN -->
+    <section class="view" id="v-admin">
+      <div class="sec-head" style="margin-top:0">
+        <div><h2>管理<span class="acc">面板</span></h2><div class="sub">腐竹专用</div></div>
+      </div>
+      <div class="glass" style="padding:20px;margin-bottom:14px">
+        <h3 style="font-weight:900;margin-bottom:12px">快捷操作</h3>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" onclick="window.open('https://github.com/Yang-ctrl-D/carthy-a/issues','_blank')">管理所有 Issues</button>
+          <button class="btn" onclick="window.open('https://github.com/Yang-ctrl-D/carthy-a/labels','_blank')">管理标签</button>
+          <button class="btn" onclick="window.open('https://github.com/Yang-ctrl-D/carthy-a/releases','_blank')">管理 Release 资源</button>
+          <button class="btn" onclick="window.open('https://github.com/Yang-ctrl-D/carthy-a/graphs/contributors','_blank')">查看贡献者</button>
+        </div>
+      </div>
+      <div class="glass" style="padding:20px">
+        <h3 style="font-weight:900;margin-bottom:12px">所有帖子（实时）</h3>
+        <div id="adminList"><p style="color:var(--ink-faint)">加载中...</p></div>
       </div>
     </section>
   </main>
@@ -773,21 +833,21 @@ main{flex:1;min-width:0}
     <input id="liEmail" type="email" placeholder="your@email.com" style="width:100%;height:42px;border:1px solid var(--line-2);border-radius:10px;background:rgba(6,9,15,.7);color:var(--ink);padding:0 14px;outline:none">
     <label style="display:block;font-size:12px;color:var(--ink-dim);margin:13px 0 6px;font-weight:600">密码</label>
     <input id="liPwd" type="password" placeholder="••••••••" style="width:100%;height:42px;border:1px solid var(--line-2);border-radius:10px;background:rgba(6,9,15,.7);color:var(--ink);padding:0 14px;outline:none">
-    <button class="btn solid auth-submit" style="width:100%;margin-top:18px;height:44px" onclick="doLogin()">登录 / 注册</button>
-    <div class="modal-foot">腐竹账号：3962892029@qq.com</div>
+    <button class="btn solid" style="width:100%;margin-top:18px;height:44px" onclick="doLogin()">登录 / 注册</button>
   </div>
 </div>
 
-<!-- NEW POST/BUG MODAL -->
+<!-- POST MODAL -->
 <div class="modal-overlay" id="postModal" onclick="if(event.target===this)closePost()">
   <div class="modal glass">
-    <div class="modal-head"><h3 id="postTitle">发布内容</h3><button class="modal-x" onclick="closePost()">×</button></div>
+    <div class="modal-head"><h3 id="postTitle">发新帖</h3><button class="modal-x" onclick="closePost()">×</button></div>
     <label style="display:block;font-size:12px;color:var(--ink-dim);margin:13px 0 6px;font-weight:600">标题</label>
     <input id="npTitle" placeholder="输入标题" style="width:100%;height:42px;border:1px solid var(--line-2);border-radius:10px;background:rgba(6,9,15,.7);color:var(--ink);padding:0 14px;outline:none">
     <label style="display:block;font-size:12px;color:var(--ink-dim);margin:13px 0 6px;font-weight:600">内容</label>
-    <textarea id="npBody" placeholder="输入内容" rows="5" style="width:100%;border:1px solid var(--line-2);border-radius:10px;background:rgba(6,9,15,.7);color:var(--ink);padding:12px;outline:none;resize:vertical;font-family:inherit"></textarea>
+    <textarea id="npBody" placeholder="输入内容。分享资源时请附上下载链接。" rows="5" style="width:100%;border:1px solid var(--line-2);border-radius:10px;background:rgba(6,9,15,.7);color:var(--ink);padding:12px;outline:none;resize:vertical;font-family:inherit"></textarea>
+    <div id="postWarn" style="display:none;color:#ff9898;font-size:12px;margin-top:8px"></div>
     <button class="btn solid" style="width:100%;margin-top:14px;height:44px" onclick="submitPost()">提交到 GitHub</button>
-    <div class="modal-foot">需要 GitHub 账号，提交后在仓库 Issues 中可见</div>
+    <div class="modal-foot">提交后在 GitHub Issues 页面可见，内容经违规词检测</div>
   </div>
 </div>
 
@@ -797,7 +857,8 @@ main{flex:1;min-width:0}
 var GH_REPO='Yang-ctrl-D/carthy-a';
 var ADMIN_EMAIL='3962892029@qq.com';
 var ADMIN_PWD="6fd7h8d6s4f'h/f'h'\\f\\h'\\jjgugIlIIl//;";
-var BANNED=['傻逼','操你妈','滚蛋','垃圾','shit','fuck'];
+var BANNED=['傻逼','操你妈','滚蛋','垃圾','shit','fuck','外挂','作弊','破解','盗版','色情','赌博','毒品','诈骗'];
+var currentLabel='discussion';
 var user=JSON.parse(localStorage.getItem('carthy_user')||'null');
 
 function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},2500)}
@@ -806,8 +867,12 @@ function go(v){
   document.querySelectorAll('.view').forEach(function(e){e.classList.remove('active')});
   document.getElementById('v-'+v).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(function(b){b.classList.toggle('active',b.dataset.nav===v)});
-  if(v==='home') loadAnnouncements();
-  if(v==='bugs') loadBugs();
+  if(v==='home')loadList('announceList','announcement');
+  if(v==='forum')loadList('forumList','discussion');
+  if(v==='resource')loadList('resourceList','resource');
+  if(v==='bugs')loadList('bugList','bug');
+  if(v==='versions')loadVersions();
+  if(v==='admin')loadAdmin();
   window.scrollTo(0,0);
 }
 
@@ -842,77 +907,94 @@ function refreshUser(){
   var btnTxt=document.getElementById('topBtnTxt');
   var pn=document.getElementById('pName');var pr=document.getElementById('pRole');var pi=document.getElementById('profileInfo');
   var btnAnn=document.getElementById('btnNewAnnounce');
+  var navAdmin=document.getElementById('navAdmin');
   if(user){
     btnTxt.textContent=user.name;
     pn.textContent=user.name;
     pr.textContent=user.role==='admin'?'腐竹':'玩家';
     pi.innerHTML='邮箱：'+user.email+'<br>角色：'+(user.role==='admin'?'腐竹':'玩家')+'<br><span style="color:var(--green)">已登录</span>';
     btnAnn.style.display=user.role==='admin'?'':'none';
+    navAdmin.style.display=user.role==='admin'?'':'none';
   }else{
     btnTxt.textContent='登录 / 注册';
     pn.textContent='未登录';pr.textContent='点击右上角登录';
-    btnAnn.style.display='none';
+    btnAnn.style.display='none';navAdmin.style.display='none';
   }
 }
 
 function esc(s){if(!s)return'';var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function hasLabel(i,name){return (i.labels||[]).some(function(l){return l.name===name})}
 
-function loadAnnouncements(){
-  var el=document.getElementById('announceList');
+function loadList(elId,label){
+  var el=document.getElementById(elId);
   el.innerHTML='<div class="empty glass"><p>加载中...</p></div>';
-  fetch('https://api.github.com/repos/'+GH_REPO+'/issues?state=open&per_page=10')
+  fetch('https://api.github.com/repos/'+GH_REPO+'/issues?state=open&per_page=30')
     .then(function(r){return r.json()})
     .then(function(issues){
-      var anns=(issues||[]).filter(function(i){return (i.labels||[]).some(function(l){return l.name==='announcement'})});
-      if(!anns.length){
-        el.innerHTML='<div class="empty glass"><div class="empty-ico"><svg><use href="#i-home" xlink:href="#i-home"/></svg></div><h3>暂无公告</h3><p>发布第一条公告吧</p></div>';
+      var list=(issues||[]).filter(function(i){return hasLabel(i,label)&&!i.pull_request});
+      if(!list.length){
+        el.innerHTML='<div class="empty glass"><div class="empty-ico"><svg><use href="#i-forum" xlink:href="#i-forum"/></svg></div><h3>暂无内容</h3><p>点击右上角发布第一条</p></div>';
         return;
       }
-      el.innerHTML=anns.map(function(i){
+      el.innerHTML=list.map(function(i){
         return '<div class="post-card glass" onclick="window.open(\''+i.html_url+'\',\'_blank\')">'+
           '<div class="avatar"></div><div class="body">'+
-          '<div class="meta"><span class="u">'+esc(i.user.login)+'</span><span>'+new Date(i.created_at).toLocaleDateString()+'</span></div>'+
-          '<h3>'+esc(i.title)+'</h3>'+
-          '<div class="snippet">'+esc(i.body?i.body.substring(0,150):'')+'</div>'+
-          '</div></div>';
-      }).join('');
-    })
-    .catch(function(){el.innerHTML='<div class="empty glass"><p>加载失败，请刷新</p></div>'});
-}
-
-function loadBugs(){
-  var el=document.getElementById('bugList');
-  el.innerHTML='<div class="empty glass"><p>加载中...</p></div>';
-  fetch('https://api.github.com/repos/'+GH_REPO+'/issues?state=all&per_page=20')
-    .then(function(r){return r.json()})
-    .then(function(issues){
-      var bugs=(issues||[]).filter(function(i){return (i.labels||[]).some(function(l){return l.name==='bug'})&&!(i.labels||[]).some(function(l){return l.name==='announcement'})});
-      if(!bugs.length){
-        el.innerHTML='<div class="empty glass"><div class="empty-ico"><svg><use href="#i-forum" xlink:href="#i-forum"/></svg></div><h3>暂无 Bug 报告</h3><p>遇到问题？点击右上角"反馈 Bug"</p></div>';
-        return;
-      }
-      el.innerHTML=bugs.map(function(i){
-        var closed=i.state==='closed';
-        return '<div class="post-card glass" onclick="window.open(\''+i.html_url+'\',\'_blank\')">'+
-          '<div class="avatar"></div><div class="body">'+
-          '<div class="meta"><span class="u">'+esc(i.user.login)+'</span><span class="tag '+(closed?'forge':'fabric')+'" style="margin-left:8px">'+(closed?'已解决':'待处理')+'</span></div>'+
+          '<div class="meta"><span class="u">'+esc(i.user.login)+'</span><span>'+new Date(i.created_at).toLocaleDateString()+'</span>'+
+          '<span class="chip" style="margin-left:8px">'+i.comments+' 回复</span></div>'+
           '<h3>#'+i.number+' '+esc(i.title)+'</h3>'+
-          '<div class="snippet">'+esc(i.body?i.body.substring(0,150):'')+'</div>'+
+          '<div class="snippet">'+esc(i.body?i.body.substring(0,200):'')+'</div>'+
           '</div></div>';
       }).join('');
     })
     .catch(function(){el.innerHTML='<div class="empty glass"><p>加载失败，请刷新</p></div>'});
 }
 
-function newPost(){
-  if(!user){toast('请先登录');return}
-  if(user.role!=='admin'){toast('只有腐竹能发布公告');return}
-  document.getElementById('postTitle').textContent='发布公告';
-  document.getElementById('postModal').classList.add('open');
+function loadVersions(){
+  var el=document.getElementById('versionList');
+  el.innerHTML='<div class="empty glass"><p>从 Mojang 加载中...</p></div>';
+  fetch('https://piston-meta.mojang.com/mc/game/version_manifest_v2.json')
+    .then(function(r){return r.json()})
+    .then(function(data){
+      var vers=(data.versions||[]).slice(0,40);
+      el.innerHTML='<div class="dl-grid" style="grid-template-columns:repeat(3,1fr)">'+
+        vers.map(function(v){
+          var t=v.type;
+          var cls=t=='release'?'vanilla':(t=='snapshot'?'fabric':'forge');
+          return '<div class="dl-card glass"><div class="head"><div class="ver-icon fg"><svg><use href="#i-box" xlink:href="#i-box"/></svg></div>'+
+            '<div><div class="v">'+esc(v.id)+'</div><div class="tag '+cls+'">'+t+'</div></div></div>'+
+            '<p class="desc">发布于 '+new Date(v.releaseTime).toLocaleDateString()+'</p>'+
+            '<button class="btn dl-btn" onclick="window.open(\''+v.url+'\',\'_blank\')">查看详情</button></div>';
+        }).join('')+'</div>';
+    })
+    .catch(function(){el.innerHTML='<div class="empty glass"><p>加载失败</p></div>'});
 }
-function newBug(){
+
+function loadAdmin(){
+  var el=document.getElementById('adminList');
+  el.innerHTML='<p style="color:var(--ink-faint)">加载中...</p>';
+  fetch('https://api.github.com/repos/'+GH_REPO+'/issues?state=all&per_page=30')
+    .then(function(r){return r.json()})
+    .then(function(issues){
+      if(!issues.length){el.innerHTML='<p>暂无帖子</p>';return}
+      el.innerHTML=issues.map(function(i){
+        var labels=(i.labels||[]).map(function(l){return '<span class="tag '+l.name+'">'+l.name+'</span>'}).join(' ');
+        var closed=i.state==='closed';
+        return '<div style="padding:10px 0;border-bottom:1px solid var(--line)">'+
+          '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">'+
+          '<span class="tag '+(closed?'forge':'fabric')+'">'+(closed?'已关闭':'开放')+'</span>'+
+          '<b>#'+i.number+' '+esc(i.title)+'</b>'+labels+
+          '<span style="margin-left:auto"><button class="btn" onclick="window.open(\''+i.html_url+'\',\'_blank\')" style="height:28px;font-size:12px;padding:0 10px">管理</button></span>'+
+          '</div><div style="font-size:12px;color:var(--ink-faint);margin-top:4px">'+esc(i.user.login)+' · '+new Date(i.created_at).toLocaleDateString()+'</div></div>';
+      }).join('');
+    })
+    .catch(function(){el.innerHTML='<p>加载失败</p>'});
+}
+
+function openPost(label){
   if(!user){toast('请先登录');return}
-  document.getElementById('postTitle').textContent='反馈 Bug';
+  currentLabel=label;
+  var titles={announcement:'发布公告',discussion:'发新帖',resource:'分享资源',bug:'反馈 Bug'};
+  document.getElementById('postTitle').textContent=titles[label]||'发新帖';
   document.getElementById('postModal').classList.add('open');
 }
 function closePost(){document.getElementById('postModal').classList.remove('open')}
@@ -921,24 +1003,20 @@ function submitPost(){
   var t=document.getElementById('npTitle').value.trim();
   var b=document.getElementById('npBody').value.trim();
   if(!t||!b){toast('请填写标题和内容');return}
+  var warn='';
   for(var i=0;i<BANNED.length;i++){
-    if(t.toLowerCase().indexOf(BANNED[i].toLowerCase())>=0||b.toLowerCase().indexOf(BANNED[i].toLowerCase())>=0){toast('内容包含违规词');return}
+    if(t.toLowerCase().indexOf(BANNED[i].toLowerCase())>=0||b.toLowerCase().indexOf(BANNED[i].toLowerCase())>=0){
+      warn='内容包含违规词：'+BANNED[i];break;
+    }
   }
-  // Open GitHub to create issue with correct label
-  var isBug=document.getElementById('postTitle').textContent.indexOf('Bug')>=0;
-  var labelParam=isBug?'bug':'announcement';
-  var url='https://github.com/'+GH_REPO+'/issues/new?labels='+labelParam+'&title='+encodeURIComponent(t)+'&body='+encodeURIComponent(b+'\n\n提交者：'+user.email);
+  if(warn){var w=document.getElementById('postWarn');w.textContent=warn;w.style.display='block';toast(warn);return}
+  var url='https://github.com/'+GH_REPO+'/issues/new?labels='+currentLabel+'&title='+encodeURIComponent(t)+'&body='+encodeURIComponent(b+'\n\n提交者：'+user.email);
   window.open(url,'_blank');
   closePost();toast('正在跳转到 GitHub 提交...');
 }
 
-function dlLauncher(){
-  window.location.href='https://github.com/Yang-ctrl-D/carthy-a/releases/download/v1.0.0/CarthY-Setup.exe';
-}
-
-// init
 refreshUser();
-loadAnnouncements();
+loadList('announceList','announcement');
 </script>
 </body>
 </html>

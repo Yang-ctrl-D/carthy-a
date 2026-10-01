@@ -1,1 +1,339 @@
-<!DOCTYPE html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=CARTHY%E8%AE%BA%E5%9D%9B.html">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CarthY 绀惧尯</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;background:#05070d;color:#ecf5f2;min-height:100vh}
+a{color:#6fd7ff;text-decoration:none;cursor:pointer}
+.container{max-width:1000px;margin:0 auto;padding:20px}
+header{background:rgba(8,12,20,.85);backdrop-filter:blur(14px);border-bottom:1px solid rgba(168,210,212,.12);padding:0 20px;position:sticky;top:0;z-index:10}
+header .inner{display:flex;justify-content:space-between;align-items:center;max-width:1000px;margin:0 auto;height:60px}
+.logo{font-size:18px;font-weight:800;cursor:pointer;background:linear-gradient(118deg,#37e6a9,#6fd7ff,#a06bff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+nav{display:flex;gap:2px;align-items:center}
+nav a{padding:7px 13px;border-radius:8px;font-size:13px;color:#9fb4b8;cursor:pointer;transition:.2s}
+nav a:hover,nav a.active{background:rgba(55,230,169,.12);color:#37e6a9}
+.btn{padding:8px 16px;border-radius:8px;border:none;cursor:pointer;font-size:13px;transition:.2s;font-weight:600}
+.btn-p{background:linear-gradient(118deg,#37e6a9,#a06bff);color:#05110c}
+.btn-p:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(55,230,169,.3)}
+.btn-g{background:rgba(255,255,255,.06);color:#cbd5e1}
+.btn-g:hover{background:rgba(255,255,255,.1)}
+.card{background:rgba(15,23,36,.6);border:1px solid rgba(168,210,212,.12);border-radius:12px;padding:16px;margin-bottom:12px}
+.item{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid rgba(168,210,212,.06);cursor:pointer;transition:.15s}
+.item:last-child{border:none}
+.item:hover{background:rgba(55,230,169,.04)}
+.avatar{width:28px;height:28px;border-radius:50%;vertical-align:middle;margin-right:6px;background:#2a1f4d}
+input,textarea,select{width:100%;padding:9px 12px;border-radius:8px;border:1px solid rgba(168,210,212,.15);background:rgba(0,0,0,.25);color:#fff;font-size:14px;margin-bottom:8px;font-family:inherit}
+input:focus,textarea:focus{outline:none;border-color:#37e6a9}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:100}
+.modal-bg.on{display:flex}
+.modal{background:#0b1019;border-radius:14px;padding:24px;width:400px;border:1px solid rgba(168,210,212,.15)}
+.modal h2{margin-bottom:16px;font-size:17px}
+.tabs{display:flex;gap:6px;margin-bottom:14px}
+.tabs .tab{flex:1;padding:7px;text-align:center;border-radius:8px;cursor:pointer;font-size:12px;background:rgba(255,255,255,.04)}
+.tabs .tab.on{background:#37e6a9;color:#05110c}
+.cats{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.pill{padding:5px 12px;border-radius:16px;background:rgba(255,255,255,.06);cursor:pointer;font-size:12px}
+.pill.on{background:#37e6a9;color:#05110c}
+.err{color:#f87171;font-size:12px;margin-top:6px}
+.tag{font-size:10px;padding:2px 6px;border-radius:4px;background:#a06bff;color:#fff;margin-left:6px}
+.tag-admin{background:#f59e0b}
+.tag-mod{background:#37e6a9;color:#05110c}
+.tag-pin{background:#ef4444}
+.reply{border-top:1px solid rgba(168,210,212,.06);padding:10px 0}
+.stats{display:flex;gap:16px;margin-bottom:16px}
+.stat{flex:1;text-align:center;padding:14px;background:rgba(55,230,169,.05);border-radius:10px;border:1px solid rgba(55,230,169,.15)}
+.stat b{display:block;font-size:22px;color:#37e6a9}
+.stat span{font-size:11px;color:#9fb4b8}
+.dl-btn{background:linear-gradient(118deg,#37e6a9,#6fd7ff);color:#05110c;padding:10px 20px;border-radius:10px;display:inline-block;font-weight:700;margin:8px 0}
+.online-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#37e6a9;margin-right:4px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+</style>
+</head>
+<body>
+<header>
+  <div class="inner">
+    <div class="logo" onclick="show('home')">CarthY 绀惧尯</div>
+    <nav>
+      <a class="navlink" data-p="home" onclick="show('home')">棣栭〉</a>
+      <a class="navlink" data-p="multi" onclick="show('multi')">鑱旀満澶у巺</a>
+      <a class="navlink" data-p="friends" onclick="show('friends')">濂藉弸</a>
+      <span id="navUser"></span>
+      <button class="btn btn-p" id="loginBtn" onclick="openLogin()">鐧诲綍</button>
+    </nav>
+  </div>
+</header>
+<div class="container" id="view"></div>
+
+<!-- 鐧诲綍寮圭獥 -->
+<div class="modal-bg" id="loginModal">
+  <div class="modal">
+    <h2>鐧诲綍 CarthY</h2>
+    <div class="tabs">
+      <div class="tab on" data-t="email" onclick="ltab('email')">閭鐧诲綍</div>
+      <div class="tab" data-t="ls" onclick="ltab('ls')">澶栫疆鐧诲綍</div>
+    </div>
+    <div id="emailForm">
+      <div id="loginView">
+        <input id="loginEmail" type="email" placeholder="閭">
+        <input id="loginPass" type="password" placeholder="瀵嗙爜">
+        <button class="btn btn-p" style="width:100%" onclick="emailLogin()">鐧诲綍</button>
+        <p style="text-align:center;margin-top:10px;font-size:12px;color:#9fb4b8">
+          杩樻病璐﹀彿锛?a onclick="showRegister()">娉ㄥ唽</a>
+        </p>
+      </div>
+      <div id="registerView" style="display:none">
+        <input id="regName" placeholder="鏄电О">
+        <input id="regEmail" type="email" placeholder="閭">
+        <input id="regPass" type="password" placeholder="瀵嗙爜">
+        <button class="btn btn-p" style="width:100%" onclick="emailRegister()">娉ㄥ唽</button>
+        <p style="text-align:center;margin-top:10px;font-size:12px;color:#9fb4b8">
+          <a onclick="showLogin()">杩斿洖鐧诲綍</a>
+        </p>
+      </div>
+    </div>
+    <div id="lsForm" style="display:none">
+      <input id="lsUser" placeholder="LittleSkin 鐢ㄦ埛鍚?>
+      <input id="lsPass" type="password" placeholder="瀵嗙爜">
+      <button class="btn btn-p" style="width:100%" onclick="lsLogin()">鐧诲綍</button>
+    </div>
+    <div class="err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- 鍙戝笘寮圭獥 -->
+<div class="modal-bg" id="newModal">
+  <div class="modal" style="width:480px">
+    <h2>鍙戝竷鏂板笘</h2>
+    <select id="newCat"></select>
+    <input id="newTitle" placeholder="鏍囬">
+    <textarea id="newContent" rows="4" placeholder="鍐呭..."></textarea>
+    <input id="newFileUrl" placeholder="璧勬簮涓嬭浇閾炬帴锛堝彲閫夛級">
+    <input id="newFileName" placeholder="璧勬簮鍚嶇О锛堝彲閫夛級">
+    <button class="btn btn-p" style="width:100%" onclick="postThread()">鍙戝竷</button>
+  </div>
+</div>
+
+<!-- 寤烘埧闂村脊绐?-->
+<div class="modal-bg" id="roomModal">
+  <div class="modal">
+    <h2>鍒涘缓鑱旀満鎴块棿</h2>
+    <input id="roomName" placeholder="鎴块棿鍚嶇О">
+    <input id="roomIp" placeholder="鏈嶅姟鍣↖P">
+    <input id="roomPort" placeholder="绔彛锛堥粯璁?5565锛?>
+    <input id="roomVer" placeholder="娓告垙鐗堟湰锛堝 1.20.1锛? value="1.20.1">
+    <textarea id="roomMotd" rows="2" placeholder="绠€浠嬶紙鍙€夛級"></textarea>
+    <button class="btn btn-p" style="width:100%" onclick="createRoom()">鍒涘缓</button>
+  </div>
+</div>
+
+<script>
+let me = null, currentCat = null;
+const LAUNCHER_URL = 'https://github.com/Yang-ctrl-D/carthy-a/releases/download/v1.0.0/CarthY-Setup.exe';
+
+async function api(url, opts) { const r = await fetch(url, opts); return r.json(); }
+
+async function loadMe() {
+  me = await api('/api/me');
+  const nav = document.getElementById('navUser');
+  const btn = document.getElementById('loginBtn');
+  if (me) {
+    const roleTag = me.role==='admin' ? '<span class="tag tag-admin">鑵愮</span>' : me.role==='moderator' ? '<span class="tag tag-mod">瀹℃牳鍛?/span>' : '';
+    nav.innerHTML = `<img class="avatar" src="${me.avatar||''}" onerror="this.style.display='none'"><span style="font-size:13px;margin-right:8px">${me.name}${roleTag}</span>`;
+    btn.textContent = '閫€鍑?; btn.onclick = async () => { await api('/api/logout',{method:'POST'}); location.reload(); };
+  } else {
+    nav.innerHTML = '';
+    btn.textContent = '鐧诲綍'; btn.onclick = openLogin;
+  }
+}
+
+function show(page) {
+  document.querySelectorAll('.navlink').forEach(a => a.classList.toggle('active', a.dataset.p === page));
+  if (page === 'home') renderHome();
+  else if (page === 'multi') renderMulti();
+  else if (page === 'friends') renderFriends();
+}
+
+async function renderHome() {
+  const [cats, threads, stats] = await Promise.all([
+    api('/api/categories'), api('/api/threads' + (currentCat ? '?cat='+currentCat : '')), api('/api/stats')
+  ]);
+  document.getElementById('view').innerHTML = `
+    <div class="stats">
+      <div class="stat"><b><span class="online-dot"></span>${stats.online}</b><span>鍦ㄧ嚎鐢ㄦ埛</span></div>
+      <div class="stat"><b>${stats.threads}</b><span>甯栧瓙鎬绘暟</span></div>
+      <div class="stat"><b>${stats.rooms}</b><span>鑱旀満鎴块棿</span></div>
+    </div>
+    <div style="text-align:center;margin-bottom:16px">
+      <a class="dl-btn" href="${LAUNCHER_URL}" target="_blank">涓嬭浇 CarthY 鍚姩鍣?(80MB)</a>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <h2 style="font-size:18px">绀惧尯甯栧瓙</h2>
+      <button class="btn btn-p" onclick="openNew()">鍙戝笘</button>
+    </div>
+    <div class="cats">
+      <span class="pill ${!currentCat?'on':''}" onclick="currentCat=null;renderHome()">鍏ㄩ儴</span>
+      ${cats.map(c=>`<span class="pill ${currentCat==c.id?'on':''}" onclick="currentCat=${c.id};renderHome()">${c.name}</span>`).join('')}
+    </div>
+    <div class="card">
+      ${threads.length ? threads.map(t=>`
+        <div class="item" onclick="openThread(${t.id})">
+          <div>
+            <div style="font-size:14px;font-weight:600">${t.is_pinned?'<span class="tag tag-pin">缃《</span>':''}${t.title}${t.file_url?'<span class="tag">璧勬簮</span>':''}</div>
+            <div style="font-size:11px;color:#6b8188;margin-top:3px">
+              <img class="avatar" src="${t.avatar||''}" onerror="this.style.display='none'" style="width:18px;height:18px">
+              ${t.author}${t.author_role==='admin'?'<span class="tag tag-admin">鑵愮</span>':t.author_role==='moderator'?'<span class="tag tag-mod">瀹℃牳鍛?/span>':''}
+               路 ${new Date(t.created_at*1000).toLocaleDateString()} 路 娴忚 ${t.views}
+            </div>
+          </div>
+          ${t.file_name?`<span style="font-size:11px;color:#6fd7ff">${t.file_name}</span>`:''}
+        </div>`).join('') : '<div style="padding:20px;text-align:center;color:#6b8188">鏆傛棤甯栧瓙</div>'}
+    </div>`;
+}
+
+async function openThread(id) {
+  const d = await api('/api/thread/'+id);
+  document.getElementById('view').innerHTML = `
+    <button class="btn btn-g" onclick="show('home')" style="margin-bottom:12px">鈫?杩斿洖</button>
+    <div class="card">
+      <h2 style="font-size:18px;margin-bottom:6px">${d.thread.title}</h2>
+      <div style="font-size:11px;color:#6b8188;margin-bottom:12px">
+        <img class="avatar" src="${d.thread.avatar||''}" onerror="this.style.display='none'" style="width:18px;height:18px">
+        ${d.thread.author} 路 ${new Date(d.thread.created_at*1000).toLocaleString()}
+      </div>
+      <p style="line-height:1.7;white-space:pre-wrap">${d.thread.content}</p>
+      ${d.thread.file_url?`<p style="margin-top:12px"><a class="btn btn-p" href="${d.thread.file_url}" target="_blank">涓嬭浇: ${d.thread.file_name||'璧勬簮'}</a></p>`:''}
+    </div>
+    <div class="card">
+      ${d.posts.map(p=>`<div class="reply">
+        <div style="font-size:12px;color:#6b8188"><img class="avatar" src="${p.avatar||''}" onerror="this.style.display='none'" style="width:18px;height:18px">${p.author} 路 ${new Date(p.created_at*1000).toLocaleString()}</div>
+        <p style="margin-top:6px;white-space:pre-wrap">${p.content}</p>
+      </div>`).join('')}
+    </div>
+    <div class="card">
+      <textarea id="replyBox" rows="2" placeholder="鍥炲..."></textarea>
+      <button class="btn btn-p" onclick="postReply(${id})">鍥炲</button>
+    </div>`;
+}
+
+async function postReply(id) {
+  if (!me) return openLogin();
+  await api('/api/reply/'+id,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content:document.getElementById('replyBox').value})});
+  openThread(id);
+}
+
+async function openNew() {
+  if (!me) return openLogin();
+  const cats = await api('/api/categories');
+  document.getElementById('newCat').innerHTML = cats.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+  document.getElementById('newModal').classList.add('on');
+}
+
+async function postThread() {
+  await api('/api/thread',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+    category_id:document.getElementById('newCat').value,
+    title:document.getElementById('newTitle').value,
+    content:document.getElementById('newContent').value,
+    file_url:document.getElementById('newFileUrl').value,
+    file_name:document.getElementById('newFileName').value
+  })});
+  document.getElementById('newModal').classList.remove('on');
+  renderHome();
+}
+
+async function renderMulti() {
+  const rooms = await api('/api/rooms');
+  document.getElementById('view').innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <h2 style="font-size:18px">鑱旀満澶у巺</h2>
+      <button class="btn btn-p" onclick="openRoom()">鍒涘缓鎴块棿</button>
+    </div>
+    <div style="text-align:center;margin-bottom:16px">
+      <a class="dl-btn" href="${LAUNCHER_URL}" target="_blank">涓嬭浇 CarthY 鍚姩鍣ㄨ仈鏈?/a>
+    </div>
+    <div class="card">
+      ${rooms.length ? rooms.map(r=>`
+        <div class="item">
+          <div>
+            <div style="font-size:14px;font-weight:600">${r.name}</div>
+            <div style="font-size:11px;color:#6b8188;margin-top:3px">
+              <img class="avatar" src="${r.host_avatar||''}" onerror="this.style.display='none'" style="width:18px;height:18px">
+              ${r.host_name} 路 MC ${r.version} 路 ${r.max_players}浜?            </div>
+            ${r.motd?`<div style="font-size:12px;color:#9fb4b8;margin-top:4px">${r.motd}</div>`:''}
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:13px;color:#37e6a9">${r.ip}:${r.port}</div>
+            <button class="btn btn-g" style="margin-top:6px" onclick="navigator.clipboard.writeText('${r.ip}:${r.port}');this.textContent='宸插鍒?">澶嶅埗鍦板潃</button>
+          </div>
+        </div>`).join('') : '<div style="padding:20px;text-align:center;color:#6b8188">鏆傛棤鎴块棿锛岀偣鍙充笂瑙掑垱寤?/div>'}
+    </div>`;
+}
+
+function openRoom(){ if(!me) return openLogin(); document.getElementById('roomModal').classList.add('on'); }
+async function createRoom() {
+  await api('/api/rooms',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+    name:document.getElementById('roomName').value,
+    ip:document.getElementById('roomIp').value,
+    port:document.getElementById('roomPort').value,
+    version:document.getElementById('roomVer').value,
+    motd:document.getElementById('roomMotd').value
+  })});
+  document.getElementById('roomModal').classList.remove('on');
+  renderMulti();
+}
+
+async function renderFriends() {
+  const list = await api('/api/friends');
+  document.getElementById('view').innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <h2 style="font-size:18px">濂藉弸</h2>
+      <button class="btn btn-p" onclick="addFriend()">娣诲姞濂藉弸</button>
+    </div>
+    <div class="card">
+      ${list.length ? list.map(f=>`
+        <div class="item">
+          <div>
+            <img class="avatar" src="${f.avatar||''}" onerror="this.style.display='none'">
+            <span style="font-size:14px">${f.name}</span>
+          </div>
+          <span style="font-size:12px;color:${f.status==='accepted'?'#34d399':'#fbbf24'}">${f.status==='accepted'?'宸叉坊鍔?:'寰呯‘璁?}</span>
+        </div>`).join('') : '<div style="padding:20px;text-align:center;color:#6b8188">鏆傛棤濂藉弸</div>'}
+    </div>`;
+}
+
+async function addFriend() {
+  if (!me) return openLogin();
+  const name = prompt('杈撳叆瀵规柟鏄电О鎴栭偖绠?'); if(!name) return;
+  await api('/api/friend/add',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name})});
+  alert('宸插彂閫佸ソ鍙嬭姹?);
+}
+
+function openLogin(){document.getElementById('loginModal').classList.add('on')}
+function showRegister(){document.getElementById('loginView').style.display='none';document.getElementById('registerView').style.display='block'}
+function showLogin(){document.getElementById('registerView').style.display='none';document.getElementById('loginView').style.display='block'}
+function ltab(t){
+  document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('on',el.dataset.t===t));
+  document.getElementById('emailForm').style.display=t==='email'?'block':'none';
+  document.getElementById('lsForm').style.display=t==='ls'?'block':'none';
+}
+async function emailLogin(){
+  const r = await api('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:document.getElementById('loginEmail').value,password:document.getElementById('loginPass').value})});
+  if(r.ok) location.reload(); else document.getElementById('loginErr').textContent = r.error;
+}
+async function emailRegister(){
+  const r = await api('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:document.getElementById('regName').value,email:document.getElementById('regEmail').value,password:document.getElementById('regPass').value})});
+  if(r.ok) location.reload(); else document.getElementById('loginErr').textContent = r.error;
+}
+async function lsLogin(){
+  const r = await api('/api/login/littleskin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:document.getElementById('lsUser').value,password:document.getElementById('lsPass').value})});
+  if(r.ok) location.reload(); else document.getElementById('loginErr').textContent = r.error;
+}
+
+loadMe().then(()=>show('home'));
+setInterval(()=>{ if(document.getElementById('view').innerHTML) renderHome(); }, 60000);
+</script>
+</body>
+</html>
+

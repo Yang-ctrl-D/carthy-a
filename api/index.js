@@ -21,4 +21,5 @@ app.post('/api/reply/:id',(q,s)=>{const uid=parseInt(q.headers.authorization);if
 app.get('/api/rooms',(q,s)=>s.json([...rooms].reverse().map(r=>({...r,host_name:users.find(u=>u.id===r.host_id)?.name,host_avatar:users.find(u=>u.id===r.host_id)?.avatar}))));
 app.post('/api/rooms',(q,s)=>{const uid=parseInt(q.headers.authorization);if(!uid)return s.status(401).json({error:'请先登录'});rooms.push({id:nextRoomId++,name:q.body.name,host_id:uid,ip:q.body.ip,port:parseInt(q.body.port)||25565,version:q.body.version||'1.20.1',motd:q.body.motd||'',created_at:Math.floor(Date.now()/1000)});s.json({ok:true})});
 app.post('/api/bug-report',(q,s)=>{bugs.push({id:nextBugId++,user_id:parseInt(q.headers.authorization)||0,title:q.body.title,content:q.body.content,launcher_version:q.body.launcher_version||'',game_log:q.body.game_log||'',created_at:Math.floor(Date.now()/1000)});s.json({ok:true})});
+app.get('*',(q,s)=>{s.setHeader('Content-Type','text/html; charset=utf-8');s.send(process.env.FRONTEND_HTML||'')});
 module.exports=app;

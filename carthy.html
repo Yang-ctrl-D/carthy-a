@@ -1012,7 +1012,7 @@ function submitPost(){
   if(warn){var w=document.getElementById('postWarn');w.textContent=warn;w.style.display='block';toast(warn);return}
   var url='https://github.com/'+GH_REPO+'/issues/new?labels='+currentLabel+'&title='+encodeURIComponent(t)+'&body='+encodeURIComponent(b+'\n\n提交者：'+user.email);
   window.open(url,'_blank');
-  closePost();toast('正在跳转到 GitHub 提交...');
+  closePost();toast('已打开 GitHub，点击绿色 Submit 按钮发布');
 }
 
 refreshUser();

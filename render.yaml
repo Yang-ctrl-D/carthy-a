@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: carthy-forum
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js

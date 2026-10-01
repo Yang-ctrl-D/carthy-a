@@ -883,7 +883,7 @@ function loadBugs(){
   fetch('https://api.github.com/repos/'+GH_REPO+'/issues?state=all&per_page=20')
     .then(function(r){return r.json()})
     .then(function(issues){
-      var bugs=(issues||[]).filter(function(i){return (i.labels||[]).some(function(l){return l.name==='bug'})||!i.labels.length});
+      var bugs=(issues||[]).filter(function(i){return (i.labels||[]).some(function(l){return l.name==='bug'})&&!(i.labels||[]).some(function(l){return l.name==='announcement'})});
       if(!bugs.length){
         el.innerHTML='<div class="empty glass"><div class="empty-ico"><svg><use href="#i-forum" xlink:href="#i-forum"/></svg></div><h3>暂无 Bug 报告</h3><p>遇到问题？点击右上角"反馈 Bug"</p></div>';
         return;
@@ -920,9 +920,10 @@ function submitPost(){
   for(var i=0;i<BANNED.length;i++){
     if(t.toLowerCase().indexOf(BANNED[i].toLowerCase())>=0||b.toLowerCase().indexOf(BANNED[i].toLowerCase())>=0){toast('内容包含违规词');return}
   }
-  // Open GitHub to create issue
+  // Open GitHub to create issue with correct label
   var isBug=document.getElementById('postTitle').textContent.indexOf('Bug')>=0;
-  var url='https://github.com/'+GH_REPO+'/issues/new?title='+encodeURIComponent(t)+'&body='+encodeURIComponent(b+'\n\n提交者：'+user.email);
+  var labelParam=isBug?'bug':'announcement';
+  var url='https://github.com/'+GH_REPO+'/issues/new?labels='+labelParam+'&title='+encodeURIComponent(t)+'&body='+encodeURIComponent(b+'\n\n提交者：'+user.email);
   window.open(url,'_blank');
   closePost();toast('正在跳转到 GitHub 提交...');
 }

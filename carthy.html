@@ -963,7 +963,7 @@ function loadVersions(){
           return '<div class="dl-card glass"><div class="head"><div class="ver-icon fg"><svg><use href="#i-box" xlink:href="#i-box"/></svg></div>'+
             '<div><div class="v">'+esc(v.id)+'</div><div class="tag '+cls+'">'+t+'</div></div></div>'+
             '<p class="desc">发布于 '+new Date(v.releaseTime).toLocaleDateString()+'</p>'+
-            '<button class="btn dl-btn" onclick="window.open(\''+v.url+'\',\'_blank\')">查看详情</button></div>';
+            '<div class="meta"><span>在 CarthY 启动器中下载此版本</span></div></div>';
         }).join('')+'</div>';
     })
     .catch(function(){el.innerHTML='<div class="empty glass"><p>加载失败</p></div>'});

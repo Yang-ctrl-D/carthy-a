@@ -1,1 +1,13 @@
-{"name":"carthy-forum","version":"1.0.0","main":"server.js","dependencies":{"express":"^4.18.0","express-session":"^1.17.0","better-sqlite3":"^9.0.0","axios":"^1.6.0"},"scripts":{"start":"node server.js"}}
+{
+    "name":  "carthy-forum",
+    "version":  "1.0.0",
+    "dependencies":  {
+                         "express-session":  "^1.17.3",
+                         "axios":  "^1.6.0",
+                         "express":  "^4.18.0",
+                         "better-sqlite3":  "^9.0.0"
+                     },
+    "scripts":  {
+                    "start":  "node server.js"
+                }
+}

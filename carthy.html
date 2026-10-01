@@ -713,7 +713,7 @@ main{flex:1;min-width:0}
 
       <div class="sec-head">
         <div><h2>社区<span class="acc">公告</span></h2><div class="sub">从 GitHub 仓库实时加载</div></div>
-        <span class="more" onclick="newPost()"><svg width="15" height="15"><use href="#i-edit" xlink:href="#i-edit"/></svg> 发布公告</span>
+        <span class="more" id="btnNewAnnounce" style="display:none" onclick="newPost()"><svg width="15" height="15"><use href="#i-edit" xlink:href="#i-edit"/></svg> 发布公告</span>
       </div>
       <div id="announceList"><div class="empty glass"><p>加载中...</p></div></div>
     </section>
@@ -841,14 +841,17 @@ function doLogin(){
 function refreshUser(){
   var btnTxt=document.getElementById('topBtnTxt');
   var pn=document.getElementById('pName');var pr=document.getElementById('pRole');var pi=document.getElementById('profileInfo');
+  var btnAnn=document.getElementById('btnNewAnnounce');
   if(user){
     btnTxt.textContent=user.name;
     pn.textContent=user.name;
     pr.textContent=user.role==='admin'?'腐竹':'玩家';
     pi.innerHTML='邮箱：'+user.email+'<br>角色：'+(user.role==='admin'?'腐竹':'玩家')+'<br><span style="color:var(--green)">已登录</span>';
+    btnAnn.style.display=user.role==='admin'?'':'none';
   }else{
     btnTxt.textContent='登录 / 注册';
     pn.textContent='未登录';pr.textContent='点击右上角登录';
+    btnAnn.style.display='none';
   }
 }
 
@@ -903,6 +906,7 @@ function loadBugs(){
 
 function newPost(){
   if(!user){toast('请先登录');return}
+  if(user.role!=='admin'){toast('只有腐竹能发布公告');return}
   document.getElementById('postTitle').textContent='发布公告';
   document.getElementById('postModal').classList.add('open');
 }

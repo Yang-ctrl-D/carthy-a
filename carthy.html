@@ -845,6 +845,8 @@ main{flex:1;min-width:0}
     <input id="npTitle" placeholder="输入标题" style="width:100%;height:42px;border:1px solid var(--line-2);border-radius:10px;background:rgba(6,9,15,.7);color:var(--ink);padding:0 14px;outline:none">
     <label style="display:block;font-size:12px;color:var(--ink-dim);margin:13px 0 6px;font-weight:600">内容</label>
     <textarea id="npBody" placeholder="输入内容。分享资源时请附上下载链接。" rows="5" style="width:100%;border:1px solid var(--line-2);border-radius:10px;background:rgba(6,9,15,.7);color:var(--ink);padding:12px;outline:none;resize:vertical;font-family:inherit"></textarea>
+    <label style="display:block;font-size:12px;color:var(--ink-dim);margin:13px 0 6px;font-weight:600">附件（可选）</label>
+    <input type="file" id="npFile" style="width:100%;color:var(--ink-dim);font-size:13px">
     <div id="postWarn" style="display:none;color:#ff9898;font-size:12px;margin-top:8px"></div>
     <button class="btn solid" style="width:100%;margin-top:14px;height:44px" onclick="submitPost()">提交到 GitHub</button>
     <div class="modal-foot">提交后在 GitHub Issues 页面可见，内容经违规词检测</div>
@@ -859,7 +861,7 @@ var ADMIN_EMAIL='3962892029@qq.com';
 var ADMIN_PWD="6fd7h8d6s4f'h/f'h'\\f\\h'\\jjgugIlIIl//;";
 var BANNED=['傻逼','操你妈','滚蛋','垃圾','shit','fuck','外挂','作弊','破解','盗版','色情','赌博','毒品','诈骗'];
 var currentLabel='discussion';
-var user=JSON.parse(localStorage.getItem('carthy_user')||'null');
+var user=JSON.parse(localStorage.getItem('carthy_user')||'null')||{name:'游客'+Math.floor(Math.random()*9999),role:'player'};
 
 function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},2500)}
 
@@ -877,13 +879,7 @@ function go(v){
 }
 
 function openLogin(){
-  if(user){
-    if(confirm('当前登录：'+user.name+'\n\n确定退出登录？')){
-      localStorage.removeItem('carthy_user');user=null;refreshUser();toast('已退出');
-    }
-    return;
-  }
-  document.getElementById('loginModal').classList.add('open');
+  alert('当前身份：'+user.name+'\n角色：'+(user.role==='admin'?'腐竹':'游客'));
 }
 function closeLogin(){document.getElementById('loginModal').classList.remove('open')}
 
@@ -908,18 +904,12 @@ function refreshUser(){
   var pn=document.getElementById('pName');var pr=document.getElementById('pRole');var pi=document.getElementById('profileInfo');
   var btnAnn=document.getElementById('btnNewAnnounce');
   var navAdmin=document.getElementById('navAdmin');
-  if(user){
-    btnTxt.textContent=user.name;
-    pn.textContent=user.name;
-    pr.textContent=user.role==='admin'?'腐竹':'玩家';
-    pi.innerHTML='邮箱：'+user.email+'<br>角色：'+(user.role==='admin'?'腐竹':'玩家')+'<br><span style="color:var(--green)">已登录</span>';
-    btnAnn.style.display=user.role==='admin'?'':'none';
-    navAdmin.style.display=user.role==='admin'?'':'none';
-  }else{
-    btnTxt.textContent='登录 / 注册';
-    pn.textContent='未登录';pr.textContent='点击右上角登录';
-    btnAnn.style.display='none';navAdmin.style.display='none';
-  }
+  btnTxt.textContent=user.name;
+  pn.textContent=user.name;
+  pr.textContent=user.role==='admin'?'腐竹':'游客';
+  pi.innerHTML='身份：'+user.name+'<br>角色：'+(user.role==='admin'?'腐竹':'游客')+'<br><span style="color:var(--green)">在线</span>';
+  btnAnn.style.display=user.role==='admin'?'':'none';
+  navAdmin.style.display=user.role==='admin'?'':'none';
 }
 
 function esc(s){if(!s)return'';var d=document.createElement('div');d.textContent=s;return d.innerHTML}
@@ -1025,6 +1015,7 @@ function closePost(){document.getElementById('postModal').classList.remove('open
 function submitPost(){
   var t=document.getElementById('npTitle').value.trim();
   var b=document.getElementById('npBody').value.trim();
+  var f=document.getElementById('npFile').files[0];
   if(!t||!b){toast('请填写标题和内容');return}
   var warn='';
   for(var i=0;i<BANNED.length;i++){
@@ -1033,7 +1024,10 @@ function submitPost(){
     }
   }
   if(warn){var w=document.getElementById('postWarn');w.textContent=warn;w.style.display='block';toast(warn);return}
-  var url='https://github.com/'+GH_REPO+'/issues/new?labels='+currentLabel+'&title='+encodeURIComponent(t)+'&body='+encodeURIComponent(b+'\n\n提交者：'+user.email);
+  var body=b;
+  if(f) body+='\n\n附件：'+f.name+'（'+Math.round(f.size/1024)+'KB）——请在 GitHub 编辑时上传此文件';
+  body+='\n\n提交者：'+user.name;
+  var url='https://github.com/'+GH_REPO+'/issues/new?labels='+currentLabel+'&title='+encodeURIComponent(t)+'&body='+encodeURIComponent(body);
   window.open(url,'_blank');
   closePost();toast('已打开 GitHub，点击绿色 Submit 按钮发布');
 }

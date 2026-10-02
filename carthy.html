@@ -951,22 +951,49 @@ function loadList(elId,label){
 
 function loadVersions(){
   var el=document.getElementById('versionList');
-  el.innerHTML='<div class="empty glass"><p>从 Mojang 加载中...</p></div>';
-  fetch('https://piston-meta.mojang.com/mc/game/version_manifest_v2.json')
+  el.innerHTML='<div class="empty glass"><p>加载中...</p></div>';
+  fetch('https://bmclapi2.bangbang93.com/mc/game/version_manifest_v2.json')
     .then(function(r){return r.json()})
     .then(function(data){
-      var vers=(data.versions||[]).slice(0,40);
-      el.innerHTML='<div class="dl-grid" style="grid-template-columns:repeat(3,1fr)">'+
-        vers.map(function(v){
-          var t=v.type;
-          var cls=t=='release'?'vanilla':(t=='snapshot'?'fabric':'forge');
-          return '<div class="dl-card glass"><div class="head"><div class="ver-icon fg"><svg><use href="#i-box" xlink:href="#i-box"/></svg></div>'+
-            '<div><div class="v">'+esc(v.id)+'</div><div class="tag '+cls+'">'+t+'</div></div></div>'+
-            '<p class="desc">发布于 '+new Date(v.releaseTime).toLocaleDateString()+'</p>'+
-            '<div class="meta"><span>在 CarthY 启动器中下载此版本</span></div></div>';
-        }).join('')+'</div>';
+      var vers=data.versions||[];
+      window._allVersions=vers;
+      var html='<div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">'+
+        '<input id="verSearch" placeholder="搜索版本号..." style="flex:1;min-width:200px;padding:10px 14px;border-radius:9px;border:1px solid var(--line-2);background:var(--glass-2);color:var(--ink);font-size:14px" oninput="filterVersions()">'+
+        '<select id="verFilter" style="padding:10px 14px;border-radius:9px;border:1px solid var(--line-2);background:var(--glass-2);color:var(--ink);font-size:14px" onchange="filterVersions()">'+
+        '<option value="all">全部 ('+vers.length+')</option>'+
+        '<option value="release">正式版</option>'+
+        '<option value="snapshot">快照版</option>'+
+        '<option value="old_beta">远古 Beta</option>'+
+        '<option value="old_alpha">远古 Alpha</option>'+
+        '</select></div>'+
+        '<div id="verGrid" class="dl-grid" style="grid-template-columns:repeat(3,1fr);max-height:600px;overflow-y:auto"></div>';
+      el.innerHTML=html;
+      filterVersions();
     })
-    .catch(function(){el.innerHTML='<div class="empty glass"><p>加载失败</p></div>'});
+    .catch(function(){el.innerHTML='<div class="empty glass"><p>加载失败，请刷新重试</p></div>'});
+}
+
+function filterVersions(){
+  if(!window._allVersions)return;
+  var q=(document.getElementById('verSearch').value||'').toLowerCase();
+  var f=document.getElementById('verFilter').value;
+  var vers=window._allVersions.filter(function(v){
+    if(f!=='all'&&v.type!==f)return false;
+    if(q&&v.id.toLowerCase().indexOf(q)<0)return false;
+    return true;
+  });
+  var grid=document.getElementById('verGrid');
+  if(!vers.length){grid.innerHTML='<div class="empty glass" style="grid-column:1/-1"><p>没有匹配的版本</p></div>';return}
+  grid.innerHTML=vers.slice(0,200).map(function(v){
+    var t=v.type;
+    var cls=t=='release'?'vanilla':(t=='snapshot'?'fabric':(t=='old_beta'?'forge':'mod'));
+    var d=new Date(v.releaseTime).toLocaleDateString('zh-CN');
+    return '<div class="dl-card glass" style="padding:12px">'+
+      '<div style="display:flex;justify-content:space-between;align-items:center">'+
+      '<div style="font-weight:700;font-size:15px">'+esc(v.id)+'</div>'+
+      '<div class="tag '+cls+'" style="font-size:10px;padding:2px 8px;border-radius:6px">'+t+'</div></div>'+
+      '<div style="color:var(--ink-faint);font-size:12px;margin-top:4px">'+d+'</div></div>';
+  }).join('')+(vers.length>200?'<div style="grid-column:1/-1;text-align:center;color:var(--ink-faint);padding:12px">仅显示前200个，共 '+vers.length+' 个版本，请用搜索缩小范围</div>':'');
 }
 
 function loadAdmin(){

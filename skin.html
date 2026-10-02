@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CarthY 皮肤站</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0a0e1a;color:#e0e0e0;min-height:100vh}
+.header{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:20px 30px;display:flex;align-items:center;gap:15px;border-bottom:1px solid #2a2a4a}
+.logo{font-size:24px;font-weight:800;background:linear-gradient(90deg,#0f0,#0ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav{margin-left:auto;display:flex;gap:10px}
+.nav button{background:#1a2a4a;color:#0ff;border:1px solid #2a4a6a;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:14px}
+.nav button:hover{background:#2a3a5a}
+.container{max-width:1000px;margin:20px auto;padding:0 20px}
+.card{background:rgba(20,30,50,.8);border:1px solid #2a3a5a;border-radius:12px;padding:20px;margin-bottom:16px}
+.input{width:100%;padding:10px 14px;border-radius:8px;border:1px solid #2a3a5a;background:#0a1020;color:#e0e0e0;margin:6px 0;font-size:14px}
+.btn{background:linear-gradient(90deg,#0a6,#08a);color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:14px;margin-top:8px}
+.btn:hover{opacity:.9}
+.btn-danger{background:#a33}
+.skin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px;margin-top:16px}
+.skin-item{background:#1a2540;border-radius:8px;padding:10px;text-align:center;cursor:pointer}
+.skin-item:hover{background:#2a3550}
+.skin-preview{width:64px;height:128px;margin:0 auto;background:#1a2540;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:40px}
+.skin-name{font-size:12px;margin-top:6px;color:#aaa}
+.status{color:#0f0;font-size:13px;margin-top:8px}
+.error{color:#f66;font-size:13px;margin-top:8px}
+.tabs{display:flex;gap:8px;margin-bottom:16px}
+.tab{padding:8px 16px;border-radius:8px;background:#1a2540;cursor:pointer;font-size:14px;border:1px solid #2a3a5a}
+.tab.active{background:#0a4a6a;border-color:#0aa;color:#0ff}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">CarthY 皮肤站</div>
+  <div class="nav">
+    <button onclick="showTab('browse')">浏览皮肤</button>
+    <button id="btnAccount" onclick="showLogin()">登录/注册</button>
+  </div>
+</div>
+<div class="container">
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('browse')">皮肤商城</div>
+    <div class="tab" onclick="showTab('mine')">我的皮肤</div>
+    <div class="tab" onclick="showTab('upload')">上传皮肤</div>
+  </div>
+
+  <div id="tabBrowse" class="card">
+    <h3>热门皮肤</h3>
+    <p style="color:#888;font-size:13px;margin:8px 0">点击皮肤即可使用</p>
+    <div class="skin-grid" id="skinGrid"></div>
+  </div>
+
+  <div id="tabMine" class="card hidden">
+    <h3>我的资料</h3>
+    <div id="mineInfo">
+      <p style="color:#888">请先登录</p>
+    </div>
+  </div>
+
+  <div id="tabUpload" class="card hidden">
+    <h3>上传皮肤</h3>
+    <p style="color:#888;font-size:13px;margin:8px 0">选择一张 64x64 或 64x128 的 PNG 皮肤文件</p>
+    <input type="file" id="skinFile" accept=".png" class="input">
+    <button class="btn" onclick="uploadSkin()">上传并使用</button>
+    <div id="uploadStatus"></div>
+  </div>
+</div>
+
+<div id="loginModal" class="hidden" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:100">
+  <div class="card" style="width:380px;max-width:90%">
+    <h3 id="loginTitle">登录</h3>
+    <input id="loginUser" class="input" placeholder="用户名">
+    <input id="loginPass" class="input" type="password" placeholder="密码">
+    <button class="btn" onclick="doLogin()" style="width:100%">登录 / 注册</button>
+    <div id="loginMsg"></div>
+    <button class="btn btn-danger" onclick="closeLogin()" style="width:100%;margin-top:6px">关闭</button>
+  </div>
+</div>
+
+<script>
+var API='https://sparkling-scene-7bfb.3962892029.workers.dev';
+var user=JSON.parse(localStorage.getItem('carthy_skin_user')||'null');
+
+function showTab(t){
+  document.querySelectorAll('.tab').forEach(function(e){e.classList.remove('active')});
+  event.target.classList.add('active');
+  ['Browse','Mine','Upload'].forEach(function(x){
+    document.getElementById('tab'+x).classList.toggle('hidden',x.toLowerCase()!==t);
+  });
+  if(t==='mine'&&user) loadMine();
+}
+
+function showLogin(){
+  document.getElementById('loginModal').classList.remove('hidden');
+}
+function closeLogin(){
+  document.getElementById('loginModal').classList.add('hidden');
+}
+
+async function doLogin(){
+  var u=document.getElementById('loginUser').value.trim();
+  var p=document.getElementById('loginPass').value;
+  if(!u||!p){document.getElementById('loginMsg').innerHTML='<span class="error">请输入用户名和密码</span>';return}
+  try{
+    var r=await fetch(API+'/authserver/authenticate',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({username:u,password:p})
+    });
+    var d=await r.json();
+    if(d.accessToken){
+      user={name:u,token:d.accessToken,uuid:d.selectedProfile.id};
+      localStorage.setItem('carthy_skin_user',JSON.stringify(user));
+      document.getElementById('btnAccount').textContent=u;
+      closeLogin();
+      loadMine();
+    }else{
+      document.getElementById('loginMsg').innerHTML='<span class="error">登录失败</span>';
+    }
+  }catch(e){
+    document.getElementById('loginMsg').innerHTML='<span class="error">服务器连接失败</span>';
+  }
+}
+
+function loadMine(){
+  if(!user)return;
+  document.getElementById('mineInfo').innerHTML=
+    '<p>用户名：<b>'+user.name+'</b></p>'+
+    '<p>UUID：'+user.uuid+'</p>'+
+    '<p style="margin-top:12px"><button class="btn" onclick="logout()">退出登录</button></p>';
+}
+
+async function uploadSkin(){
+  if(!user){alert('请先登录');showLogin();return}
+  var f=document.getElementById('skinFile').files[0];
+  if(!f){document.getElementById('uploadStatus').innerHTML='<span class="error">请选择文件</span>';return}
+  var reader=new FileReader();
+  reader.onload=async function(){
+    var b64=reader.result.split(',')[1];
+    try{
+      var r=await fetch(API+'/api/skin',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({username:user.name,skin:'data:image/png;base64,'+b64})
+      });
+      var d=await r.json();
+      if(d.success){
+        document.getElementById('uploadStatus').innerHTML='<span class="status">皮肤上传成功！</span>';
+      }else{
+        document.getElementById('uploadStatus').innerHTML='<span class="error">上传失败</span>';
+      }
+    }catch(e){
+      document.getElementById('uploadStatus').innerHTML='<span class="error">服务器错误</span>';
+    }
+  };
+  reader.readAsDataURL(f);
+}
+
+function logout(){
+  localStorage.removeItem('carthy_skin_user');
+  user=null;
+  document.getElementById('btnAccount').textContent='登录/注册';
+  loadMine();
+}
+
+// Demo skins
+var demos=[
+  {name:'默认 Steve',icon:'🧍'},
+  {name:'Alex',icon:'🧑'},
+  {name:'骑士',icon:'🛡️'},
+  {name:'勇者',icon:'⚔️'},
+  {name:'法师',icon:'🔮'},
+  {name:'忍者',icon:'🥷'},
+  {name:'机器人',icon:'🤖'},
+  {name:'骷髅',icon:'💀'},
+];
+var grid=document.getElementById('skinGrid');
+demos.forEach(function(s){
+  grid.innerHTML+='<div class="skin-item"><div class="skin-preview">'+s.icon+'</div><div class="skin-name">'+s.name+'</div></div>';
+});
+
+if(user){document.getElementById('btnAccount').textContent=user.name;loadMine()}
+</script>
+</body>
+</html>
